@@ -1,0 +1,307 @@
+import 'package:spending_tracker/Core/Models/Category.dart';
+import 'package:spending_tracker/Core/Models/MonthlyTransactionObject.dart';
+import 'package:spending_tracker/Core/Models/UserTransaction.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:spending_tracker/Core/Services/Sqflite/CategoryDatabaseHelper.dart';
+import '../Models/Month.dart';
+import '../Services/MonthlyTransactionService.dart';
+import '../Services/Sqflite/TransactionDatabase.dart';
+
+class AppProvider with ChangeNotifier {
+  Month monthInstance = Month.getInstance;
+  MonthlyTransactionObject dataTable = MonthlyTransactionObject.getInstance;
+
+  //Database
+  TransactionDatabase transactionDatabase = TransactionDatabase();
+  CategoryDatabase categoryDatabase = CategoryDatabase();
+
+  //Provider variables
+  bool _busy = false;
+  String _categoryType = '';
+  List<UserTransaction> _categoryUserTransactionList = [];
+
+  List<UserCategory> _userCategoryList = [];
+  Map<String, String> _userCategoryMap = {};
+
+  ///Generate initial calendar and query from database.
+  AppProvider() {
+    _setBusy(true);
+    setDate(DateTime.now(), monthInstance);
+
+    _getAllCategory().then((categoryList) {
+      for (int i = 0; i < categoryList.length; i++) {
+        _userCategoryList.add(UserCategory.fromDb(categoryList[i]));
+        _userCategoryMap[categoryList[i]["name"]] = categoryList[i]["icon"];
+      }
+    });
+
+    _getUserTransactionsBetween().then((listOfUserTx) async {
+      Map<String, dynamic> temp = {"tx": listOfUserTx, "listOfCategories": _userCategoryList};
+      print(listOfUserTx);
+      print(_userCategoryList);
+
+      await compute(StaticMonthlyTransactionObject.calc, temp).then((resp) {
+        dataTable = resp;
+        _setBusy(false);
+      });
+      // await StaticMonthlyTransactionObject.calc(temp).then((resp) {
+      //   dataTable = resp;
+      //   _setBusy(false);
+      // });
+    });
+  }
+
+  //----------------------------------------------Core Functions-----------------------------------------
+
+  ///Sets busy status or not busy status. The only method used to notify listeners.
+  void _setBusy(bool value) {
+    _busy = value;
+    notifyListeners();
+  }
+
+  ///Check if given date is same month and year as current date. If not, then change date, build MonthlyDateArray and then build MonthlyTransactionObject.
+  ///Used for Reset button and Changing months by swiping left and right.
+  Future<void> _changeDateAndQuery(DateTime date) async {
+    _setBusy(true);
+    setDate(date, monthInstance);
+
+    //Query
+    //Call build table fcn
+    List<Map<String, dynamic>> listOfUserTx = await _getUserTransactionsBetween();
+
+    Map<String, dynamic> temp = {"tx": listOfUserTx, "listOfCategories": _userCategoryList};
+    await compute(StaticMonthlyTransactionObject.calc, temp).then((resp) {
+      dataTable = resp;
+      _setBusy(false);
+    });
+  }
+
+  //----------------------------------------------Setters-----------------------------------------
+  set categoryType(String category) {
+    _categoryType = category;
+  }
+
+  //----------------------------------------------Getters-----------------------------------------
+
+  ///Get the date currently selected.
+  DateTime get date {
+    return monthInstance.date;
+  }
+
+  double get sixWeekTotal {
+    return dataTable.sixWeekTotal;
+  }
+
+  ///Used to set widget tree status. Returns the value of the busy status.
+  bool get busy {
+    return _busy;
+  }
+
+  ///Returns a list of maps for each category.
+  // List<Map<String, dynamic>> get monthlyCategoryTotals {
+  //   return dataTable.monthlyCategoryTotalsAsList;
+  // }
+
+  ///Returns a maps for each category containing their totals.
+  Map<String, dynamic> get monthlyCategoryTotals {
+    return dataTable.monthlyCategoryTotals;
+  }
+
+  List<UserTransaction> get categoryUserTransactionList {
+    return _categoryUserTransactionList;
+  }
+
+  ///Returns the txList.
+  ///Example of map : {"date": DateTime,"dailyTotal": double,"transactions": List<UserTransaction>}
+  List<Map<String, dynamic>> get txList {
+    return dataTable.txList;
+  }
+
+  List<UserCategory> get userCategoryList {
+    return _userCategoryList;
+  }
+
+  Map<String, String> get userCategoryMap {
+    return _userCategoryMap;
+  }
+
+  //----------------------------------------------External Functions-----------------------------------------
+
+  ///Changes the current date in Provider to the one selected.
+  Future<void> changeDate(DateTime date) async {
+    await _changeDateAndQuery(date);
+  }
+
+  ///Resets the current date in Provider to today.
+  Future<void> reset() async {
+    DateTime resetToCurrentDate = DateTime.now();
+    await _changeDateAndQuery(DateTime.utc(resetToCurrentDate.year, resetToCurrentDate.month, resetToCurrentDate.day));
+  }
+
+  ///Refreshes the current queried transactions after inserting/updating/deleting a transaction.
+  ///If the categoryType is not empty, then also get the category transactions.
+  Future<void> refreshTransactions() async {
+    _setBusy(true);
+    setDate(date, monthInstance);
+
+    //Query
+    //Call build table fcn
+    List<Map<String, dynamic>> listOfUserTx = await _getUserTransactionsBetween();
+
+    Map<String, dynamic> temp = {"tx": listOfUserTx, "listOfCategories": _userCategoryList};
+
+    if (_categoryType != "") {
+      getListOfCategoryTransactions();
+    }
+
+    await compute(StaticMonthlyTransactionObject.calc, temp).then((resp) {
+      dataTable = resp;
+      _setBusy(false);
+      // List<List<Map<String, dynamic>>> temp = resp.MonthlyTransactionObjectObject;
+      // for (int i = 0; i < temp.length; i++) {
+      //   print(temp[i]);
+      // }
+    });
+  }
+
+  Future<void> addUserCategory(String name, String icon, String colorOne, String colorTwo) async {
+    await _insertCategory(name, icon, colorOne, colorTwo);
+    refreshUserCategoryList();
+    refreshTransactions();
+  }
+
+  Future<void> deleteUserCategory(int id) async {
+    await _deleteCategory(id);
+    refreshUserCategoryList();
+  }
+
+  Future<void> refreshUserCategoryList() async {
+    _userCategoryMap.clear();
+    _userCategoryList.clear();
+
+    await _getAllCategory().then((categoryList) {
+      for (int i = 0; i < categoryList.length; i++) {
+        _userCategoryList.add(UserCategory.fromDb(categoryList[i]));
+        _userCategoryMap[categoryList[i]["name"]] = categoryList[i]["icon"];
+        notifyListeners();
+      }
+    });
+  }
+
+  ///Using the categoryType in the MonthProvider object, does a SQL search. Then converts each transaction to a UserTransaction object.
+  Future<void> getListOfCategoryTransactions() async {
+    _categoryUserTransactionList.clear();
+
+    await _getCategoryList(_categoryType).then((resp) {
+      for (int i = 0; i < resp.length; i++) {
+        _categoryUserTransactionList.add(UserTransaction.fromDb(resp[i]));
+      }
+    });
+  }
+
+  Future<bool> categoryExists(String category) async {
+    List<Map<String, dynamic>> resp = await _checkCategoryExists(category);
+
+    if (resp.length > 0) {
+      return true;
+    }
+    return false;
+  }
+
+  //----------------------------------------------SQFLite Core Functions-----------------------------------------
+
+  ///Given the name, amount, desc, date, and category; insert into the database as an UserTransaction object.
+  Future<void> insertUserTransaction(String name, double amount, String desc, DateTime date, String category) {
+    UserTransaction tx = UserTransaction();
+    tx.name = name;
+    tx.amount = amount;
+    tx.desc = desc;
+    tx.date = date.millisecondsSinceEpoch;
+    tx.category = category;
+    tx.uploaded = 0;
+
+    return transactionDatabase.insertUserTransaction(tx);
+  }
+
+  ///Given the id, name, amount, desc, date, and category; update the transaction.
+  Future<int> updateUserTransaction(
+      int id, String name, double amount, String desc, DateTime date, String category, int uploaded) {
+    UserTransaction tx = UserTransaction();
+    tx.id = id;
+    tx.name = name;
+    tx.amount = amount;
+    tx.desc = desc;
+    tx.date = date.millisecondsSinceEpoch;
+    tx.category = category;
+    tx.uploaded = uploaded;
+
+    return transactionDatabase.updateUserTransaction(tx);
+  }
+
+  ///Given the id, delete the transaction from the database.
+  Future<int> deleteUserTransaction(int id) {
+    return transactionDatabase.deleteUserTransaction(id);
+  }
+
+  ///Given the category, delete all transactions from the database.
+  Future<int> deleteAllUserTransactionInCategory(String category) {
+    return transactionDatabase.deleteAllUserTransactionInCategory(category);
+  }
+
+  ///Gets all the user transaction.
+  ///Not used in any of the widgets.
+  Future<List<Map<String, dynamic>>> getAllUserTransaction() async {
+    return await transactionDatabase.getAllUserTransactionList();
+  }
+
+  ///Private function that gets all the user transaction of a particular category.
+  Future<List<Map<String, dynamic>>> _getCategoryList(String category) async {
+    int beginningOfQuery = monthInstance.beginningOfMonthInt;
+    int endOfQuery = monthInstance.endOfMonthInt;
+
+    return await transactionDatabase.getCategoryList(beginningOfQuery, endOfQuery, category);
+  }
+
+  ///Private function that grabs all the transactions between certain dates.
+  Future<List<Map<String, dynamic>>> _getUserTransactionsBetween() async {
+    int beginningOfQuery = monthInstance.beginningOfMonthInt;
+    int endOfQuery = monthInstance.endOfMonthInt;
+
+    return await transactionDatabase.getUserTransactionsBetween(beginningOfQuery, endOfQuery);
+  }
+
+  Future<void> _insertCategory(String name, String icon, String colorOne, String colorTwo) {
+    UserCategory category = UserCategory();
+    category.name = name;
+    category.icon = icon;
+    category.colorOne = colorOne;
+    category.colorTwo = colorTwo;
+
+    return categoryDatabase.insertCategory(category);
+  }
+
+  Future<int> _deleteCategory(int id) {
+    return categoryDatabase.deleteCategory(id);
+  }
+
+  Future<List<Map<String, dynamic>>> _getAllCategory() async {
+    return await categoryDatabase.getAllCategoryList();
+  }
+
+  ///Given the id, name, amount, desc, date, and category; update the transaction.
+  Future<int> updateUserCategory(int id, String name, String colorOne, String colorTwo, String icon) {
+    UserCategory userCategory = UserCategory();
+    userCategory.id = id;
+    userCategory.name = name;
+    userCategory.colorOne = colorOne;
+    userCategory.colorTwo = colorTwo;
+    userCategory.icon = icon;
+
+    return categoryDatabase.updateCategory(userCategory);
+  }
+
+  Future<List<Map<String, dynamic>>> _checkCategoryExists(String category) async {
+    return await categoryDatabase.checkCategoryExists(category);
+  }
+}
