@@ -24,7 +24,7 @@ class MonthlyViewSliver extends StatelessWidget {
               SliverPersistentHeader(
                 pinned: true,
                 floating: false,
-                delegate: HeaderDelegate(minExtent: 44, maxExtent: 200),
+                delegate: HeaderDelegate(minExtent: 44, maxExtent: 100),
               ),
               appProvider.txList.length == 0
                   ? SliverList(

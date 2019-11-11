@@ -4,6 +4,7 @@ import 'package:spending_tracker/Core/Constants/ColorPalette.dart';
 import 'package:spending_tracker/Core/Constants/IconsLibrary.dart';
 import 'package:spending_tracker/Core/ViewModels/AppProvider.dart';
 import 'package:spending_tracker/UI/Views/EditCategoryView/EditCategoryView.dart';
+import 'package:spending_tracker/UI/Widgets/CommonWidgets/CommonFunctions.dart';
 import 'package:spending_tracker/UI/Widgets/Dialog/DeleteDialog.dart';
 
 class CategoryListView extends StatelessWidget {
@@ -25,7 +26,6 @@ class CategoryListView extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
-                  color: greySlightlyDarkBlue,
                 ),
                 child: Row(
                   children: <Widget>[
@@ -42,9 +42,9 @@ class CategoryListView extends StatelessWidget {
                       ),
                       padding: EdgeInsets.only(left: 12.0),
                       child: Text(
-                        appProvider.userCategoryList[index].name,
+                        upperCaseFirstLetter(appProvider.userCategoryList[index].name),
                         textScaleFactor: 1,
-                        style: TextStyle(color: Colors.white, fontSize: 20),
+                        style: TextStyle(fontSize: 20),
                       ),
                     ),
 

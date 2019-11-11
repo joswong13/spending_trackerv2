@@ -87,7 +87,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                   Text(
                     "Add",
                     textScaleFactor: 1,
-                    style: TextStyle(fontSize: 28, color: Colors.white, fontWeight: FontWeight.w600),
+                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
                   ),
                   IconButton(
                     icon: const Icon(Icons.add_circle_outline),
@@ -136,7 +136,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                         Text(
                           'Category:',
                           textScaleFactor: 1,
-                          style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 18),
+                          style: TextStyle(fontSize: 18),
                         ),
                         RaisedButton(
                           color: Theme.of(context).primaryColor,
@@ -146,7 +146,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                             if (appProvider.userCategoryList.length == 0) {
                               await errorEmptyCategoryDialog(context);
                             } else {
-                              categoryDialog(context, appProvider.userCategoryList).then((String resp) {
+                              categoryDialog(context, appProvider.userCategoryList, _category).then((String resp) {
                                 _setCategoryState(resp);
                               });
                             }
@@ -161,7 +161,6 @@ class _TransactionScreenState extends State<TransactionScreen> {
                           _selectedDate == null ? 'No Date Chosen' : DateFormat.yMd().format(_selectedDate),
                           textScaleFactor: 1,
                           style: TextStyle(
-                            color: Theme.of(context).primaryColor,
                             fontSize: 18,
                           ),
                         ),

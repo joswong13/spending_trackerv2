@@ -38,6 +38,7 @@ class TransactionDatabase {
     await db.execute(_createDatabaseString);
   }
 
+//---------------------------------------------INSERT---------------------------------------------------------
   /// Inserts a user transaction into the database.
   Future<void> insertUserTransaction(UserTransaction tx) async {
     // Get a reference to the database.
@@ -50,6 +51,7 @@ class TransactionDatabase {
     );
   }
 
+//---------------------------------------------UPDATE---------------------------------------------------------
   /// Updates a user transaction in the database.
   Future<int> updateUserTransaction(UserTransaction tx) async {
     final Database db = await database;
@@ -59,15 +61,7 @@ class TransactionDatabase {
     return resp;
   }
 
-  /// Deletes a user transaction from the database.
-  Future<int> deleteUserTransaction(int id) async {
-    final Database db = await database;
-
-    int resp = await db.delete('userTransaction', where: "id = ?", whereArgs: [id]);
-
-    return resp;
-  }
-
+//---------------------------------------------GET---------------------------------------------------------
   /// Gets all user transactions in the database.
   Future<List<Map<String, dynamic>>> getAllUserTransactionList() async {
     final Database db = await database;
@@ -91,6 +85,16 @@ class TransactionDatabase {
         where: "date >= ? AND date <= ? AND category = ?",
         whereArgs: [startOfMonth, endOfMonth, category],
         orderBy: "date ASC");
+  }
+
+//---------------------------------------------DELETE---------------------------------------------------------
+  /// Deletes a user transaction from the database.
+  Future<int> deleteUserTransaction(int id) async {
+    final Database db = await database;
+
+    int resp = await db.delete('userTransaction', where: "id = ?", whereArgs: [id]);
+
+    return resp;
   }
 
   /// Deletes a user transaction from the database.

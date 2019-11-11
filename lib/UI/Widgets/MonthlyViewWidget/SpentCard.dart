@@ -18,7 +18,7 @@ class SpentCard extends StatelessWidget {
         height: 200,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
-          color: blueDarkDarkBlue,
+          color: Colors.blue,
         ),
         child: ListView(
           padding: EdgeInsets.symmetric(vertical: 5),

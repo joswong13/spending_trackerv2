@@ -25,98 +25,88 @@ class HeaderDelegate implements SliverPersistentHeaderDelegate {
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
     final monthData = Provider.of<AppProvider>(context);
 
-    return Container(
-      child: Stack(children: [
-        AnimatedOpacity(
-          opacity: topHeaderVisible(shrinkOffset) ? 1.0 : 0.0,
-          duration: Duration(milliseconds: 100),
-          child: Container(
-            //height: minExtent,
-            margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
-            decoration: BoxDecoration(
-              color: blueDarkDarkBlue,
-            ),
-            child: Center(
-              child: Text(DateFormat.yMMM().format(monthData.date),
-                  style: TextStyle(
-                    fontSize: 28,
-                  ),
-                  textScaleFactor: 1.0),
-            ),
+    return Stack(overflow: Overflow.visible, children: [
+      AnimatedOpacity(
+        opacity: topHeaderVisible(shrinkOffset) ? 1.0 : 0.0,
+        duration: Duration(milliseconds: 100),
+        child: Container(
+          //height: minExtent,
+          margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
+          decoration: BoxDecoration(
+            color: darkGrey,
+          ),
+          child: Center(
+            child: Text(DateFormat.yMMM().format(monthData.date),
+                style: TextStyle(
+                  fontSize: 28,
+                ),
+                textScaleFactor: 1.0),
           ),
         ),
-        AnimatedOpacity(
-          opacity: topHeaderVisible(shrinkOffset) ? 0.0 : 1.0,
-          duration: Duration(milliseconds: 100),
-          child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
+      ),
+      AnimatedOpacity(
+        opacity: topHeaderVisible(shrinkOffset) ? 0.0 : 1.0,
+        duration: Duration(milliseconds: 100),
+        child: Container(
+          height: maxExtent,
+          //color: Theme.of(context).primaryColor,
+          margin: EdgeInsets.fromLTRB(0, 0, 0, 16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(30),
+              bottomRight: Radius.circular(30),
             ),
-            elevation: 8,
-            margin: EdgeInsets.fromLTRB(16, 16, 16, 16),
-            child: Container(
-              height: maxExtent,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: blueDarkDarkBlue,
-              ),
-              child: ListView(
-                padding: EdgeInsets.symmetric(vertical: 5),
-                physics: NeverScrollableScrollPhysics(),
-                children: <Widget>[
-                  Center(
-                    child: Text(DateFormat.yMMM().format(monthData.date),
-                        style: TextStyle(
-                          fontSize: 28,
-                        ),
-                        textScaleFactor: 1.0),
-                  ),
-                  Center(
-                    child: Text(
-                      "Spent - \$${monthData.sixWeekTotal}",
-                      style: TextStyle(fontSize: 28),
+            color: darkGrey,
+            //color: Theme.of(context).primaryColor,
+          ),
+          child: ListView(
+            padding: EdgeInsets.symmetric(vertical: 5),
+            physics: NeverScrollableScrollPhysics(),
+            children: <Widget>[
+              Center(
+                child: Text(DateFormat.yMMM().format(monthData.date),
+                    style: TextStyle(
+                      fontSize: 28,
                     ),
-                  ),
-                  // Center(
-                  //   child: Text(
-                  //     "Budget",
-                  //     style: TextStyle(fontSize: 38),
-                  //   ),
-                  // ),
-                  //Budget comes later
-                ],
+                    textScaleFactor: 1.0),
               ),
-            ),
+              Center(
+                child: Text(
+                  "Spent - \$${monthData.sixWeekTotal}",
+                  style: TextStyle(fontSize: 28),
+                ),
+              ),
+            ],
           ),
         ),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: IconButton(
-            onPressed: () {
-              DateTime newMonth = DateTime.utc(monthData.date.year, monthData.date.month - 1, 1);
-              monthData.changeDate(newMonth);
-            },
-            iconSize: 30,
-            icon: Icon(
-              Icons.chevron_left,
-            ),
+      ),
+      Align(
+        alignment: Alignment.centerLeft,
+        child: IconButton(
+          onPressed: () {
+            DateTime newMonth = DateTime.utc(monthData.date.year, monthData.date.month - 1, 1);
+            monthData.changeDate(newMonth);
+          },
+          iconSize: 30,
+          icon: Icon(
+            Icons.chevron_left,
           ),
         ),
-        Align(
-          alignment: Alignment.centerRight,
-          child: IconButton(
-            onPressed: () {
-              DateTime newMonth = DateTime.utc(monthData.date.year, monthData.date.month + 1, 1);
-              monthData.changeDate(newMonth);
-            },
-            iconSize: 30,
-            icon: Icon(
-              Icons.chevron_right,
-            ),
+      ),
+      Align(
+        alignment: Alignment.centerRight,
+        child: IconButton(
+          onPressed: () {
+            DateTime newMonth = DateTime.utc(monthData.date.year, monthData.date.month + 1, 1);
+            monthData.changeDate(newMonth);
+          },
+          iconSize: 30,
+          icon: Icon(
+            Icons.chevron_right,
           ),
         ),
-      ]),
-    );
+      ),
+    ]);
   }
 
   @override
@@ -125,7 +115,6 @@ class HeaderDelegate implements SliverPersistentHeaderDelegate {
   }
 
   @override
-  // TODO: implement snapConfiguration
   FloatingHeaderSnapConfiguration get snapConfiguration => null;
 }
 
@@ -199,4 +188,100 @@ class HeaderDelegate implements SliverPersistentHeaderDelegate {
 //           ),
 //         ]),
 //       ),
+//     );
+
+// return Container(
+//       child: Stack(children: [
+//         AnimatedOpacity(
+//           opacity: topHeaderVisible(shrinkOffset) ? 1.0 : 0.0,
+//           duration: Duration(milliseconds: 100),
+//           child: Container(
+//             //height: minExtent,
+//             margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
+//             decoration: BoxDecoration(
+//               //color: blueDarkDarkBlue,
+//               color: Color.fromRGBO(29, 29, 29, 1),
+//             ),
+//             child: Center(
+//               child: Text(DateFormat.yMMM().format(monthData.date),
+//                   style: TextStyle(
+//                     fontSize: 28,
+//                   ),
+//                   textScaleFactor: 1.0),
+//             ),
+//           ),
+//         ),
+//         AnimatedOpacity(
+//           opacity: topHeaderVisible(shrinkOffset) ? 0.0 : 1.0,
+//           duration: Duration(milliseconds: 100),
+//           // child: Card(
+//           //   shape: RoundedRectangleBorder(
+//           //     borderRadius: BorderRadius.circular(15),
+//           //   ),
+//           //   elevation: 8,
+
+//           child: Container(
+//             margin: EdgeInsets.fromLTRB(16, 16, 16, 16),
+//             height: maxExtent,
+//             decoration: BoxDecoration(
+//               borderRadius: BorderRadius.circular(15),
+//               //color: blueDarkDarkBlue,
+//               //color: Color.fromRGBO(255, 255, 255, 0.06),
+//             ),
+//             child: ListView(
+//               padding: EdgeInsets.symmetric(vertical: 5),
+//               physics: NeverScrollableScrollPhysics(),
+//               children: <Widget>[
+//                 Center(
+//                   child: Text(DateFormat.yMMM().format(monthData.date),
+//                       style: TextStyle(
+//                         fontSize: 28,
+//                       ),
+//                       textScaleFactor: 1.0),
+//                 ),
+//                 Center(
+//                   child: Text(
+//                     "Spent - \$${monthData.sixWeekTotal}",
+//                     style: TextStyle(fontSize: 28),
+//                   ),
+//                 ),
+//                 // Center(
+//                 //   child: Text(
+//                 //     "Budget",
+//                 //     style: TextStyle(fontSize: 38),
+//                 //   ),
+//                 // ),
+//                 //Budget comes later
+//               ],
+//             ),
+//           ),
+//           //),
+//         ),
+//         Align(
+//           alignment: Alignment.centerLeft,
+//           child: IconButton(
+//             onPressed: () {
+//               DateTime newMonth = DateTime.utc(monthData.date.year, monthData.date.month - 1, 1);
+//               monthData.changeDate(newMonth);
+//             },
+//             iconSize: 30,
+//             icon: Icon(
+//               Icons.chevron_left,
+//             ),
+//           ),
+//         ),
+//         Align(
+//           alignment: Alignment.centerRight,
+//           child: IconButton(
+//             onPressed: () {
+//               DateTime newMonth = DateTime.utc(monthData.date.year, monthData.date.month + 1, 1);
+//               monthData.changeDate(newMonth);
+//             },
+//             iconSize: 30,
+//             icon: Icon(
+//               Icons.chevron_right,
+//             ),
+//           ),
+//         ),
+//       ]),
 //     );

@@ -38,8 +38,6 @@ class AppProvider with ChangeNotifier {
 
     _getUserTransactionsBetween().then((listOfUserTx) async {
       Map<String, dynamic> temp = {"tx": listOfUserTx, "listOfCategories": _userCategoryList};
-      print(listOfUserTx);
-      print(_userCategoryList);
 
       await compute(StaticMonthlyTransactionObject.calc, temp).then((resp) {
         dataTable = resp;
@@ -122,6 +120,7 @@ class AppProvider with ChangeNotifier {
     return _userCategoryList;
   }
 
+  ///Returns a map containing the category name and category icon.
   Map<String, String> get userCategoryMap {
     return _userCategoryMap;
   }
@@ -166,7 +165,7 @@ class AppProvider with ChangeNotifier {
   }
 
   Future<void> addUserCategory(String name, String icon, String colorOne, String colorTwo) async {
-    await _insertCategory(name, icon, colorOne, colorTwo);
+    await _insertCategory(name.toLowerCase(), icon, colorOne, colorTwo);
     refreshUserCategoryList();
     refreshTransactions();
   }

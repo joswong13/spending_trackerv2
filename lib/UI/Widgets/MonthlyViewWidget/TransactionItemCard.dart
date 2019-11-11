@@ -4,7 +4,6 @@ import 'package:spending_tracker/Core/Constants/IconsLibrary.dart';
 import 'package:spending_tracker/Core/ViewModels/AppProvider.dart';
 import 'package:spending_tracker/UI/Widgets/Dialog/DeleteDialog.dart';
 import '../../../Core/Models/UserTransaction.dart';
-import '../../../Core/Constants/ColorPalette.dart';
 import '../../Views/EditDeleteView/EditDeleteTransactionView.dart';
 
 class TransactionItemCard extends StatelessWidget {
@@ -46,7 +45,9 @@ class TransactionItemCard extends StatelessWidget {
               message: txData.category,
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 12),
-                child: Icon(icons[appProvider.userCategoryMap[txData.category]]),
+                child: Icon(
+                  icons[appProvider.userCategoryMap[txData.category]],
+                ),
               ),
             ),
             Container(
@@ -63,11 +64,11 @@ class TransactionItemCard extends StatelessWidget {
                       children: <Widget>[
                         Text(
                           txData.name,
-                          style: TextStyle(color: Colors.white, fontSize: 20),
+                          style: TextStyle(fontSize: 22),
                         ),
                         Text(
                           "\$${txData.amount}",
-                          style: TextStyle(color: tealLessThanRobinsEgg, fontSize: 18),
+                          style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 18),
                         ),
                       ],
                     )
@@ -76,23 +77,21 @@ class TransactionItemCard extends StatelessWidget {
                       children: <Widget>[
                         Text(
                           txData.name,
-                          style: TextStyle(color: Colors.white, fontSize: 24),
+                          style: TextStyle(fontSize: 22),
                         ),
                         Text(
                           txData.desc,
-                          style: TextStyle(color: greyCityLights, fontSize: 20),
+                          style: TextStyle(color: Color.fromRGBO(255, 255, 255, 0.60), fontSize: 20),
                         ),
                         Text(
                           "\$${txData.amount}",
-                          style: TextStyle(color: tealLessThanRobinsEgg, fontSize: 18),
+                          style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 18),
                         ),
                       ],
                     ),
             ),
             Expanded(
-              child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Icon(Icons.keyboard_arrow_right, color: greyCityLights, size: 30.0)),
+              child: Align(alignment: Alignment.centerRight, child: Icon(Icons.keyboard_arrow_right, size: 30.0)),
             )
           ],
         ),
@@ -100,6 +99,7 @@ class TransactionItemCard extends StatelessWidget {
     );
   }
 }
+//color: greyCityLights,
 //Text(" Intermediate", style: TextStyle(color: Colors.white))
 // child: Column(
 //           children: <Widget>[

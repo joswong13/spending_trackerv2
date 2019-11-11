@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:spending_tracker/Core/Constants/ColorPalette.dart';
 
 Future<String> colorDialog(BuildContext context) async {
-  String category = await showDialog(
+  String color = await showDialog(
       context: context,
       builder: (BuildContext context) {
         return SimpleDialog(
@@ -11,7 +11,7 @@ Future<String> colorDialog(BuildContext context) async {
             children: <Widget>[
               const Text('Select Color'),
               Divider(
-                color: greyCityLights,
+                color: Colors.white70,
               ),
             ],
           ),
@@ -21,15 +21,28 @@ Future<String> colorDialog(BuildContext context) async {
               height: MediaQuery.of(context).size.height * 0.7,
               child: GridView.count(
                 crossAxisCount: 5,
-                children: getColorsMapAsList().map((eachColor) {
-                  return SimpleDialogOption(
+                children:
+                    //getColorsMapAsList().map((eachColor)
+                    getColorsMapAsList().map((eachColor) {
+                  return InkWell(
                     child: Container(
+                      margin: EdgeInsets.all(2),
                       color: eachColor["color"],
                     ),
-                    onPressed: () {
+                    onTap: () {
                       Navigator.pop(context, eachColor["name"]);
                     },
                   );
+                  // return SimpleDialogOption(
+                  //   child: Container(
+                  //     width: 50,
+                  //     height: 50,
+                  //     color: eachColor["color"],
+                  //   ),
+                  //   onPressed: () {
+                  //     Navigator.pop(context, eachColor["name"]);
+                  //   },
+                  // );
                 }).toList(),
               ),
             ),
@@ -37,9 +50,8 @@ Future<String> colorDialog(BuildContext context) async {
         );
       });
 
-  if (category == null) {
-    category = "Choose Icon";
+  if (color == null) {
+    color = "blueGrey900";
   }
-
-  return category;
+  return color;
 }

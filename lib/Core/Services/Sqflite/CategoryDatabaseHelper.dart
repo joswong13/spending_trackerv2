@@ -41,6 +41,7 @@ class CategoryDatabase {
     await db.execute(_createCategoryDatabaseString);
   }
 
+//---------------------------------------------INSERT---------------------------------------------------------
   /// Inserts a user transaction into the database.
   Future<void> insertCategory(UserCategory category) async {
     // Get a reference to the database.
@@ -53,6 +54,7 @@ class CategoryDatabase {
     );
   }
 
+//---------------------------------------------UPDATE---------------------------------------------------------
   /// Updates a user transaction in the database.
   Future<int> updateCategory(UserCategory category) async {
     final Database db = await database;
@@ -62,15 +64,7 @@ class CategoryDatabase {
     return resp;
   }
 
-  /// Deletes a user transaction from the database.
-  Future<int> deleteCategory(int id) async {
-    final Database db = await database;
-
-    int resp = await db.delete('category', where: "id = ?", whereArgs: [id]);
-
-    return resp;
-  }
-
+//---------------------------------------------GET---------------------------------------------------------
   /// Gets all user transactions in the database.
   Future<List<Map<String, dynamic>>> getAllCategoryList() async {
     final Database db = await database;
@@ -83,5 +77,15 @@ class CategoryDatabase {
     final Database db = await database;
 
     return await db.query('category', where: "name = ?", whereArgs: [category]);
+  }
+
+//---------------------------------------------DELETE---------------------------------------------------------
+  /// Deletes a user transaction from the database.
+  Future<int> deleteCategory(int id) async {
+    final Database db = await database;
+
+    int resp = await db.delete('category', where: "id = ?", whereArgs: [id]);
+
+    return resp;
   }
 }

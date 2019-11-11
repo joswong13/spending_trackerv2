@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:spending_tracker/Core/Constants/ColorPalette.dart';
 import 'package:spending_tracker/Core/Constants/IconsLibrary.dart';
 
 Future<String> categoryIconDialog(BuildContext context) async {
@@ -12,7 +11,7 @@ Future<String> categoryIconDialog(BuildContext context) async {
             children: <Widget>[
               const Text('Select Category Icon'),
               Divider(
-                color: greyCityLights,
+                color: Colors.white70,
               ),
             ],
           ),

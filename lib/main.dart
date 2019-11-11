@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import './Core/ViewModels/AppProvider.dart';
-import './Core/Constants/ColorPalette.dart';
 import './UI/Views/HomeView/HomeView.dart';
+import 'Core/Constants/ColorPalette.dart';
 
 void main() {
   //sets fullscreen (without bottom nav android nav bar)
   //SystemChrome.setEnabledSystemUIOverlays([]);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: blueDarkDarkBlue, //top bar color
+    statusBarColor: darkGrey, //top bar color
     statusBarIconBrightness: Brightness.light, //top bar icons
     systemNavigationBarColor: Colors.black, //bottom bar color
     systemNavigationBarIconBrightness: Brightness.light, //bottom bar icons
@@ -28,18 +28,35 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         theme: ThemeData(
-          scaffoldBackgroundColor: greyVeryDarkBlue,
-          buttonColor: tealLessThanRobinsEgg,
+          dialogTheme: DialogTheme(
+            titleTextStyle: TextStyle(
+              color: Color.fromRGBO(255, 255, 255, 0.87),
+              fontSize: 24,
+            ),
+          ),
+          cardColor: darkGrey,
+          scaffoldBackgroundColor: Color.fromRGBO(18, 18, 18, 1),
+          buttonTheme: ButtonThemeData(
+            buttonColor: primaryGreen,
+          ),
           brightness: Brightness.dark,
-          primaryColor: tealLessThanRobinsEgg,
+          primaryColor: primaryGreen,
+          iconTheme: IconThemeData(
+            color: Color.fromRGBO(255, 255, 255, 0.87),
+          ),
+          textTheme: TextTheme(
+            body1: TextStyle(
+              color: Color.fromRGBO(255, 255, 255, 0.87),
+            ),
+          ),
         ),
         home: HomeView(),
-        //routes: <String, WidgetBuilder>{'/addTransaction': (BuildContext context) => TransactionScreen()},
       ),
     );
   }
 }
 
+//routes: <String, WidgetBuilder>{'/addTransaction': (BuildContext context) => TransactionScreen()},
 // home: Scaffold(
 //   appBar: AppBar(
 //     title: Text('AppBar'),

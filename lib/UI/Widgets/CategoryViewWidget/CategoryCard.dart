@@ -4,6 +4,7 @@ import 'package:spending_tracker/Core/Models/Category.dart';
 import 'package:spending_tracker/Core/ViewModels/AppProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:spending_tracker/UI/Widgets/CommonWidgets/CommonFunctions.dart';
 import '../../Views/CategoryTransactionView/CategoryTransactionView.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
@@ -35,7 +36,7 @@ class CategoryCard extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
           gradient: LinearGradient(
-            colors: [colorsMap[_userCategory.colorOne], colorsMap[_userCategory.colorTwo]],
+            colors: [materialColorMap[_userCategory.colorOne], materialColorMap[_userCategory.colorTwo]],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -45,7 +46,7 @@ class CategoryCard extends StatelessWidget {
           children: <Widget>[
             Icon(icons[_userCategory.icon]),
             AutoSizeText(
-              _userCategory.name,
+              upperCaseFirstLetter(_userCategory.name),
               style: TextStyle(fontSize: 24),
               maxLines: 1,
             ),

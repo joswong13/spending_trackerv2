@@ -49,7 +49,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
       floatingActionButton: FloatingActionButton(
         tooltip: 'Add',
         isExtended: true,
-        backgroundColor: tealFadedPoster,
+        backgroundColor: Theme.of(context).primaryColor,
         foregroundColor: Colors.black,
         child: Icon(Icons.add),
         onPressed: () {
@@ -75,7 +75,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
             controller: _tabController,
             labelColor: Theme.of(context).primaryColor,
             indicatorColor: Theme.of(context).primaryColor,
-            unselectedLabelColor: Colors.blueGrey,
+            unselectedLabelColor: Colors.grey[800],
           ),
         ),
       ),

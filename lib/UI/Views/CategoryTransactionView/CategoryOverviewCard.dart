@@ -21,7 +21,8 @@ class CategoryOverviewCard extends StatelessWidget {
               alignment: Alignment.center,
               child: Text(
                 "Categories",
-                style: TextStyle(fontSize: sizeConfig.topHeight28, color: greyCityLights, fontWeight: FontWeight.w600),
+                textScaleFactor: 1,
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
               ),
             ),
             Align(

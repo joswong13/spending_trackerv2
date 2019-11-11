@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:spending_tracker/Core/Constants/IconsLibrary.dart';
 import 'package:spending_tracker/Core/Models/Category.dart';
-import '../../../Core/Constants/ColorPalette.dart';
+import 'package:spending_tracker/UI/Widgets/CommonWidgets/CommonFunctions.dart';
 
 enum Category { GAS, FOOD, GROCCERIES, RECURRING, SHOPPING, ENTERTAINMENT, TRANSPORTATION, MISC }
 
@@ -19,7 +19,7 @@ Future<DateTime> presentDatePicker(BuildContext context, DateTime selectedDate) 
   }
 }
 
-Future<String> categoryDialog(BuildContext context, List<UserCategory> categoriesList) async {
+Future<String> categoryDialog(BuildContext context, List<UserCategory> categoriesList, String currentCategory) async {
   String category = await showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -29,7 +29,7 @@ Future<String> categoryDialog(BuildContext context, List<UserCategory> categorie
               children: <Widget>[
                 const Text('Select Category'),
                 Divider(
-                  color: greyCityLights,
+                  color: Colors.white70,
                 ),
               ],
             ),
@@ -42,7 +42,7 @@ Future<String> categoryDialog(BuildContext context, List<UserCategory> categorie
                     return SimpleDialogOption(
                       child: ListTile(
                         leading: Icon(icons[category.icon]),
-                        title: Text(category.name),
+                        title: Text(upperCaseFirstLetter(category.name)),
                       ),
                       onPressed: () {
                         Navigator.pop(context, category.name);
@@ -55,7 +55,7 @@ Future<String> categoryDialog(BuildContext context, List<UserCategory> categorie
       });
 
   if (category == null) {
-    category = "None";
+    category = currentCategory;
   }
   return category;
 }

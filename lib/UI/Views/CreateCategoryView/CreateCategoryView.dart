@@ -24,8 +24,8 @@ class _CreateCategoryViewState extends State<CreateCategoryView> {
       "Warning: This category name cannot be changed. Please confirm the following category name: ";
   String _categoryIcon = "Choose Icon";
   FocusNode focusNode = FocusNode();
-  String _colorOne = 'greyVeryDarkBlue';
-  String _colorTwo = 'greyVeryDarkBlue';
+  String _colorOne = 'blueGrey900';
+  String _colorTwo = 'blueGrey900';
 
   void _setCategoryIcon(String iconName) {
     setState(() {
@@ -35,8 +35,8 @@ class _CreateCategoryViewState extends State<CreateCategoryView> {
 
   void _resetContainerColor() {
     setState(() {
-      _colorOne = 'greyVeryDarkBlue';
-      _colorTwo = 'greyVeryDarkBlue';
+      _colorOne = 'blueGrey900';
+      _colorTwo = 'blueGrey900';
     });
   }
 
@@ -76,8 +76,8 @@ class _CreateCategoryViewState extends State<CreateCategoryView> {
                   borderRadius: BorderRadius.circular(15),
                   gradient: LinearGradient(
                     colors: [
-                      colorsMap[_colorOne],
-                      colorsMap[_colorTwo],
+                      materialColorMap[_colorOne],
+                      materialColorMap[_colorTwo],
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,

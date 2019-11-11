@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spending_tracker/UI/Views/AddExpenseView/AddTransactionView.dart';
+import 'package:spending_tracker/UI/Widgets/CommonWidgets/CommonFunctions.dart';
 
 const roundedRect30 = RoundedRectangleBorder(
   borderRadius: BorderRadius.all(
@@ -9,7 +10,7 @@ const roundedRect30 = RoundedRectangleBorder(
 
 Text raisedButtonTextSize14(String buttonText) {
   return Text(
-    buttonText,
+    upperCaseFirstLetter(buttonText) ,
     textScaleFactor: 1,
     style: TextStyle(fontSize: 14, color: Colors.black),
   );

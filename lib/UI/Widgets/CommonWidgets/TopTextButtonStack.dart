@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:spending_tracker/Core/Constants/ColorPalette.dart';
 
 class TopTextButtonStack extends StatelessWidget {
   final FocusNode focusNode;
@@ -8,7 +7,7 @@ class TopTextButtonStack extends StatelessWidget {
   final FocusNode focusNode2;
   final String title;
 
-  TopTextButtonStack({this.title, this.focusNode, this.focusNode1, this.focusNode2});
+  TopTextButtonStack({@required this.title, this.focusNode, this.focusNode1, this.focusNode2});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +17,7 @@ class TopTextButtonStack extends StatelessWidget {
         child: Text(
           title,
           textScaleFactor: 1,
-          style: TextStyle(fontSize: 28, color: greyCityLights, fontWeight: FontWeight.w600),
+          style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
         ),
       ),
       Align(

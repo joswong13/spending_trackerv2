@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:spending_tracker/Core/Constants/ColorPalette.dart';
 import 'package:spending_tracker/UI/Widgets/MonthlyViewWidget/TransactionItemCard.dart';
 import 'package:intl/intl.dart';
 
@@ -13,40 +12,50 @@ class TransactionItems extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
       ),
-      elevation: 8,
+      elevation: 1,
       margin: EdgeInsets.fromLTRB(16, 5, 16, 5),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: greySlightlyDarkBlue,
-        ),
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    DateFormat("EEE d").format(transaction["date"]),
-                    style: TextStyle(fontSize: 18, color: tealLessThanRobinsEgg),
+      // child: Container(
+      //   decoration: BoxDecoration(
+      //     borderRadius: BorderRadius.circular(15),
+      //     //color: greySlightlyDarkBlue,
+      //     //color: Colors.blueGrey[900],
+      //   ),
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  DateFormat("EEE d").format(transaction["date"]),
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Theme.of(context).primaryColor,
                   ),
-                  Text(
-                    "\$${transaction["dailyTotal"].toString()}",
-                    style: TextStyle(fontSize: 18, color: tealLessThanRobinsEgg),
+                ),
+                Text(
+                  "\$${transaction["dailyTotal"].toString()}",
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Theme.of(context).primaryColor,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            Divider(
-              height: 0.0,
-            ),
-            ...transaction["transactions"].map((tx) {
-              return TransactionItemCard(txData: tx);
-            })
-          ],
-        ),
+          ),
+          Divider(
+            height: 0.0,
+          ),
+          ...transaction["transactions"].map((tx) {
+            return TransactionItemCard(txData: tx);
+          })
+        ],
       ),
+      //),
     );
   }
 }
+
+//style: TextStyle(fontSize: 18, color: Colors.blue[200]),
+//style: TextStyle(fontSize: 18, color: tealLessThanRobinsEgg),

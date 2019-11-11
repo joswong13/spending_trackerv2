@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:spending_tracker/Core/Constants/ColorPalette.dart';
 import 'package:spending_tracker/Core/Constants/IconsLibrary.dart';
 import 'package:spending_tracker/Core/Models/Category.dart';
+import 'package:spending_tracker/UI/Widgets/CommonWidgets/CommonFunctions.dart';
 import 'package:spending_tracker/UI/Widgets/FormWidgets/RaisedButtonWidget.dart';
 import 'package:spending_tracker/UI/Widgets/FormWidgets/TextfieldWidget.dart';
 import 'package:spending_tracker/Core/ViewModels/AppProvider.dart';
@@ -80,8 +81,8 @@ class _EditCategoryViewState extends State<EditCategoryView> {
                   borderRadius: BorderRadius.circular(15),
                   gradient: LinearGradient(
                     colors: [
-                      colorsMap[_colorOne],
-                      colorsMap[_colorTwo],
+                      materialColorMap[_colorOne],
+                      materialColorMap[_colorTwo],
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
@@ -90,7 +91,7 @@ class _EditCategoryViewState extends State<EditCategoryView> {
                 child: Column(
                   children: <Widget>[
                     Text(
-                      _name,
+                      upperCaseFirstLetter(_name),
                       textScaleFactor: 1,
                       style: TextStyle(fontSize: 27),
                     ),
