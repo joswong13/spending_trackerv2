@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
+import 'package:spending_tracker/Core/Constants/ColorPalette.dart';
 import 'package:spending_tracker/Core/Constants/IconsLibrary.dart';
 import 'package:spending_tracker/Core/Models/Category.dart';
 import 'package:spending_tracker/Core/ViewModels/AppProvider.dart';
@@ -16,21 +17,23 @@ void main() {
 
     UserCategory uc = UserCategory();
     uc.id = 1;
-    uc.name = "Test";
+    uc.name = "test";
     uc.icon = "Shopping";
-    uc.colorOne = "blueGreyForestBlues";
-    uc.colorTwo = "blueGreenDarnerTail";
+    uc.colorOne = "red500";
+    uc.colorTwo = "green500";
+
     await tester.pumpWidget(
       MultiProvider(
         providers: [
           ChangeNotifierProvider(builder: (ctx) => AppProvider()),
         ],
         child: Builder(
-          builder: (_) => MaterialApp(
+          builder: (BuildContext context) => MaterialApp(
             navigatorObservers: [mockObserver],
             home: Material(
-              child: Directionality(
-                textDirection: TextDirection.ltr,
+              child: Container(
+                height: 200,
+                width: 200,
                 child: CategoryCard(uc),
               ),
             ),

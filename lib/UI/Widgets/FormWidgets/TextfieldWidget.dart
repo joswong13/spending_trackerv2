@@ -16,14 +16,14 @@ TextField transactionTextfield(
       focusedBorder: UnderlineInputBorder(
         borderSide: BorderSide(color: primary),
       ),
-      suffixIcon: textFieldIconButton(focusNode, controller),
+      suffixIcon: _textFieldIconButton(focusNode, controller),
     ),
     controller: controller,
     textCapitalization: TextCapitalization.words,
   );
 }
 
-void textfieldClearSuffixIcon({FocusNode focusNode, TextEditingController textfieldController}) {
+void _textfieldClearSuffixIcon({FocusNode focusNode, TextEditingController textfieldController}) {
   SchedulerBinding.instance.addPostFrameCallback((_) {
     focusNode.unfocus();
     textfieldController.clear();
@@ -31,15 +31,16 @@ void textfieldClearSuffixIcon({FocusNode focusNode, TextEditingController textfi
   });
 }
 
-IconButton textFieldIconButton(FocusNode focusNode, TextEditingController textController) {
+IconButton _textFieldIconButton(FocusNode focusNode, TextEditingController textController) {
   return IconButton(
     icon: Icon(Icons.clear),
     onPressed: () {
-      textfieldClearSuffixIcon(focusNode: focusNode, textfieldController: textController);
+      _textfieldClearSuffixIcon(focusNode: focusNode, textfieldController: textController);
     },
   );
 }
 
+///Given the context and between 1 to 3 focus nodes, this method will unfocus and pop context.
 void unfocusTextFieldAndPop(BuildContext context, FocusNode focusNode1, [FocusNode focusNode2, FocusNode focusNode3]) {
   SchedulerBinding.instance.addPostFrameCallback((_) {
     if (focusNode1 != null) {
@@ -64,7 +65,7 @@ Map<String, dynamic> checkValidFields({String name, String amount, String catego
   try {
     _tempAmount = double.parse(amount);
   } catch (e) {
-    return validatorMap = {"valid": false, "error": "Error: Amount cannot be empty."};
+    return validatorMap = {"valid": false, "error": "Error: Amount error."};
   }
   if (name == "") {
     return validatorMap = {"valid": false, "error": "Error: Name cannot be empty."};
@@ -78,9 +79,10 @@ Map<String, dynamic> checkValidFields({String name, String amount, String catego
   return validatorMap = {"valid": true};
 }
 
-void textfieldFullClearUnfocus({FocusNode focusNode, TextEditingController textfieldController}) {
+///Given a FocusNode and the TextFieldController, this will unfocus and clear the text field.
+void textfieldFullClearUnfocus({FocusNode focusNode, TextEditingController textFieldController}) {
   SchedulerBinding.instance.addPostFrameCallback((_) {
     focusNode.unfocus();
-    textfieldController.clear();
+    textFieldController.clear();
   });
 }

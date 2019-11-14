@@ -15,7 +15,7 @@ class HeaderDelegate implements SliverPersistentHeaderDelegate {
 
   bool topHeaderVisible(double shrinkOffset) {
     final double alpha = (shrinkOffset / (this.maxExtent - this.minExtent)).clamp(0.0, 1.0);
-    if (alpha >= 0.8) {
+    if (alpha >= 0.5) {
       return true;
     }
     return false;
@@ -36,12 +36,11 @@ class HeaderDelegate implements SliverPersistentHeaderDelegate {
             color: darkGrey,
           ),
           child: Center(
-            child: Text(DateFormat.yMMM().format(monthData.date),
-                style: TextStyle(
-                  fontSize: 28,
-                ),
-                textScaleFactor: 1.0),
-          ),
+              child: Text(
+            DateFormat.yMMM().format(monthData.date),
+            textScaleFactor: 1.0,
+            style: TextStyle(fontSize: 28, color: Theme.of(context).primaryColor),
+          )),
         ),
       ),
       AnimatedOpacity(
@@ -49,7 +48,6 @@ class HeaderDelegate implements SliverPersistentHeaderDelegate {
         duration: Duration(milliseconds: 100),
         child: Container(
           height: maxExtent,
-          //color: Theme.of(context).primaryColor,
           margin: EdgeInsets.fromLTRB(0, 0, 0, 16),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
@@ -57,7 +55,6 @@ class HeaderDelegate implements SliverPersistentHeaderDelegate {
               bottomRight: Radius.circular(30),
             ),
             color: darkGrey,
-            //color: Theme.of(context).primaryColor,
           ),
           child: ListView(
             padding: EdgeInsets.symmetric(vertical: 5),
@@ -72,8 +69,10 @@ class HeaderDelegate implements SliverPersistentHeaderDelegate {
               ),
               Center(
                 child: Text(
-                  "Spent - \$${monthData.sixWeekTotal}",
-                  style: TextStyle(fontSize: 28),
+                  "Spent - \$${monthData.monthlyTotal}",
+                  style: TextStyle(
+                    fontSize: 28,
+                  ),
                 ),
               ),
             ],

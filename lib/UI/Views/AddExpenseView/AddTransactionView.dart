@@ -46,9 +46,9 @@ class _TransactionScreenState extends State<TransactionScreen> {
 
   ///After submitting, clears and resets the form.
   void _afterSubmit() {
-    textfieldFullClearUnfocus(focusNode: nameFocusNode, textfieldController: nameController);
-    textfieldFullClearUnfocus(focusNode: amountFocusNode, textfieldController: amountController);
-    textfieldFullClearUnfocus(focusNode: descFocusNode, textfieldController: descController);
+    textfieldFullClearUnfocus(focusNode: nameFocusNode, textFieldController: nameController);
+    textfieldFullClearUnfocus(focusNode: amountFocusNode, textFieldController: amountController);
+    textfieldFullClearUnfocus(focusNode: descFocusNode, textFieldController: descController);
     setState(() {
       _category = "None";
       _selectedDate = null;

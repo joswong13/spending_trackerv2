@@ -11,13 +11,21 @@ class CategoryHorizontalScrollBox extends StatelessWidget {
     final appProvider = Provider.of<AppProvider>(context);
 
     return Container(
-      color: darkGrey,
+      //color: darkGrey,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Theme.of(context).primaryColor, darkGrey],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          stops: [0.1, 0.5],
+        ),
+      ),
       child: Column(
         children: <Widget>[
           Text(
             "Categories",
             textScaleFactor: 1,
-            style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
+            style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600, color: Colors.black),
           ),
           appProvider.userCategoryList.length == 0
               ? InkWell(

@@ -37,7 +37,7 @@ void main() {
     expect(uT.category, "Test");
     expect(uT.amount, 3.3);
 
-    expect(dataTable.sixWeekTotal, 16.5);
+    expect(dataTable.monthlyTotal, 16.5);
     expect(dataTable.monthlyCategoryTotals, {"Test": 4.4, "Test1": 12.1});
     expect(dataTable.txList[0]["dailyTotal"], 3.3);
     expect(dataTable.txList[1]["dailyTotal"], 13.2);

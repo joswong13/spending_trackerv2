@@ -33,7 +33,7 @@ class SpentCard extends StatelessWidget {
             ),
             Center(
               child: Text(
-                "Spent - \$${monthData.sixWeekTotal}",
+                "Spent - \$${monthData.monthlyTotal}",
                 style: TextStyle(fontSize: 28),
               ),
             ),
