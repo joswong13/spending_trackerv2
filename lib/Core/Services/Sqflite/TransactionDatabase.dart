@@ -41,7 +41,7 @@ class TransactionDatabase extends BaseDB<UserTransaction> {
   }
 
 //---------------------------------------------INSERT---------------------------------------------------------
-  /// Inserts a user transaction into the database.
+
   @override
   Future<void> insert(UserTransaction tx) async {
     // Get a reference to the database.
@@ -55,7 +55,7 @@ class TransactionDatabase extends BaseDB<UserTransaction> {
   }
 
 //---------------------------------------------UPDATE---------------------------------------------------------
-  /// Updates a user transaction in the database.
+
   @override
   Future<int> update(UserTransaction tx) async {
     final Database db = await database;
@@ -66,7 +66,7 @@ class TransactionDatabase extends BaseDB<UserTransaction> {
   }
 
 //---------------------------------------------GET---------------------------------------------------------
-  /// Gets all user transactions in the database.
+
   @override
   Future<List<Map<String, dynamic>>> getAllInDb() async {
     final Database db = await database;
@@ -98,7 +98,7 @@ class TransactionDatabase extends BaseDB<UserTransaction> {
   }
 
 //---------------------------------------------DELETE---------------------------------------------------------
-  /// Deletes a user transaction from the database.
+
   @override
   Future<int> deleteById(int id) async {
     final Database db = await database;
@@ -108,7 +108,6 @@ class TransactionDatabase extends BaseDB<UserTransaction> {
     return resp;
   }
 
-  /// Deletes a user transaction from the database.
   @override
   Future<int> deleteByString(String category) async {
     final Database db = await database;

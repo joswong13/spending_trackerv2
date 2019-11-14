@@ -1,13 +1,10 @@
-import 'package:spending_tracker/Core/Constants/SizeConfig.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spending_tracker/UI/Views/CreateCategoryView/CreateCategoryView.dart';
 import '../../../Core/ViewModels/AppProvider.dart';
 import '../../Widgets/CategoryViewWidget/CategoryCard.dart';
-import '../../../Core/Constants/ColorPalette.dart';
 
 class CategoryOverviewCard extends StatelessWidget {
-  final SizeConfig sizeConfig = SizeConfig();
   @override
   Widget build(BuildContext context) {
     final AppProvider appProvider = Provider.of<AppProvider>(context);

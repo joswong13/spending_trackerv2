@@ -44,7 +44,7 @@ class CategoryDatabase extends BaseDB<UserCategory> {
   }
 
 //---------------------------------------------INSERT---------------------------------------------------------
-  /// Inserts a user transaction into the database.
+
   @override
   Future<void> insert(UserCategory category) async {
     // Get a reference to the database.
@@ -58,7 +58,7 @@ class CategoryDatabase extends BaseDB<UserCategory> {
   }
 
 //---------------------------------------------UPDATE---------------------------------------------------------
-  /// Updates a user transaction in the database.
+
   @override
   Future<int> update(UserCategory category) async {
     final Database db = await database;
@@ -69,7 +69,7 @@ class CategoryDatabase extends BaseDB<UserCategory> {
   }
 
 //---------------------------------------------GET---------------------------------------------------------
-  /// Gets all user transactions in the database.
+
   @override
   Future<List<Map<String, dynamic>>> getAllInDb() async {
     final Database db = await database;
@@ -77,7 +77,6 @@ class CategoryDatabase extends BaseDB<UserCategory> {
     return await db.query('category');
   }
 
-  /// Gets all transactions from a particular category and date.
   @override
   Future<List<Map<String, dynamic>>> getWithOneParameter<A>(A category) async {
     final Database db = await database;
@@ -96,7 +95,7 @@ class CategoryDatabase extends BaseDB<UserCategory> {
   }
 
 //---------------------------------------------DELETE---------------------------------------------------------
-  /// Deletes a user transaction from the database.
+
   @override
   Future<int> deleteById(int id) async {
     final Database db = await database;

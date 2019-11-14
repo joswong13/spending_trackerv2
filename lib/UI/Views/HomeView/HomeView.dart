@@ -1,5 +1,4 @@
-import 'package:spending_tracker/Core/Constants/ColorPalette.dart';
-import 'package:spending_tracker/Core/Constants/SizeConfig.dart';
+//import 'package:spending_tracker/Core/Constants/SizeConfig.dart';
 import 'package:flutter/material.dart';
 
 //Widgets
@@ -30,8 +29,8 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
 //BudgetView(),
   @override
   Widget build(BuildContext context) {
-    final SizeConfig sizeConfig = SizeConfig();
-    sizeConfig.initValues(context);
+    // final SizeConfig sizeConfig = SizeConfig();
+    // sizeConfig.initValues(context);
 
     return Scaffold(
       key: GlobalKey<ScaffoldState>(),
