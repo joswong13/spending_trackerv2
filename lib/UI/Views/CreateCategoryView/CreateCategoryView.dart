@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:spending_tracker/Core/Constants/ColorPalette.dart';
+import 'package:spending_tracker/Core/Constants/ErrorCode.dart';
 import 'package:spending_tracker/Core/Constants/IconsLibrary.dart';
 import 'package:spending_tracker/UI/Widgets/Dialog/ConfirmationAlertDialog.dart';
 import 'package:spending_tracker/UI/Widgets/FormWidgets/RaisedButtonWidget.dart';
@@ -41,14 +42,14 @@ class _CreateCategoryViewState extends State<CreateCategoryView> {
   }
 
   Map<String, dynamic> _validateCreateCategory() {
-    Map<String, dynamic> validMap;
     if (nameController.text == "") {
-      return validMap = {"valid": false, "error": "Error: Category name cannot be empty"};
+      return {"valid": false, "error": ERR_CAT_NAME_EMPTY};
+    } else if (nameController.text.length > 15) {
+      return {"valid": false, "error": ERR_CAT_NAME_TOO_LONG};
+    } else if (_categoryIcon == "Choose Icon") {
+      return {"valid": false, "error": ERR_CAT_ICON_NULL};
     }
-    if (_categoryIcon == "Choose Icon") {
-      return validMap = {"valid": false, "error": "Error: Need category icon"};
-    }
-    return validMap = {"valid": true};
+    return {"valid": true};
   }
 
   @override
@@ -68,7 +69,8 @@ class _CreateCategoryViewState extends State<CreateCategoryView> {
         child: SafeArea(
           child: Column(
             children: <Widget>[
-              TopTextButtonStack(title: "Category Management", focusNode: focusNode),
+              TopTextButtonStack(
+                  title: "Category Management", focusNode: focusNode, method: appProvider.refreshTransactions),
               Container(
                 margin: EdgeInsets.all(10),
                 padding: EdgeInsets.symmetric(vertical: 6, horizontal: 30),
@@ -171,7 +173,7 @@ class _CreateCategoryViewState extends State<CreateCategoryView> {
                       bool ifExists = await appProvider.categoryExists(nameController.text.trim());
                       print(ifExists);
                       if (!ifExists) {
-                        await appProvider.addUserCategory(
+                        await appProvider.insertCategory(
                             nameController.text.trim(), _categoryIcon, _colorOne, _colorTwo);
                         SchedulerBinding.instance.addPostFrameCallback((_) {
                           focusNode.unfocus();

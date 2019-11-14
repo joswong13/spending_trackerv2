@@ -6,8 +6,9 @@ class TopTextButtonStack extends StatelessWidget {
   final FocusNode focusNode1;
   final FocusNode focusNode2;
   final String title;
+  final Function method;
 
-  TopTextButtonStack({@required this.title, this.focusNode, this.focusNode1, this.focusNode2});
+  TopTextButtonStack({@required this.title, this.focusNode, this.focusNode1, this.focusNode2, this.method});
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +38,9 @@ class TopTextButtonStack extends StatelessWidget {
               }
               if (focusNode2 != null) {
                 focusNode2.unfocus();
+              }
+              if (method != null) {
+                method();
               }
 
               Navigator.pop(context);

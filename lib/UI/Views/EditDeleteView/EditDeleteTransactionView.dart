@@ -120,7 +120,6 @@ class _TransactionScreenState extends State<EditScreen> {
                                     widget.uploaded)
                                 .then((resp) async {
                               if (resp == 1) {
-                                await appProvider.refreshTransactions();
                                 Navigator.pop(context);
                               }
                             });

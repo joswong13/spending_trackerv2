@@ -97,6 +97,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                     onPressed: () async {
                       Map<String, dynamic> validMap = checkValidFields(
                           name: nameController.text.trim(),
+                          desc: descController.text.trim(),
                           amount: amountController.text.trim(),
                           category: _category,
                           date: _selectedDate);

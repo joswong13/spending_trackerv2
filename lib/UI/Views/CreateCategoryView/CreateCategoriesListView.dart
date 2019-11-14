@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:spending_tracker/Core/Constants/ColorPalette.dart';
 import 'package:spending_tracker/Core/Constants/IconsLibrary.dart';
 import 'package:spending_tracker/Core/ViewModels/AppProvider.dart';
 import 'package:spending_tracker/UI/Views/EditCategoryView/EditCategoryView.dart';
@@ -47,7 +46,6 @@ class CategoryListView extends StatelessWidget {
                         style: TextStyle(fontSize: 20),
                       ),
                     ),
-
                     Expanded(
                       child: Align(
                         alignment: Alignment.centerRight,
@@ -81,40 +79,13 @@ class CategoryListView extends StatelessWidget {
                                 await appProvider
                                     .deleteAllUserTransactionInCategory(appProvider.userCategoryList[index].name);
 
-                                await appProvider
-                                    .deleteUserCategory(appProvider.userCategoryList[index].id)
-                                    .then((resp) {
-                                  appProvider.refreshTransactions();
-                                });
+                                await appProvider.deleteCategory(appProvider.userCategoryList[index].id);
                               }
                             });
                           },
                         ),
                       ),
                     ),
-
-                    //         // RaisedButton.icon(
-                    //         //   icon: Icon(Icons.delete),
-                    //         //   color: Colors.red,
-                    //         //   //child: Text("Delete"),
-                    //         //   onPressed: () {
-                    //         //     deleteCategoryDialog(context).then((bool confirmation) async {
-                    //         //       if (confirmation) {
-                    //         //         await appProvider
-                    //         //             .deleteAllUserTransactionInCategory(appProvider.userCategoryList[index].name);
-
-                    //         //         await appProvider
-                    //         //             .deleteUserCategory(appProvider.userCategoryList[index].id)
-                    //         //             .then((resp) {
-                    //         //           appProvider.refreshTransactions();
-                    //         //         });
-                    //         //       }
-                    //         //     });
-                    //         //   },
-                    //         // ),
-                    //         ),
-                    //   ),
-                    // ),
                   ],
                 ),
               ),
@@ -125,3 +96,26 @@ class CategoryListView extends StatelessWidget {
     );
   }
 }
+
+//         // RaisedButton.icon(
+//         //   icon: Icon(Icons.delete),
+//         //   color: Colors.red,
+//         //   //child: Text("Delete"),
+//         //   onPressed: () {
+//         //     deleteCategoryDialog(context).then((bool confirmation) async {
+//         //       if (confirmation) {
+//         //         await appProvider
+//         //             .deleteAllUserTransactionInCategory(appProvider.userCategoryList[index].name);
+
+//         //         await appProvider
+//         //             .deleteUserCategory(appProvider.userCategoryList[index].id)
+//         //             .then((resp) {
+//         //           appProvider.refreshTransactions();
+//         //         });
+//         //       }
+//         //     });
+//         //   },
+//         // ),
+//         ),
+//   ),
+// ),

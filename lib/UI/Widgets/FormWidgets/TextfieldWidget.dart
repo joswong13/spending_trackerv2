@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:spending_tracker/Core/Constants/ErrorCode.dart';
 
 ///Creates a textfield given the parameters.
 TextField transactionTextfield(
@@ -57,26 +58,29 @@ void unfocusTextFieldAndPop(BuildContext context, FocusNode focusNode1, [FocusNo
 }
 
 ///Checks if the required fields are filled out.
-Map<String, dynamic> checkValidFields({String name, String amount, String category, DateTime date}) {
+Map<String, dynamic> checkValidFields({String name, String desc, String amount, String category, DateTime date}) {
   double _tempAmount;
-  Map<String, dynamic> validatorMap;
 
-  // add more amount checks
+  //TODO: add more amount checks
   try {
     _tempAmount = double.parse(amount);
   } catch (e) {
-    return validatorMap = {"valid": false, "error": "Error: Amount error."};
+    return {"valid": false, "error": ERR_TX_AMOUNT_PARSE_ERROR};
   }
   if (name == "") {
-    return validatorMap = {"valid": false, "error": "Error: Name cannot be empty."};
+    return {"valid": false, "error": ERR_TX_NAME_EMPTY};
+  } else if (name.length > 15) {
+    return {"valid": false, "error": ERR_TX_NAME_TOO_LONG};
+  } else if (desc.length > 15) {
+    return {"valid": false, "error": ERR_TX_DESC_TOO_LONG};
   } else if (_tempAmount <= 0.00) {
-    return validatorMap = {"valid": false, "error": "Error: Amount cannot be less than or equal to 0.0."};
+    return {"valid": false, "error": ERR_TX_AMOUNT_DOUBLE_ERROR};
   } else if (category == "None") {
-    return validatorMap = {"valid": false, "error": "Error: Category cannot be none."};
+    return {"valid": false, "error": ERR_TX_CAT_NULL};
   } else if (date == null) {
-    return validatorMap = {"valid": false, "error": "Error: Date has not been picked."};
+    return {"valid": false, "error": ERR_TX_DATE_NULL};
   }
-  return validatorMap = {"valid": true};
+  return {"valid": true};
 }
 
 ///Given a FocusNode and the TextFieldController, this will unfocus and clear the text field.

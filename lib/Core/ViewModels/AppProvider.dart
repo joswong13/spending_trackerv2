@@ -25,6 +25,7 @@ class AppProvider with ChangeNotifier {
   List<UserCategory> _userCategoryList = [];
   Map<String, String> _userCategoryMap = {};
 
+  ///@Constructor
   ///Generate initial calendar and query from database.
   AppProvider() {
     _setBusy(true);
@@ -97,11 +98,6 @@ class AppProvider with ChangeNotifier {
     return _busy;
   }
 
-  ///Returns a list of maps for each category.
-  // List<Map<String, dynamic>> get monthlyCategoryTotals {
-  //   return dataTable.monthlyCategoryTotalsAsList;
-  // }
-
   ///Returns a maps for each category containing their totals.
   Map<String, dynamic> get monthlyCategoryTotals {
     return dataTable.monthlyCategoryTotals;
@@ -133,12 +129,6 @@ class AppProvider with ChangeNotifier {
     await _changeDateAndQuery(date);
   }
 
-  ///Resets the current date in Provider to today.
-  Future<void> reset() async {
-    DateTime resetToCurrentDate = DateTime.now();
-    await _changeDateAndQuery(DateTime.utc(resetToCurrentDate.year, resetToCurrentDate.month, resetToCurrentDate.day));
-  }
-
   ///Refreshes the current queried transactions after inserting/updating/deleting a transaction.
   ///If the categoryType is not empty, then also get the category transactions.
   Future<void> refreshTransactions() async {
@@ -166,18 +156,7 @@ class AppProvider with ChangeNotifier {
     });
   }
 
-  Future<void> addUserCategory(String name, String icon, String colorOne, String colorTwo) async {
-    await _insertCategory(name.toLowerCase(), icon, colorOne, colorTwo);
-    refreshUserCategoryList();
-    refreshTransactions();
-  }
-
-  Future<void> deleteUserCategory(int id) async {
-    await _deleteCategory(id);
-    refreshUserCategoryList();
-  }
-
-  Future<void> refreshUserCategoryList() async {
+  Future<void> _refreshUserCategoryList() async {
     _userCategoryMap.clear();
     _userCategoryList.clear();
 
@@ -201,17 +180,9 @@ class AppProvider with ChangeNotifier {
     });
   }
 
-  Future<bool> categoryExists(String category) async {
-    List<Map<String, dynamic>> resp = await _checkCategoryExists(category);
-
-    if (resp.length > 0) {
-      return true;
-    }
-    return false;
-  }
-
   //----------------------------------------------SQFLite Core Functions-----------------------------------------
 
+  //------------INSERT-----------------
   ///Given the name, amount, desc, date, and category; insert into the database as an UserTransaction object.
   Future<void> insertUserTransaction(String name, double amount, String desc, DateTime date, String category) {
     UserTransaction tx = UserTransaction();
@@ -225,9 +196,23 @@ class AppProvider with ChangeNotifier {
     return transactionDatabase.insert(tx);
   }
 
+  ///Insert UserCategory to category db, then refresh the current list of _userCategory and map of _userCategoryMap. Then refresh transactions.
+  Future<void> insertCategory(String name, String icon, String colorOne, String colorTwo) async {
+    UserCategory category = UserCategory();
+    category.name = name.toLowerCase();
+    category.icon = icon;
+    category.colorOne = colorOne;
+    category.colorTwo = colorTwo;
+
+    await categoryDatabase.insert(category);
+
+    await _refreshUserCategoryList();
+  }
+
+  //------------UPDATE-----------------
   ///Given the id, name, amount, desc, date, and category; update the transaction.
   Future<int> updateUserTransaction(
-      int id, String name, double amount, String desc, DateTime date, String category, int uploaded) {
+      int id, String name, double amount, String desc, DateTime date, String category, int uploaded) async {
     UserTransaction tx = UserTransaction();
     tx.id = id;
     tx.name = name;
@@ -237,23 +222,47 @@ class AppProvider with ChangeNotifier {
     tx.category = category;
     tx.uploaded = uploaded;
 
-    return transactionDatabase.update(tx);
+    int resp = await transactionDatabase.update(tx);
+
+    await refreshTransactions();
+
+    return resp;
   }
 
-  ///Given the id, delete the transaction from the database.
-  Future<int> deleteUserTransaction(int id) {
-    return transactionDatabase.deleteById(id);
+  ///Given the id, name, amount, desc, date, and category; update the transaction.
+  Future<int> updateUserCategory(int id, String name, String colorOne, String colorTwo, String icon) async {
+    UserCategory userCategory = UserCategory();
+    userCategory.id = id;
+    userCategory.name = name;
+    userCategory.colorOne = colorOne;
+    userCategory.colorTwo = colorTwo;
+    userCategory.icon = icon;
+
+    int resp = await categoryDatabase.update(userCategory);
+
+    await _refreshUserCategoryList();
+
+    return resp;
   }
 
-  ///Given the category, delete all transactions from the database.
-  Future<int> deleteAllUserTransactionInCategory(String category) {
-    return transactionDatabase.deleteByString(category);
-  }
-
+  //------------READ-----------------
   ///Gets all the user transaction.
   ///Not used in any of the widgets.
-  Future<List<Map<String, dynamic>>> getAllUserTransaction() async {
-    return await transactionDatabase.getAllInDb();
+  // Future<List<Map<String, dynamic>>> _getAllUserTransaction() async {
+  //   return await transactionDatabase.getAllInDb();
+  // }
+
+  Future<List<Map<String, dynamic>>> _getAllCategory() async {
+    return await categoryDatabase.getAllInDb();
+  }
+
+  Future<bool> categoryExists(String category) async {
+    List<Map<String, dynamic>> resp = await categoryDatabase.getWithOneParameter<String>(category);
+
+    if (resp.length > 0) {
+      return true;
+    }
+    return false;
   }
 
   ///Private function that gets all the user transaction of a particular category.
@@ -272,37 +281,29 @@ class AppProvider with ChangeNotifier {
     return await transactionDatabase.getWithTwoParameters<int, int>(beginningOfQuery, endOfQuery);
   }
 
-  Future<void> _insertCategory(String name, String icon, String colorOne, String colorTwo) {
-    UserCategory category = UserCategory();
-    category.name = name;
-    category.icon = icon;
-    category.colorOne = colorOne;
-    category.colorTwo = colorTwo;
+  //------------DELETE-----------------
+  Future<int> deleteCategory(int id) async {
+    int resp = await categoryDatabase.deleteById(id);
 
-    return categoryDatabase.insert(category);
+    await _refreshUserCategoryList();
+    await refreshTransactions();
+
+    return resp;
   }
 
-  Future<int> _deleteCategory(int id) {
-    return categoryDatabase.deleteById(id);
+  ///Given the id, delete the transaction from the database.
+  Future<int> deleteUserTransaction(int id) {
+    return transactionDatabase.deleteById(id);
   }
 
-  Future<List<Map<String, dynamic>>> _getAllCategory() async {
-    return await categoryDatabase.getAllInDb();
-  }
-
-  ///Given the id, name, amount, desc, date, and category; update the transaction.
-  Future<int> updateUserCategory(int id, String name, String colorOne, String colorTwo, String icon) {
-    UserCategory userCategory = UserCategory();
-    userCategory.id = id;
-    userCategory.name = name;
-    userCategory.colorOne = colorOne;
-    userCategory.colorTwo = colorTwo;
-    userCategory.icon = icon;
-
-    return categoryDatabase.update(userCategory);
-  }
-
-  Future<List<Map<String, dynamic>>> _checkCategoryExists(String category) async {
-    return await categoryDatabase.getWithOneParameter<String>(category);
+  ///Given the category, delete all transactions from the database.
+  Future<int> deleteAllUserTransactionInCategory(String category) {
+    return transactionDatabase.deleteByString(category);
   }
 }
+
+// ///Resets the current date in Provider to today.
+// Future<void> reset() async {
+//   DateTime resetToCurrentDate = DateTime.now();
+//   await _changeDateAndQuery(DateTime.utc(resetToCurrentDate.year, resetToCurrentDate.month, resetToCurrentDate.day));
+// }

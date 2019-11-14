@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:spending_tracker/Core/Constants/ColorPalette.dart';
+import 'package:spending_tracker/Core/Constants/ErrorCode.dart';
 import 'package:spending_tracker/Core/Constants/IconsLibrary.dart';
 import 'package:spending_tracker/Core/Models/Category.dart';
 import 'package:spending_tracker/UI/Widgets/CommonWidgets/CommonFunctions.dart';
 import 'package:spending_tracker/UI/Widgets/FormWidgets/RaisedButtonWidget.dart';
-import 'package:spending_tracker/UI/Widgets/FormWidgets/TextfieldWidget.dart';
 import 'package:spending_tracker/Core/ViewModels/AppProvider.dart';
 import 'package:spending_tracker/UI/Widgets/CommonWidgets/TopTextButtonStack.dart';
 import 'package:spending_tracker/UI/Widgets/Dialog/CategoryIconDialog.dart';
@@ -14,11 +13,6 @@ import 'package:spending_tracker/UI/Widgets/Dialog/ColorDialog.dart';
 import 'package:spending_tracker/UI/Widgets/Dialog/ErrorDialog.dart';
 
 class EditCategoryView extends StatefulWidget {
-  // final String categoryName;
-  // final String iconName;
-  // final String colorOne;
-  // final String colorTwo;
-  // final int id;
   final UserCategory userCategory;
   EditCategoryView(this.userCategory);
 
@@ -55,11 +49,10 @@ class _EditCategoryViewState extends State<EditCategoryView> {
   }
 
   Map<String, dynamic> _validateCreateCategory() {
-    Map<String, dynamic> validMap;
     if (_categoryIcon == "Choose Icon") {
-      return validMap = {"valid": false, "error": "Error: Need category icon"};
+      return {"valid": false, "error": ERR_CAT_ICON_NULL};
     }
-    return validMap = {"valid": true};
+    return {"valid": true};
   }
 
   @override
@@ -174,7 +167,6 @@ class _EditCategoryViewState extends State<EditCategoryView> {
                   Map<String, dynamic> validateMap = _validateCreateCategory();
                   if (validateMap["valid"]) {
                     await appProvider.updateUserCategory(_id, _name, _colorOne, _colorTwo, _categoryIcon);
-                    await appProvider.refreshUserCategoryList();
 
                     Navigator.pop(context);
                   } else {
