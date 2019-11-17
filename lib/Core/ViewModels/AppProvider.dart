@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:spending_tracker/Core/Services/Sqflite/BaseDB.dart';
 import 'package:spending_tracker/Core/Services/Sqflite/CategoryDatabaseHelper.dart';
 import '../Models/Month.dart';
-import '../Services/MonthlyTransactionService.dart';
+import '../Services/SQFLiteHelperMethods/MonthlyTransactionService.dart';
 import '../Services/Sqflite/TransactionDatabase.dart';
 
 class AppProvider with ChangeNotifier {
@@ -210,7 +210,7 @@ class AppProvider with ChangeNotifier {
   }
 
   //------------UPDATE-----------------
-  ///Given the id, name, amount, desc, date, and category; update the transaction.
+  ///Given the id, name, amount, desc, date, and category; update the transaction. Then refresh list of transactions via refreshTransactions();
   Future<int> updateUserTransaction(
       int id, String name, double amount, String desc, DateTime date, String category, int uploaded) async {
     UserTransaction tx = UserTransaction();
@@ -224,12 +224,14 @@ class AppProvider with ChangeNotifier {
 
     int resp = await transactionDatabase.update(tx);
 
-    await refreshTransactions();
+    if (resp == 1) {
+      await refreshTransactions();
+    }
 
     return resp;
   }
 
-  ///Given the id, name, amount, desc, date, and category; update the transaction.
+  ///Given the id, name, amount, desc, date, and category; update the transaction. Then refresh the list of categories via _refreshUserCategoryList().
   Future<int> updateUserCategory(int id, String name, String colorOne, String colorTwo, String icon) async {
     UserCategory userCategory = UserCategory();
     userCategory.id = id;
@@ -240,17 +242,14 @@ class AppProvider with ChangeNotifier {
 
     int resp = await categoryDatabase.update(userCategory);
 
-    await _refreshUserCategoryList();
+    if (resp == 1) {
+      await _refreshUserCategoryList();
+    }
 
     return resp;
   }
 
   //------------READ-----------------
-  ///Gets all the user transaction.
-  ///Not used in any of the widgets.
-  // Future<List<Map<String, dynamic>>> _getAllUserTransaction() async {
-  //   return await transactionDatabase.getAllInDb();
-  // }
 
   Future<List<Map<String, dynamic>>> _getAllCategory() async {
     return await categoryDatabase.getAllInDb();
@@ -285,15 +284,23 @@ class AppProvider with ChangeNotifier {
   Future<int> deleteCategory(int id) async {
     int resp = await categoryDatabase.deleteById(id);
 
-    await _refreshUserCategoryList();
-    await refreshTransactions();
+    if (resp == 1) {
+      await _refreshUserCategoryList();
+      await refreshTransactions();
+    }
 
     return resp;
   }
 
   ///Given the id, delete the transaction from the database.
-  Future<int> deleteUserTransaction(int id) {
-    return transactionDatabase.deleteById(id);
+  Future<int> deleteUserTransaction(int id) async {
+    int resp = await transactionDatabase.deleteById(id);
+
+    if (resp == 1) {
+      await refreshTransactions();
+    }
+
+    return resp;
   }
 
   ///Given the category, delete all transactions from the database.
@@ -301,6 +308,12 @@ class AppProvider with ChangeNotifier {
     return transactionDatabase.deleteByString(category);
   }
 }
+
+///Gets all the user transaction.
+///Not used in any of the widgets.
+// Future<List<Map<String, dynamic>>> _getAllUserTransaction() async {
+//   return await transactionDatabase.getAllInDb();
+// }
 
 // ///Resets the current date in Provider to today.
 // Future<void> reset() async {

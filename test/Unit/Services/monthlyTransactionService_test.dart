@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:spending_tracker/Core/Models/Category.dart';
 import 'package:spending_tracker/Core/Models/MonthlyTransactionObject.dart';
 import 'package:spending_tracker/Core/Models/UserTransaction.dart';
-import 'package:spending_tracker/Core/Services/MonthlyTransactionService.dart';
+import 'package:spending_tracker/Core/Services/SQFLiteHelperMethods/MonthlyTransactionService.dart';
 
 void main() {
   test("Test input and output of monthly transaction service", () async {

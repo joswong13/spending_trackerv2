@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spending_tracker/Core/Constants/ColorPalette.dart';
-import 'package:spending_tracker/Core/Constants/ErrorCode.dart';
 import 'package:spending_tracker/Core/Constants/IconsLibrary.dart';
 import 'package:spending_tracker/Core/Models/Category.dart';
+import 'package:spending_tracker/Core/Services/Validators/TextFieldValidators.dart';
 import 'package:spending_tracker/UI/Widgets/CommonWidgets/CommonFunctions.dart';
 import 'package:spending_tracker/UI/Widgets/FormWidgets/RaisedButtonWidget.dart';
 import 'package:spending_tracker/Core/ViewModels/AppProvider.dart';
@@ -46,13 +46,6 @@ class _EditCategoryViewState extends State<EditCategoryView> {
       _colorOne = 'greyVeryDarkBlue';
       _colorTwo = 'greyVeryDarkBlue';
     });
-  }
-
-  Map<String, dynamic> _validateCreateCategory() {
-    if (_categoryIcon == "Choose Icon") {
-      return {"valid": false, "error": ERR_CAT_ICON_NULL};
-    }
-    return {"valid": true};
   }
 
   @override
@@ -164,7 +157,7 @@ class _EditCategoryViewState extends State<EditCategoryView> {
                 shape: roundedRect30,
                 child: raisedButtonTextSize14("Save"),
                 onPressed: () async {
-                  Map<String, dynamic> validateMap = _validateCreateCategory();
+                  Map<String, dynamic> validateMap = validateCategoryFields(name: _name, categoryIcon: _categoryIcon);
                   if (validateMap["valid"]) {
                     await appProvider.updateUserCategory(_id, _name, _colorOne, _colorTwo, _categoryIcon);
 

@@ -7,8 +7,42 @@ class TopTextButtonStack extends StatelessWidget {
   final FocusNode focusNode2;
   final String title;
   final Function method;
+  final bool changed;
+  final Widget widget;
 
-  TopTextButtonStack({@required this.title, this.focusNode, this.focusNode1, this.focusNode2, this.method});
+  /// Returns a widget with a [title] in the middle, a back button with Navigator.pop(context) on the center left alignment, and a user widget on the center right alignment.
+  /// The [title] sets the title text at the centre of widget. This widget can accept up to three focus nodes to unfocus when you press the back button.
+  /// The [method] accepts a method to be called when clicking the back button other than poppping context and unfocusing FocusNodes.
+  /// Set [changed] to true to run method when clicking back button. Accepts a [widget] for the top right alignment such as an icon button.
+  ///
+  /// ```
+  /// TopTextButtonStack(
+  ///   title: "Add",
+  ///   focusNode: nameFocusNode,
+  ///   focusNode1: amountFocusNode,
+  ///   focusNode2: descFocusNode,
+  ///   method: appProvider.refreshTransactions,
+  ///   changed: _transactionAdded,
+  ///   widget: addTransactionIconButton(
+  ///       color: Theme.of(context).primaryColor,
+  ///       tooltip: "Add",
+  ///       insertMethod: () {
+  ///          double amountDouble = double.parse(amountController.text.trim());
+  ///          appProvider
+  ///               .insertUserTransaction(
+  ///                     nameController.text.trim(),
+  ///                     double.parse(amountDouble.toStringAsFixed(2)),
+  ///                     descController.text.trim(),
+  ///                     _selectedDate,
+  ///                     _category)
+  ///                             .then((resp) {
+  ///                                 _afterSubmit();
+  ///                             });
+  ///      }),
+  /// )
+  ///```
+  TopTextButtonStack(
+      {@required this.title, this.focusNode, this.focusNode1, this.focusNode2, this.method, this.changed, this.widget});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +73,7 @@ class TopTextButtonStack extends StatelessWidget {
               if (focusNode2 != null) {
                 focusNode2.unfocus();
               }
-              if (method != null) {
+              if (method != null && changed) {
                 method();
               }
 
@@ -48,6 +82,11 @@ class TopTextButtonStack extends StatelessWidget {
           },
         ),
       ),
+      if (widget != null)
+        Align(
+          alignment: Alignment.centerRight,
+          child: widget,
+        )
     ]);
   }
 }

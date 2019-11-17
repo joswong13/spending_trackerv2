@@ -1,6 +1,6 @@
 import 'package:spending_tracker/Core/Models/Category.dart';
 import 'package:spending_tracker/Core/Models/MonthlyTransactionObject.dart';
-import '../Models/UserTransaction.dart';
+import '../../Models/UserTransaction.dart';
 
 class StaticMonthlyTransactionObject {
   static Future<MonthlyTransactionObject> calc(Map<String, dynamic> computeMap) async {

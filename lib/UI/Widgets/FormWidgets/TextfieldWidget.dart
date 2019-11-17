@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:spending_tracker/Core/Constants/ErrorCode.dart';
+import 'package:flutter/services.dart';
+import 'dart:math' as math;
 
 ///Creates a textfield given the parameters.
 TextField transactionTextfield(
-    Color primary, FocusNode focusNode, TextEditingController controller, String label, String hint) {
+    Color primary, FocusNode focusNode, TextEditingController controller, String label, String hint, bool isNum) {
+  TextInputType keyboard;
+  List<TextInputFormatter> formatters;
+  if (isNum) {
+    keyboard = TextInputType.numberWithOptions(decimal: true);
+    formatters = [DecimalTextInputFormatter(decimalRange: 2)];
+  } else {
+    keyboard = TextInputType.text;
+    formatters = [];
+  }
   return TextField(
     focusNode: focusNode,
     decoration: InputDecoration(
@@ -21,6 +31,8 @@ TextField transactionTextfield(
     ),
     controller: controller,
     textCapitalization: TextCapitalization.words,
+    keyboardType: keyboard,
+    inputFormatters: formatters,
   );
 }
 
@@ -57,32 +69,6 @@ void unfocusTextFieldAndPop(BuildContext context, FocusNode focusNode1, [FocusNo
   });
 }
 
-///Checks if the required fields are filled out.
-Map<String, dynamic> checkValidFields({String name, String desc, String amount, String category, DateTime date}) {
-  double _tempAmount;
-
-  //TODO: add more amount checks
-  try {
-    _tempAmount = double.parse(amount);
-  } catch (e) {
-    return {"valid": false, "error": ERR_TX_AMOUNT_PARSE_ERROR};
-  }
-  if (name == "") {
-    return {"valid": false, "error": ERR_TX_NAME_EMPTY};
-  } else if (name.length > 15) {
-    return {"valid": false, "error": ERR_TX_NAME_TOO_LONG};
-  } else if (desc.length > 15) {
-    return {"valid": false, "error": ERR_TX_DESC_TOO_LONG};
-  } else if (_tempAmount <= 0.00) {
-    return {"valid": false, "error": ERR_TX_AMOUNT_DOUBLE_ERROR};
-  } else if (category == "None") {
-    return {"valid": false, "error": ERR_TX_CAT_NULL};
-  } else if (date == null) {
-    return {"valid": false, "error": ERR_TX_DATE_NULL};
-  }
-  return {"valid": true};
-}
-
 ///Given a FocusNode and the TextFieldController, this will unfocus and clear the text field.
 void textfieldFullClearUnfocus({FocusNode focusNode, TextEditingController textFieldController}) {
   SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -90,3 +76,89 @@ void textfieldFullClearUnfocus({FocusNode focusNode, TextEditingController textF
     textFieldController.clear();
   });
 }
+
+class DecimalTextInputFormatter extends TextInputFormatter {
+  DecimalTextInputFormatter({this.decimalRange}) : assert(decimalRange == null || decimalRange > 0);
+
+  final int decimalRange;
+
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue, // unused.
+    TextEditingValue newValue,
+  ) {
+    TextSelection newSelection = newValue.selection;
+    String truncated = newValue.text;
+
+    if (decimalRange != null) {
+      String value = newValue.text;
+
+      if (value.contains(".") && value.substring(value.indexOf(".") + 1).length > decimalRange) {
+        truncated = oldValue.text;
+        newSelection = oldValue.selection;
+      } else if (value == ".") {
+        truncated = "0.";
+
+        newSelection = newValue.selection.copyWith(
+          baseOffset: math.min(truncated.length, truncated.length + 1),
+          extentOffset: math.min(truncated.length, truncated.length + 1),
+        );
+      }
+
+      return TextEditingValue(
+        text: truncated,
+        selection: newSelection,
+        composing: TextRange.empty,
+      );
+    }
+    return newValue;
+  }
+}
+
+double parseDoubleFromController(String amountText) {
+  String result = amountText.replaceAll(RegExp(r"\s+\b|\b\s"), "");
+  return double.tryParse(result);
+}
+
+// return Scaffold(
+//   appBar: AppBar(
+//     title: Text("Flutter"),
+//   ),
+//   body: Form(
+//     child: ListView(
+//       children: <Widget>[
+//         TextFormField(
+//           inputFormatters: [DecimalTextInputFormatter(decimalRange: 2)],
+//           keyboardType: TextInputType.numberWithOptions(decimal: true),
+//         )
+//       ],
+//     ),
+//   ),
+// );
+
+// class DecimalTextInputFormatter extends TextInputFormatter {
+//   DecimalTextInputFormatter({int decimalRange, bool activatedNegativeValues})
+//       : assert(decimalRange == null || decimalRange >= 0, 'DecimalTextInputFormatter declaretion error') {
+//     String dp = (decimalRange != null && decimalRange > 0) ? "([.][0-9]{0,$decimalRange}){0,1}" : "";
+//     String num = "[0-9]*$dp";
+
+//     if (activatedNegativeValues) {
+//       _exp = new RegExp("^((((-){0,1})|((-){0,1}[0-9]$num))){0,1}\$");
+//     } else {
+//       _exp = new RegExp("^($num){0,1}\$");
+//     }
+//   }
+
+//   RegExp _exp;
+
+//   @override
+//   TextEditingValue formatEditUpdate(
+//     TextEditingValue oldValue,
+//     TextEditingValue newValue,
+//   ) {
+//     if (_exp.hasMatch(newValue.text)) {
+//       return newValue;
+//     }
+//     return oldValue;
+//   }
+// }

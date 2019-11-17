@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:spending_tracker/Core/Constants/ColorPalette.dart';
 import 'package:spending_tracker/Core/Constants/ErrorCode.dart';
 import 'package:spending_tracker/Core/Constants/IconsLibrary.dart';
+import 'package:spending_tracker/Core/Services/Validators/TextFieldValidators.dart';
 import 'package:spending_tracker/UI/Widgets/Dialog/ConfirmationAlertDialog.dart';
 import 'package:spending_tracker/UI/Widgets/FormWidgets/RaisedButtonWidget.dart';
 import 'package:spending_tracker/UI/Widgets/FormWidgets/TextfieldWidget.dart';
@@ -27,10 +28,17 @@ class _CreateCategoryViewState extends State<CreateCategoryView> {
   FocusNode focusNode = FocusNode();
   String _colorOne = 'blueGrey900';
   String _colorTwo = 'blueGrey900';
+  bool _categoryListChanged = false;
 
   void _setCategoryIcon(String iconName) {
     setState(() {
       _categoryIcon = iconName;
+    });
+  }
+
+  void _setCategoryBool(bool categoryListChanged) {
+    setState(() {
+      _categoryListChanged = categoryListChanged;
     });
   }
 
@@ -39,17 +47,6 @@ class _CreateCategoryViewState extends State<CreateCategoryView> {
       _colorOne = 'blueGrey900';
       _colorTwo = 'blueGrey900';
     });
-  }
-
-  Map<String, dynamic> _validateCreateCategory() {
-    if (nameController.text == "") {
-      return {"valid": false, "error": ERR_CAT_NAME_EMPTY};
-    } else if (nameController.text.length > 15) {
-      return {"valid": false, "error": ERR_CAT_NAME_TOO_LONG};
-    } else if (_categoryIcon == "Choose Icon") {
-      return {"valid": false, "error": ERR_CAT_ICON_NULL};
-    }
-    return {"valid": true};
   }
 
   @override
@@ -70,7 +67,10 @@ class _CreateCategoryViewState extends State<CreateCategoryView> {
           child: Column(
             children: <Widget>[
               TopTextButtonStack(
-                  title: "Category Management", focusNode: focusNode, method: appProvider.refreshTransactions),
+                  title: "Category Management",
+                  focusNode: focusNode,
+                  method: appProvider.refreshTransactions,
+                  changed: _categoryListChanged),
               Container(
                 margin: EdgeInsets.all(10),
                 padding: EdgeInsets.symmetric(vertical: 6, horizontal: 30),
@@ -88,7 +88,7 @@ class _CreateCategoryViewState extends State<CreateCategoryView> {
                 child: Column(
                   children: <Widget>[
                     transactionTextfield(
-                        Theme.of(context).primaryColor, focusNode, nameController, "Category Name", "Eg. Food"),
+                        Theme.of(context).primaryColor, focusNode, nameController, "Category Name", "Eg. Food", false),
                     Container(
                       margin: EdgeInsets.fromLTRB(0, 8, 0, 0),
                       child: Row(
@@ -165,13 +165,13 @@ class _CreateCategoryViewState extends State<CreateCategoryView> {
                 shape: roundedRect30,
                 child: raisedButtonTextSize14("Add Category"),
                 onPressed: () async {
-                  Map<String, dynamic> validateMap = _validateCreateCategory();
+                  Map<String, dynamic> validateMap =
+                      validateCategoryFields(name: nameController.text.trim(), categoryIcon: _categoryIcon);
                   if (validateMap["valid"]) {
                     bool confirmation = await confirmationDialog(context, confirmDialog + nameController.text.trim());
 
                     if (confirmation) {
                       bool ifExists = await appProvider.categoryExists(nameController.text.trim());
-                      print(ifExists);
                       if (!ifExists) {
                         await appProvider.insertCategory(
                             nameController.text.trim(), _categoryIcon, _colorOne, _colorTwo);
@@ -179,10 +179,11 @@ class _CreateCategoryViewState extends State<CreateCategoryView> {
                           focusNode.unfocus();
                           nameController.clear();
                           _setCategoryIcon("Choose Icon");
+                          _setCategoryBool(true);
                           _resetContainerColor();
                         });
                       } else {
-                        errorMsgDialog(context, "Category name already exists.");
+                        errorMsgDialog(context, ERR_CAT_EXISTS);
                       }
                     }
                   } else {
