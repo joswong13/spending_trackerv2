@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:spending_tracker/Core/Constants/ColorPalette.dart';
 import 'package:intl/intl.dart';
 import 'package:spending_tracker/Core/ViewModels/AppProvider.dart';
 

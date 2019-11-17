@@ -1,5 +1,6 @@
-import 'package:flutter/src/rendering/sliver_persistent_header.dart';
+//import 'package:flutter/src/rendering/sliver_persistent_header.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:spending_tracker/Core/Constants/ColorPalette.dart';
@@ -10,8 +11,6 @@ class HeaderDelegate implements SliverPersistentHeaderDelegate {
 
   final double minExtent;
   final double maxExtent;
-
-  final String test = "chevron_right";
 
   bool topHeaderVisible(double shrinkOffset) {
     final double alpha = (shrinkOffset / (this.maxExtent - this.minExtent)).clamp(0.0, 1.0);
@@ -69,7 +68,7 @@ class HeaderDelegate implements SliverPersistentHeaderDelegate {
               ),
               Center(
                 child: Text(
-                  "Spent - \$${monthData.monthlyTotal}",
+                  "Spent - \$${monthData.monthlyTotal.toStringAsFixed(2)}",
                   style: TextStyle(
                     fontSize: 28,
                   ),

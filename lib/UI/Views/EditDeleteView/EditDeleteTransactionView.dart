@@ -39,7 +39,7 @@ class _TransactionScreenState extends State<EditScreen> {
   _TransactionScreenState(String name, String desc, double amount, int date, String category) {
     nameController = TextEditingController(text: name);
     descController = TextEditingController(text: desc);
-    amountController = TextEditingController(text: amount.toString());
+    amountController = TextEditingController(text: amount.toStringAsFixed(2));
     _selectedDate = DateTime.fromMillisecondsSinceEpoch(date, isUtc: true);
     _category = category;
   }

@@ -48,7 +48,7 @@ class CategoryTransactionView extends StatelessWidget {
                           style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
                         ),
                         Text(
-                          "\$" + appProvider.monthlyCategoryTotals[_categoryType].toString(),
+                          "\$" + appProvider.monthlyCategoryTotals[_categoryType].toStringAsFixed(2),
                           textScaleFactor: 1,
                           style: TextStyle(
                               fontSize: 28, color: Theme.of(context).primaryColor, fontWeight: FontWeight.w600),

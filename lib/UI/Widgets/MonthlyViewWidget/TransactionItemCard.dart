@@ -67,7 +67,7 @@ class TransactionItemCard extends StatelessWidget {
                           style: TextStyle(fontSize: 22),
                         ),
                         Text(
-                          "\$${txData.amount}",
+                          "\$${txData.amount.toStringAsFixed(2)}",
                           style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 18),
                         ),
                       ],
@@ -84,7 +84,7 @@ class TransactionItemCard extends StatelessWidget {
                           style: TextStyle(color: Color.fromRGBO(255, 255, 255, 0.60), fontSize: 20),
                         ),
                         Text(
-                          "\$${txData.amount}",
+                          "\$${txData.amount.toStringAsFixed(2)}",
                           style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 18),
                         ),
                       ],

@@ -51,7 +51,7 @@ class CategoryCard extends StatelessWidget {
               maxLines: 1,
             ),
             AutoSizeText(
-              "\$" + appProvider.monthlyCategoryTotals[_userCategory.name].toString(),
+              "\$" + appProvider.monthlyCategoryTotals[_userCategory.name].toStringAsFixed(2),
               style: TextStyle(fontSize: 24),
               maxLines: 1,
             ),

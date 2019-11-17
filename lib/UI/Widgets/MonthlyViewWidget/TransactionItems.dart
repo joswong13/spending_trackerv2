@@ -35,7 +35,7 @@ class TransactionItems extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "\$${transaction["dailyTotal"].toString()}",
+                  "\$${transaction["dailyTotal"].toStringAsFixed(2)}",
                   style: TextStyle(
                     fontSize: 18,
                     color: Theme.of(context).primaryColor,
