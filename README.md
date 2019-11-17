@@ -32,9 +32,10 @@ Querying of transactions can be filtered by using either the date represented as
 
 ### V0.0.9 (Nov 17, 2019)
 
+- first build candidate
 - can add categories
 - can add transactions
 - can query transactions
 - changed UI compared to Spending Tracker V1
 - made creating monthly transaction object simpler
-- have unit tests
+- added unit tests
