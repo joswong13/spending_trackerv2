@@ -1,4 +1,4 @@
-# Spending Tracker
+# Spending Tracker [![Codemagic build status](https://api.codemagic.io/apps/5dcdb8f05b37710008f462ef/5dcdb8f05b37710008f462ee/status_badge.svg)](https://codemagic.io/apps/5dcdb8f05b37710008f462ef/5dcdb8f05b37710008f462ee/latest_build)
 
 ## About
 
