@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:spending_tracker/UI/Widgets/CommonWidgets/TopTextButtonStack.dart';
 import 'package:spending_tracker/UI/Widgets/FormWidgets/RaisedButtonWidget.dart';
 import 'package:spending_tracker/UI/Widgets/FormWidgets/TextfieldWidget.dart';
 import 'package:spending_tracker/UI/Widgets/Dialog/ErrorDialog.dart';
-import '../../../Core/ViewModels/AppProvider.dart';
-import '../../Widgets/Dialog/AddTxDialogPickers.dart';
+import 'package:spending_tracker/Core/ViewModels/AppProvider.dart';
+import 'package:spending_tracker/UI/Widgets/Dialog/AddTxDialogPickers.dart';
+import 'package:spending_tracker/Core/Services/Validators/TextFieldValidators.dart';
 
 class TransactionScreen extends StatefulWidget {
   @override
@@ -20,7 +22,6 @@ class _TransactionScreenState extends State<TransactionScreen> {
   FocusNode nameFocusNode = FocusNode();
   FocusNode descFocusNode = FocusNode();
   FocusNode amountFocusNode = FocusNode();
-  //String _errorMsg;
   DateTime _selectedDate;
   String _category = "None";
   bool _transactionAdded = false;
@@ -46,14 +47,26 @@ class _TransactionScreenState extends State<TransactionScreen> {
 
   ///After submitting, clears and resets the form.
   void _afterSubmit() {
-    textfieldFullClearUnfocus(focusNode: nameFocusNode, textfieldController: nameController);
-    textfieldFullClearUnfocus(focusNode: amountFocusNode, textfieldController: amountController);
-    textfieldFullClearUnfocus(focusNode: descFocusNode, textfieldController: descController);
+    textfieldFullClearUnfocus(focusNode: nameFocusNode, textFieldController: nameController);
+    textfieldFullClearUnfocus(focusNode: amountFocusNode, textFieldController: amountController);
+    textfieldFullClearUnfocus(focusNode: descFocusNode, textFieldController: descController);
     setState(() {
       _category = "None";
       _selectedDate = null;
       _transactionAdded = true;
     });
+  }
+
+  IconButton _addTransactionIconButton({Color color, String tooltip, Function insertMethod}) {
+    return IconButton(
+      icon: const Icon(Icons.add_circle_outline),
+      iconSize: 28,
+      color: color,
+      tooltip: tooltip,
+      onPressed: () async {
+        insertMethod();
+      },
+    );
   }
 
   @override
@@ -67,57 +80,39 @@ class _TransactionScreenState extends State<TransactionScreen> {
         child: SafeArea(
           child: Column(
             children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    iconSize: 28,
-                    color: Theme.of(context).primaryColor,
-                    tooltip: "Back",
-                    onPressed: () async {
-                      if (_transactionAdded) {
-                        await appProvider.refreshTransactions();
-                        unfocusTextFieldAndPop(context, nameFocusNode, amountFocusNode, descFocusNode);
-                      } else {
-                        unfocusTextFieldAndPop(context, nameFocusNode, amountFocusNode, descFocusNode);
-                      }
-                    },
-                  ),
-                  Text(
-                    "Add",
-                    textScaleFactor: 1,
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.add_circle_outline),
-                    iconSize: 28,
-                    color: Theme.of(context).primaryColor,
-                    tooltip: "Add",
-                    onPressed: () async {
-                      Map<String, dynamic> validMap = checkValidFields(
-                          name: nameController.text.trim(),
-                          amount: amountController.text.trim(),
-                          category: _category,
-                          date: _selectedDate);
-                      if (validMap["valid"]) {
-                        double amountDouble = double.parse(amountController.text.trim());
-                        appProvider
-                            .insertUserTransaction(
-                                nameController.text.trim(),
-                                double.parse(amountDouble.toStringAsFixed(2)),
-                                descController.text.trim(),
-                                _selectedDate,
-                                _category)
-                            .then((resp) {
-                          _afterSubmit();
-                        });
-                      } else {
-                        errorMsgDialog(context, validMap["error"]);
-                      }
-                    },
-                  ),
-                ],
+              TopTextButtonStack(
+                title: "Add",
+                focusNode: nameFocusNode,
+                focusNode1: amountFocusNode,
+                focusNode2: descFocusNode,
+                method: appProvider.refreshTransactions,
+                changed: _transactionAdded,
+                widget: _addTransactionIconButton(
+                  color: Theme.of(context).primaryColor,
+                  tooltip: "Add",
+                  insertMethod: () {
+                    Map<String, dynamic> validMap = validateTransactionFields(
+                        name: nameController.text.trim(),
+                        desc: descController.text.trim(),
+                        amount: amountController.text.trim(),
+                        category: _category,
+                        date: _selectedDate);
+                    if (validMap["valid"]) {
+                      appProvider
+                          .insertUserTransaction(
+                              nameController.text.trim(),
+                              parseDoubleFromController(amountController.text),
+                              descController.text.trim(),
+                              _selectedDate,
+                              _category)
+                          .then((resp) {
+                        _afterSubmit();
+                      });
+                    } else {
+                      errorMsgDialog(context, validMap["error"]);
+                    }
+                  },
+                ),
               ),
               Container(
                 margin: EdgeInsets.fromLTRB(30, 10, 30, 0),
@@ -125,11 +120,11 @@ class _TransactionScreenState extends State<TransactionScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     transactionTextfield(Theme.of(context).primaryColor, nameFocusNode, nameController, 'Name',
-                        'Enter transaction name'),
+                        'Enter transaction name', false),
                     transactionTextfield(Theme.of(context).primaryColor, descFocusNode, descController, 'Description',
-                        '(Optional) Enter description'),
+                        '(Optional) Enter description', false),
                     transactionTextfield(Theme.of(context).primaryColor, amountFocusNode, amountController, 'Amount',
-                        'Enter the amount (eg. 0.00)'),
+                        'Enter the amount (eg. 0.00)', true),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -188,110 +183,3 @@ class _TransactionScreenState extends State<TransactionScreen> {
     );
   }
 }
-
-//floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-// floatingActionButton: Padding(
-//   padding: const EdgeInsets.all(8.0),
-//   child: Row(
-//     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//     children: <Widget>[
-//       FloatingActionButton.extended(
-//         backgroundColor: Theme.of(context).primaryColor,
-//         heroTag: "backButton",
-//         icon: const Icon(Icons.arrow_back),
-//         label: _transactionAdded ? Text("Done") : Text("Back"),
-//         onPressed: () async {
-//           if (_transactionAdded) {
-//             await appProvider.refreshTransactions();
-//             SchedulerBinding.instance.addPostFrameCallback((_) {
-//               nameFocusNode.unfocus();
-//               amountFocusNode.unfocus();
-//               descFocusNode.unfocus();
-//               Navigator.pop(context);
-//             });
-//           } else {
-//             SchedulerBinding.instance.addPostFrameCallback((_) {
-//               nameFocusNode.unfocus();
-//               amountFocusNode.unfocus();
-//               descFocusNode.unfocus();
-//               Navigator.pop(context);
-//             });
-//           }
-//         },
-//       ),
-//       FloatingActionButton.extended(
-//         backgroundColor: Theme.of(context).primaryColor,
-//         heroTag: "addButton",
-//         icon: const Icon(Icons.add_circle_outline),
-//         label: const Text("Add"),
-//         onPressed: () {
-//           Map<String, dynamic> validMap = _checkValidFields();
-//           if (validMap["valid"]) {
-//             double amountDouble = double.parse(amountController.text);
-//             appProvider
-//                 .insertUserTransaction(
-//                     _trimText(nameController.text),
-//                     double.parse(amountDouble.toStringAsFixed(2)),
-//                     _trimText(descController.text),
-//                     _selectedDate,
-//                     _category)
-//                 .then((resp) {
-//               _afterSubmit();
-//             });
-//           } else {
-//             errorMsgDialog(context, validMap["error"]);
-//           }
-//         },
-//       ),
-//     ],
-//   ),
-// ),
-
-// TextField(
-//   focusNode: nameFocusNode,
-//   style: const TextStyle(color: Colors.green),
-//   decoration: _textDecoration('Name', 'Enter transaction name', 0),
-//   controller: nameController,
-//   textCapitalization: TextCapitalization.words,
-// ),
-// TextField(
-//   focusNode: descFocusNode,
-//   style: const TextStyle(color: Colors.green),
-//   decoration: _textDecoration('Description', '(Optional) Enter description', 1),
-//   controller: descController,
-//   textCapitalization: TextCapitalization.words,
-// ),
-// TextField(
-//   focusNode: amountFocusNode,
-//   keyboardType: TextInputType.number,
-//   style: const TextStyle(color: Colors.green),
-//   decoration: _textDecoration('Amount', 'Enter the amount (eg. 0.00)', 2),
-//   controller: amountController,
-// ),
-
-//----------------------------------------------Widgets-----------------------------------------
-///Returns an InputDecoration widget that styles the text input fields with their respective clear functions.
-// InputDecoration _textDecoration(String label, String hintValue, int textFieldId) {
-//   return InputDecoration(
-//       labelText: label,
-//       labelStyle: TextStyle(color: Theme.of(context).primaryColor),
-//       hintText: hintValue,
-//       enabledBorder: UnderlineInputBorder(
-//         borderSide: BorderSide(color: Theme.of(context).primaryColor),
-//       ),
-//       focusedBorder: UnderlineInputBorder(
-//         borderSide: BorderSide(color: Theme.of(context).primaryColor),
-//       ),
-//       suffixIcon: _textFieldIconButton(textFieldId));
-// }
-
-//----------------------------------------------Clear Functions-----------------------------------------
-
-// IconButton _textFieldIconButton(int textFieldId) {
-//   if (textFieldId == 0) {
-//     return textFieldIconButton(textFieldId, nameFocusNode, nameController);
-//   } else if (textFieldId == 1) {
-//     return textFieldIconButton(textFieldId, descFocusNode, descController);
-//   }
-//   return textFieldIconButton(textFieldId, amountFocusNode, amountController);
-// }

@@ -1,6 +1,6 @@
 class MonthlyTransactionObject {
   //Map<DateTime, dynamic> _monthlyTransactions;
-  double _sixWeekTotal = 0.0;
+  double _monthlyTotal = 0.0;
   Map<String, double> _monthlyCategoryTotals = {};
   List<Map<String, dynamic>> _txList = [];
 
@@ -13,8 +13,8 @@ class MonthlyTransactionObject {
     _monthlyCategoryTotals = monthlyCategoryTotals;
   }
 
-  set sixWeekTotal(double total) {
-    _sixWeekTotal = total;
+  set monthlyTotal(double total) {
+    _monthlyTotal = total;
   }
 
   set txList(txList) {
@@ -22,8 +22,8 @@ class MonthlyTransactionObject {
   }
 
   ///Get current six week total
-  double get sixWeekTotal {
-    return double.parse(_sixWeekTotal.toStringAsFixed(2));
+  double get monthlyTotal {
+    return double.parse(_monthlyTotal.toStringAsFixed(2));
   }
 
   Map<String, double> get monthlyCategoryTotals {

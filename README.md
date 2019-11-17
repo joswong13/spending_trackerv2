@@ -1,16 +1,41 @@
-# spending_tracker
+# Spending Tracker
 
-A new Flutter project.
+## About
 
-## Getting Started
+This app was built to help people keep track of their monthly spending. On the main screen, there is a top row of categories that the user creates to help them organize their transactions. The middle section of the screen contains the information about the current month and how much they spent that month. To the left and right of the month are chevrons to help users navigate between each month.
 
-This project is a starting point for a Flutter application.
+## Data Storage
 
-A few resources to get you started if this is your first Flutter project:
+There are currently two SQFLite database tables in this application.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+### Category Table
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+This table contains the information about the categories that the user creates. This includes name, icon to represent the category, and two colors for displaying in the category page.
+
+### Transactions Table
+
+This table stores transaction that the user adds. This includes the name, description, amount, category, and date. The date is stored as an integer of milliseconds since epoch.
+
+### Query
+
+Querying of transactions can be filtered by using either the date represented as an integer or by category and date as an integer.
+
+## TODO (not in order of importance)
+
+- [ ] back up storage options other than firebase
+- [ ] add firebase functionality (for backup storage and data restore)
+- [ ] theme: ability to change colors
+- [ ] quick select months
+- [ ] quick reset to current month
+
+## Version History
+
+### V0.0.9 (Nov 17, 2019)
+
+- first build candidate
+- can add categories
+- can add transactions
+- can query transactions
+- changed UI compared to Spending Tracker V1
+- made creating monthly transaction object simpler
+- added unit tests

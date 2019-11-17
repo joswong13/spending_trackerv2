@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-final Map<String, IconData> icons = {
+const Map<String, IconData> icons = {
   "Gas": Icons.local_gas_station,
   "Food": Icons.restaurant,
   "Shopping": Icons.local_offer,
@@ -12,7 +12,7 @@ final Map<String, IconData> icons = {
   "Gift Card": Icons.card_giftcard,
   "Pets": Icons.pets,
   "Print": Icons.print,
-  "Shopping": Icons.shopping_cart,
+  "Cart": Icons.shopping_cart,
   "Basket": Icons.shopping_basket,
   "Store": Icons.store,
   "Work": Icons.work,
@@ -32,7 +32,7 @@ final Map<String, IconData> icons = {
   "Watch": Icons.watch,
   "Videogame": Icons.videogame_asset,
   "Router": Icons.router,
-  "Tab;et": Icons.tablet_mac,
+  "Tablet": Icons.tablet_mac,
   "Camera Roll": Icons.camera_roll,
   "Camera": Icons.camera_alt,
   "Euro": Icons.euro_symbol,

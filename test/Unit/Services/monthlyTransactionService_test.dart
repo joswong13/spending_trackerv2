@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:spending_tracker/Core/Models/Category.dart';
 import 'package:spending_tracker/Core/Models/MonthlyTransactionObject.dart';
 import 'package:spending_tracker/Core/Models/UserTransaction.dart';
-import 'package:spending_tracker/Core/Services/MonthlyTransactionService.dart';
+import 'package:spending_tracker/Core/Services/SQFLiteHelperMethods/MonthlyTransactionService.dart';
 
 void main() {
   test("Test input and output of monthly transaction service", () async {
@@ -37,7 +37,7 @@ void main() {
     expect(uT.category, "Test");
     expect(uT.amount, 3.3);
 
-    expect(dataTable.sixWeekTotal, 16.5);
+    expect(dataTable.monthlyTotal, 16.5);
     expect(dataTable.monthlyCategoryTotals, {"Test": 4.4, "Test1": 12.1});
     expect(dataTable.txList[0]["dailyTotal"], 3.3);
     expect(dataTable.txList[1]["dailyTotal"], 13.2);

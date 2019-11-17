@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:spending_tracker/Core/Constants/ColorPalette.dart';
 import 'package:spending_tracker/Core/Constants/IconsLibrary.dart';
 
 Future<String> categoryIconDialog(BuildContext context) async {
@@ -29,6 +30,15 @@ Future<String> categoryIconDialog(BuildContext context) async {
                       },
                     );
                   }).toList()),
+            ),
+            FlatButton(
+              child: const Text(
+                'Cancel',
+                style: TextStyle(color: primaryGreen),
+              ),
+              onPressed: () {
+                Navigator.pop(context, null);
+              },
             ),
           ],
         );

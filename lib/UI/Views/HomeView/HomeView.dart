@@ -1,5 +1,4 @@
-import 'package:spending_tracker/Core/Constants/ColorPalette.dart';
-import 'package:spending_tracker/Core/Constants/SizeConfig.dart';
+//import 'package:spending_tracker/Core/Constants/SizeConfig.dart';
 import 'package:flutter/material.dart';
 
 //Widgets
@@ -30,8 +29,8 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
 //BudgetView(),
   @override
   Widget build(BuildContext context) {
-    final SizeConfig sizeConfig = SizeConfig();
-    sizeConfig.initValues(context);
+    // final SizeConfig sizeConfig = SizeConfig();
+    // sizeConfig.initValues(context);
 
     return Scaffold(
       key: GlobalKey<ScaffoldState>(),
@@ -82,56 +81,3 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
     );
   }
 }
-
-//static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-// static List<Widget> _widgetOptions = <Widget>[
-//   MonthlyViewSliver(),
-//   CategoryOverviewCard(),
-// ];
-//  final BottomNavBarScreenProvider indexProvider = Provider.of<BottomNavBarScreenProvider>(context);
-//     final monthData = Provider.of<AppProvider>(context);
-
-//     //BottomNavBar is always 8% of usable screen
-//     final bottomNavBarHieght = sizeConfig.blockSizeVertical * 8;
-// bottomNavigationBar: SizedBox(
-//   height: bottomNavBarHieght,
-//   child: BottomNavigationBar(
-//     type: BottomNavigationBarType.shifting,
-//     items: const <BottomNavigationBarItem>[
-//       BottomNavigationBarItem(
-//         icon: Icon(Icons.calendar_today),
-//         title: Text('Spending'),
-//         backgroundColor: Colors.black,
-//       ),
-//       BottomNavigationBarItem(
-//         icon: Icon(Icons.category),
-//         title: Text('Category'),
-//         backgroundColor: Colors.black,
-//       ),
-//       // BottomNavigationBarItem(
-//       //   icon: Icon(Icons.local_atm),
-//       //   title: Text('Budget'),
-//       //   backgroundColor: Colors.black,
-//       // ),
-//       BottomNavigationBarItem(
-//         icon: Icon(Icons.add_circle_outline),
-//         title: Text('Add'),
-//         backgroundColor: Colors.black,
-//       ),
-//     ],
-//     currentIndex: indexProvider.getCurrentPageIndex,
-//     selectedItemColor: Theme.of(context).primaryColor,
-//     onTap: (int index) {
-//       if (index <= 1) {
-//         indexProvider.currentPageIndex = index;
-//       } else {
-//         Navigator.push(
-//           context,
-//           MaterialPageRoute(builder: (_) {
-//             return TransactionScreen();
-//           }),
-//         );
-//       }
-//     },
-//   ),
-// ),

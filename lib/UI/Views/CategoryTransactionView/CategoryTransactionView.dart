@@ -1,4 +1,3 @@
-import 'package:spending_tracker/Core/Constants/SizeConfig.dart';
 import 'package:spending_tracker/Core/Models/UserTransaction.dart';
 import 'package:spending_tracker/UI/Widgets/CommonWidgets/CommonFunctions.dart';
 import 'package:spending_tracker/UI/Widgets/FormWidgets/RaisedButtonWidget.dart';
@@ -9,9 +8,7 @@ import 'package:spending_tracker/UI/Widgets/MonthlyViewWidget/TransactionItemCar
 
 class CategoryTransactionView extends StatelessWidget {
   final String _categoryType;
-  //final int _index;
   final List<UserTransaction> _categoryList;
-  final SizeConfig sizeConfig = SizeConfig();
 
   ///The view of listing out all the category transactions given the category type, amount, and list of transactions.
   CategoryTransactionView(this._categoryList, this._categoryType);
@@ -32,7 +29,7 @@ class CategoryTransactionView extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: IconButton(
                         icon: const Icon(Icons.arrow_back),
-                        iconSize: sizeConfig.topHeight28,
+                        iconSize: 28,
                         color: Theme.of(context).primaryColor,
                         tooltip: "Back",
                         onPressed: () async {
@@ -51,7 +48,7 @@ class CategoryTransactionView extends StatelessWidget {
                           style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
                         ),
                         Text(
-                          "\$" + appProvider.monthlyCategoryTotals[_categoryType].toString(),
+                          "\$" + appProvider.monthlyCategoryTotals[_categoryType].toStringAsFixed(2),
                           textScaleFactor: 1,
                           style: TextStyle(
                               fontSize: 28, color: Theme.of(context).primaryColor, fontWeight: FontWeight.w600),
@@ -84,17 +81,3 @@ class CategoryTransactionView extends StatelessWidget {
     );
   }
 }
-// RaisedButton.icon(
-//     elevation: 8,
-//     shape: roundedRect30,
-//     icon: Icon(
-//       Icons.add_circle_outline,
-//       color: Colors.black,
-//     ),
-//     label: Text(
-//       "Add transactions for " + _categoryType,
-//       textScaleFactor: 1,
-//       style: TextStyle(fontSize: 22, color: Colors.black, fontWeight: FontWeight.w500),
-//     ),
-//     onPressed: () {},
-//   )

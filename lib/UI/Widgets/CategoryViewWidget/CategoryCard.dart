@@ -15,10 +15,18 @@ class CategoryCard extends StatelessWidget {
   ///Clicking on this widget will use Navigator.push to go to the CategoryTransactionView.dart.
   CategoryCard(this._userCategory);
 
+  ///Used to pass unit tests on null amount value.
+  String defaultValueString(double amount) {
+    if (amount == null) {
+      amount = 0;
+    }
+    return amount.toStringAsFixed(2);
+  }
+
   @override
   Widget build(BuildContext context) {
     final appProvider = Provider.of<AppProvider>(context);
-    //preload getListOfCategoryTransactions
+
     return InkWell(
       onTap: () {
         appProvider.categoryType = _userCategory.name;
@@ -51,7 +59,7 @@ class CategoryCard extends StatelessWidget {
               maxLines: 1,
             ),
             AutoSizeText(
-              "\$" + appProvider.monthlyCategoryTotals[_userCategory.name].toString(),
+              "\$" + defaultValueString(appProvider.monthlyCategoryTotals[_userCategory.name]),
               style: TextStyle(fontSize: 24),
               maxLines: 1,
             ),

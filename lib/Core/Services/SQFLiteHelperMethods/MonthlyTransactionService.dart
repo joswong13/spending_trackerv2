@@ -1,6 +1,6 @@
 import 'package:spending_tracker/Core/Models/Category.dart';
 import 'package:spending_tracker/Core/Models/MonthlyTransactionObject.dart';
-import '../Models/UserTransaction.dart';
+import '../../Models/UserTransaction.dart';
 
 class StaticMonthlyTransactionObject {
   static Future<MonthlyTransactionObject> calc(Map<String, dynamic> computeMap) async {
@@ -40,12 +40,12 @@ Map<String, double> _initMonthlyCategoryTotalsMap(List<UserCategory> userCategor
 ///First sets the first date in the transactions list, if the date is the same, add the transactions to the list of daily transactions.
 ///Else, add the daily transactions to the map with the date and then change the currentTxDate, and then create a new list.
 void _createTransactionsMapFromList(List<Map<String, dynamic>> tx, MonthlyTransactionObject mto) {
-  double _sixWeekTotal = 0.0;
+  double _monthlyTotal = 0.0;
   double dailyTotal = 0.0;
   List<Map<String, dynamic>> txList = [];
   Map<String, double> currentCategoryMap = mto.monthlyCategoryTotals;
   if (tx.length == 0) {
-    mto.sixWeekTotal = _sixWeekTotal;
+    mto.monthlyTotal = _monthlyTotal;
     mto.txList = txList;
     return;
   }
@@ -58,7 +58,7 @@ void _createTransactionsMapFromList(List<Map<String, dynamic>> tx, MonthlyTransa
   for (int n = 0; n < tx.length; n++) {
     DateTime tempTxDate = DateTime.fromMillisecondsSinceEpoch(tx[n]["date"], isUtc: true);
 
-    _sixWeekTotal = _sixWeekTotal + tx[n]["amount"];
+    _monthlyTotal = _monthlyTotal + tx[n]["amount"];
     _addMonthlyCategoryTotals(tx[n]["category"], tx[n]["amount"], currentCategoryMap);
 
     if (tempTxDate.isAtSameMomentAs(currentTxDate)) {
@@ -92,7 +92,7 @@ void _createTransactionsMapFromList(List<Map<String, dynamic>> tx, MonthlyTransa
     "transactions": listOfDailyTx
   };
   txList.add(dailyMap);
-  mto.sixWeekTotal = _sixWeekTotal;
+  mto.monthlyTotal = _monthlyTotal;
   mto.txList = txList;
 }
 

@@ -41,25 +41,3 @@ class MonthlyViewSliver extends StatelessWidget {
           );
   }
 }
-// SliverFixedExtentList(
-//   itemExtent: 50.0,
-//   delegate: SliverChildBuilderDelegate(
-//     (BuildContext context, int index) {
-//       return Container(
-//         alignment: Alignment.center,
-//         color: Colors.lightBlue[100 * (index % 9)],
-//         child: Text(txList[index]["name"]),
-//       );
-//       // return Container(
-//       //   alignment: Alignment.center,
-//       //   color: Colors.lightBlue[100 * (index % 9)],
-//       //   child: Text('List Item $index'),
-//       // );
-//     },
-//   ),
-// ),
-// SliverList(
-//   delegate: SliverChildListDelegate([
-//     PageThree(),
-//   ]),
-// ),

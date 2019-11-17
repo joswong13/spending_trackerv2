@@ -26,7 +26,6 @@ Future<bool> deleteDialog(BuildContext context) async {
         );
       });
 
-  //return category.toString();
   switch (confirmation) {
     case Confirmation.YES:
       return true;
@@ -64,7 +63,6 @@ Future<bool> deleteCategoryDialog(BuildContext context) async {
         );
       });
 
-  //return category.toString();
   switch (confirmation) {
     case Confirmation.YES:
       return true;

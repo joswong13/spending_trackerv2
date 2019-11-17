@@ -3,6 +3,6 @@ import 'package:spending_tracker/Core/Constants/IconsLibrary.dart';
 
 void main() {
   test("test generate list function", () {
-    expect(getIconMapAsList().length, 60);
+    expect(getIconMapAsList().length, 61);
   });
 }

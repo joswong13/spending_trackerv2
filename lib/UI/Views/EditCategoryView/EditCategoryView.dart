@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:spending_tracker/Core/Constants/ColorPalette.dart';
 import 'package:spending_tracker/Core/Constants/IconsLibrary.dart';
 import 'package:spending_tracker/Core/Models/Category.dart';
+import 'package:spending_tracker/Core/Services/Validators/TextFieldValidators.dart';
 import 'package:spending_tracker/UI/Widgets/CommonWidgets/CommonFunctions.dart';
 import 'package:spending_tracker/UI/Widgets/FormWidgets/RaisedButtonWidget.dart';
-import 'package:spending_tracker/UI/Widgets/FormWidgets/TextfieldWidget.dart';
 import 'package:spending_tracker/Core/ViewModels/AppProvider.dart';
 import 'package:spending_tracker/UI/Widgets/CommonWidgets/TopTextButtonStack.dart';
 import 'package:spending_tracker/UI/Widgets/Dialog/CategoryIconDialog.dart';
@@ -14,11 +13,6 @@ import 'package:spending_tracker/UI/Widgets/Dialog/ColorDialog.dart';
 import 'package:spending_tracker/UI/Widgets/Dialog/ErrorDialog.dart';
 
 class EditCategoryView extends StatefulWidget {
-  // final String categoryName;
-  // final String iconName;
-  // final String colorOne;
-  // final String colorTwo;
-  // final int id;
   final UserCategory userCategory;
   EditCategoryView(this.userCategory);
 
@@ -29,8 +23,8 @@ class EditCategoryView extends StatefulWidget {
 class _EditCategoryViewState extends State<EditCategoryView> {
   String _name = "";
   String _categoryIcon = "Choose Icon";
-  String _colorOne = 'greyVeryDarkBlue';
-  String _colorTwo = 'greyVeryDarkBlue';
+  String _colorOne = 'blueGrey900';
+  String _colorTwo = 'blueGrey900';
   int _id;
 
   _EditCategoryViewState(UserCategory userCategory) {
@@ -49,17 +43,9 @@ class _EditCategoryViewState extends State<EditCategoryView> {
 
   void _resetContainerColor() {
     setState(() {
-      _colorOne = 'greyVeryDarkBlue';
-      _colorTwo = 'greyVeryDarkBlue';
+      _colorOne = 'blueGrey900';
+      _colorTwo = 'blueGrey900';
     });
-  }
-
-  Map<String, dynamic> _validateCreateCategory() {
-    Map<String, dynamic> validMap;
-    if (_categoryIcon == "Choose Icon") {
-      return validMap = {"valid": false, "error": "Error: Need category icon"};
-    }
-    return validMap = {"valid": true};
   }
 
   @override
@@ -171,10 +157,9 @@ class _EditCategoryViewState extends State<EditCategoryView> {
                 shape: roundedRect30,
                 child: raisedButtonTextSize14("Save"),
                 onPressed: () async {
-                  Map<String, dynamic> validateMap = _validateCreateCategory();
+                  Map<String, dynamic> validateMap = validateCategoryFields(name: _name, categoryIcon: _categoryIcon);
                   if (validateMap["valid"]) {
                     await appProvider.updateUserCategory(_id, _name, _colorOne, _colorTwo, _categoryIcon);
-                    await appProvider.refreshUserCategoryList();
 
                     Navigator.pop(context);
                   } else {

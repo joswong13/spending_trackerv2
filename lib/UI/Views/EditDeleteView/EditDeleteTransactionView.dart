@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:spending_tracker/Core/Services/Validators/TextFieldValidators.dart';
+import 'package:spending_tracker/UI/Widgets/CommonWidgets/TopTextButtonStack.dart';
 import 'package:spending_tracker/UI/Widgets/FormWidgets/RaisedButtonWidget.dart';
 import 'package:spending_tracker/UI/Widgets/FormWidgets/TextfieldWidget.dart';
 import 'package:spending_tracker/UI/Widgets/Dialog/ErrorDialog.dart';
-import '../../../Core/ViewModels/AppProvider.dart';
-import '../../Widgets/Dialog/AddTxDialogPickers.dart';
-import '../../Widgets/Dialog/DeleteDialog.dart';
+import 'package:spending_tracker/Core/ViewModels/AppProvider.dart';
+import 'package:spending_tracker/UI/Widgets/Dialog/AddTxDialogPickers.dart';
+import 'package:spending_tracker/UI/Widgets/Dialog/DeleteDialog.dart';
 
 class EditScreen extends StatefulWidget {
   final String name;
@@ -37,7 +39,7 @@ class _TransactionScreenState extends State<EditScreen> {
   _TransactionScreenState(String name, String desc, double amount, int date, String category) {
     nameController = TextEditingController(text: name);
     descController = TextEditingController(text: desc);
-    amountController = TextEditingController(text: amount.toString());
+    amountController = TextEditingController(text: amount.toStringAsFixed(2));
     _selectedDate = DateTime.fromMillisecondsSinceEpoch(date, isUtc: true);
     _category = category;
   }
@@ -47,6 +49,32 @@ class _TransactionScreenState extends State<EditScreen> {
     setState(() {
       _category = category;
     });
+  }
+
+  Row _confirmAndDeleteIconRow({Color color, Function deleteMethod, Function confirmMethod}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        IconButton(
+          icon: const Icon(Icons.delete),
+          iconSize: 28,
+          color: color,
+          tooltip: "Delete",
+          onPressed: () async {
+            deleteMethod();
+          },
+        ),
+        IconButton(
+          icon: const Icon(Icons.check_circle_outline),
+          iconSize: 28,
+          color: color,
+          tooltip: "Confirm",
+          onPressed: () async {
+            confirmMethod();
+          },
+        ),
+      ],
+    );
   }
 
   @override
@@ -61,77 +89,49 @@ class _TransactionScreenState extends State<EditScreen> {
         child: SafeArea(
           child: Column(
             children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    iconSize: 28,
+              TopTextButtonStack(
+                title: "Edit",
+                focusNode: nameFocusNode,
+                focusNode1: amountFocusNode,
+                focusNode2: descFocusNode,
+                widget: _confirmAndDeleteIconRow(
                     color: Theme.of(context).primaryColor,
-                    tooltip: "Back",
-                    onPressed: () {
-                      Navigator.pop(context);
+                    deleteMethod: () async {
+                      bool deleteConfirmation = await deleteDialog(context);
+                      if (deleteConfirmation) {
+                        appProvider.deleteUserTransaction(widget.id).then((resp) async {
+                          if (resp == 1) {
+                            Navigator.pop(context);
+                          }
+                        });
+                      }
                     },
-                  ),
-                  Text(
-                    "Edit",
-                    textScaleFactor: 1,
-                    style: TextStyle(fontSize: 28, color: Colors.white, fontWeight: FontWeight.w600),
-                  ),
-                  Row(
-                    children: <Widget>[
-                      IconButton(
-                        icon: const Icon(Icons.delete),
-                        iconSize: 28,
-                        color: Theme.of(context).primaryColor,
-                        tooltip: "Delete",
-                        onPressed: () async {
-                          bool deleteConfirmation = await deleteDialog(context);
-                          if (deleteConfirmation) {
-                            appProvider.deleteUserTransaction(widget.id).then((resp) async {
-                              if (resp == 1) {
-                                await appProvider.refreshTransactions();
-                                Navigator.pop(context);
-                              }
-                            });
+                    confirmMethod: () {
+                      Map<String, dynamic> validMap = validateTransactionFields(
+                          name: nameController.text.trim(),
+                          amount: amountController.text.trim(),
+                          desc: descController.text.trim(),
+                          category: _category,
+                          date: _selectedDate);
+                      if (validMap["valid"]) {
+                        appProvider
+                            .updateUserTransaction(
+                                widget.id,
+                                nameController.text.trim(),
+                                parseDoubleFromController(amountController.text),
+                                descController.text.trim(),
+                                _selectedDate,
+                                _category,
+                                widget.uploaded)
+                            .then((resp) async {
+                          if (resp == 1) {
+                            Navigator.pop(context);
                           }
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.check_circle_outline),
-                        iconSize: 28,
-                        color: Theme.of(context).primaryColor,
-                        tooltip: "Confirm",
-                        onPressed: () {
-                          Map<String, dynamic> validMap = checkValidFields(
-                              name: nameController.text,
-                              amount: amountController.text,
-                              category: _category,
-                              date: _selectedDate);
-                          if (validMap["valid"]) {
-                            appProvider
-                                .updateUserTransaction(
-                                    widget.id,
-                                    nameController.text.trim(),
-                                    double.parse(amountController.text),
-                                    descController.text.trim(),
-                                    _selectedDate,
-                                    _category,
-                                    widget.uploaded)
-                                .then((resp) async {
-                              if (resp == 1) {
-                                await appProvider.refreshTransactions();
-                                Navigator.pop(context);
-                              }
-                            });
-                          } else {
-                            errorMsgDialog(context, validMap["error"]);
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                ],
+                        });
+                      } else {
+                        errorMsgDialog(context, validMap["error"]);
+                      }
+                    }),
               ),
               Container(
                 padding: EdgeInsets.fromLTRB(30, 10, 30, 0),
@@ -139,11 +139,11 @@ class _TransactionScreenState extends State<EditScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     transactionTextfield(Theme.of(context).primaryColor, nameFocusNode, nameController, 'Name',
-                        'Enter transaction name'),
+                        'Enter transaction name', false),
                     transactionTextfield(Theme.of(context).primaryColor, descFocusNode, descController, 'Description',
-                        '(Optional) Enter description'),
+                        '(Optional) Enter description', false),
                     transactionTextfield(Theme.of(context).primaryColor, amountFocusNode, amountController, 'Amount',
-                        'Enter the amount (eg. 0.00)'),
+                        'Enter the amount (eg. 0.00)', true),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -202,68 +202,3 @@ class _TransactionScreenState extends State<EditScreen> {
     );
   }
 }
-
-// floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-//       floatingActionButton: Padding(
-//         padding: const EdgeInsets.all(8.0),
-//         child: Row(
-//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//           children: <Widget>[
-//             FloatingActionButton.extended(
-//               backgroundColor: Theme.of(context).primaryColor,
-//               heroTag: "backButton",
-//               icon: const Icon(Icons.arrow_back),
-//               label: const Text("Back"),
-//               onPressed: () async {
-//                 Navigator.pop(context);
-//               },
-//             ),
-//             FloatingActionButton.extended(
-//               backgroundColor: Theme.of(context).primaryColor,
-//               heroTag: "deleteButton",
-//               icon: const Icon(Icons.delete),
-//               label: const Text("Delete"),
-//               onPressed: () async {
-//                 bool deleteConfirmation = await deleteDialog(context);
-//                 if (deleteConfirmation) {
-//                   appProvider.deleteUserTransaction(widget.id).then((resp) async {
-//                     if (resp == 1) {
-//                       await appProvider.refreshTransactions();
-//                       Navigator.pop(context);
-//                     }
-//                   });
-//                 }
-//               },
-//             ),
-//             FloatingActionButton.extended(
-//               backgroundColor: Theme.of(context).primaryColor,
-//               heroTag: "editButton",
-//               icon: const Icon(Icons.edit),
-//               label: const Text("Edit"),
-//               onPressed: () {
-//                 Map<String, dynamic> validMap = checkValidFields(
-//                     name: nameController.text, amount: amountController.text, category: _category, date: _selectedDate);
-//                 if (validMap["valid"]) {
-//                   appProvider
-//                       .updateUserTransaction(
-//                           widget.id,
-//                           _trimText(nameController.text),
-//                           double.parse(amountController.text),
-//                           _trimText(descController.text),
-//                           _selectedDate,
-//                           _category,
-//                           widget.uploaded)
-//                       .then((resp) async {
-//                     if (resp == 1) {
-//                       await appProvider.refreshTransactions();
-//                       Navigator.pop(context);
-//                     }
-//                   });
-//                 } else {
-//                   errorMsgDialog(context, validMap["error"]);
-//                 }
-//               },
-//             ),
-//           ],
-//         ),
-//       ),
