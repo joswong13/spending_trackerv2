@@ -54,14 +54,3 @@ Future<String> colorDialog(BuildContext context) async {
   }
   return color;
 }
-
-// return SimpleDialogOption(
-//   child: Container(
-//     width: 50,
-//     height: 50,
-//     color: eachColor["color"],
-//   ),
-//   onPressed: () {
-//     Navigator.pop(context, eachColor["name"]);
-//   },
-// );

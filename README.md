@@ -1,16 +1,17 @@
-# spending_tracker
+# Spending Tracker V2 - alpha
 
-A new Flutter project.
+TODO
 
-## Getting Started
+## Data Storage
 
-This project is a starting point for a Flutter application.
+Currently using SQFLite to store the transaction as one big table of transactions and then performing a query search for any transactions between dates (dates are stored as milliseconds since epoch). Currently, only supporting adding to the database and querying the database.
 
-A few resources to get you started if this is your first Flutter project:
+## TODO
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+- [ ] add firebase functionality (for backup storage and data restore)
+- [ ] Theme: ability to change colors (low priority)
+- [ ] add screenshots
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Version History
+
+### v2

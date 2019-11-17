@@ -14,7 +14,6 @@ Map<String, dynamic> validateTransactionFields(
     @required DateTime date}) {
   double _tempAmount;
 
-  //TODO: add more amount checks
   try {
     _tempAmount = double.parse(amount);
   } catch (e) {

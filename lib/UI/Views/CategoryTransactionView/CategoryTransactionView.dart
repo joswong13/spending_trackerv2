@@ -81,17 +81,3 @@ class CategoryTransactionView extends StatelessWidget {
     );
   }
 }
-// RaisedButton.icon(
-//     elevation: 8,
-//     shape: roundedRect30,
-//     icon: Icon(
-//       Icons.add_circle_outline,
-//       color: Colors.black,
-//     ),
-//     label: Text(
-//       "Add transactions for " + _categoryType,
-//       textScaleFactor: 1,
-//       style: TextStyle(fontSize: 22, color: Colors.black, fontWeight: FontWeight.w500),
-//     ),
-//     onPressed: () {},
-//   )

@@ -96,26 +96,3 @@ class CategoryListView extends StatelessWidget {
     );
   }
 }
-
-//         // RaisedButton.icon(
-//         //   icon: Icon(Icons.delete),
-//         //   color: Colors.red,
-//         //   //child: Text("Delete"),
-//         //   onPressed: () {
-//         //     deleteCategoryDialog(context).then((bool confirmation) async {
-//         //       if (confirmation) {
-//         //         await appProvider
-//         //             .deleteAllUserTransactionInCategory(appProvider.userCategoryList[index].name);
-
-//         //         await appProvider
-//         //             .deleteUserCategory(appProvider.userCategoryList[index].id)
-//         //             .then((resp) {
-//         //           appProvider.refreshTransactions();
-//         //         });
-//         //       }
-//         //     });
-//         //   },
-//         // ),
-//         ),
-//   ),
-// ),

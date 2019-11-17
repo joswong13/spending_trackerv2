@@ -50,13 +50,3 @@ class TransactionItems extends StatelessWidget {
     );
   }
 }
-
-//style: TextStyle(fontSize: 18, color: Colors.blue[200]),
-//style: TextStyle(fontSize: 18, color: tealLessThanRobinsEgg),
-
-// child: Container(
-//   decoration: BoxDecoration(
-//     borderRadius: BorderRadius.circular(15),
-//     //color: greySlightlyDarkBlue,
-//     //color: Colors.blueGrey[900],
-//   ),
