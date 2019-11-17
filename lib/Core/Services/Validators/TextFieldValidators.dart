@@ -28,7 +28,7 @@ Map<String, dynamic> validateTransactionFields(
     return {"valid": false, "error": ERR_TX_DESC_TOO_LONG};
   } else if (_tempAmount <= 0.00) {
     return {"valid": false, "error": ERR_TX_AMOUNT_DOUBLE_ERROR};
-  } else if (category == "None") {
+  } else if (category == "None" || category.length <= 0) {
     return {"valid": false, "error": ERR_TX_CAT_NULL};
   } else if (date == null) {
     return {"valid": false, "error": ERR_TX_DATE_NULL};
@@ -41,7 +41,7 @@ Map<String, dynamic> validateCategoryFields({@required String name, @required St
     return {"valid": false, "error": ERR_CAT_NAME_EMPTY};
   } else if (name.length > 12) {
     return {"valid": false, "error": ERR_CAT_NAME_TOO_LONG};
-  } else if (categoryIcon == "Choose Icon") {
+  } else if (categoryIcon == "Choose Icon" || categoryIcon.length <= 0) {
     return {"valid": false, "error": ERR_CAT_ICON_NULL};
   }
   return {"valid": true};

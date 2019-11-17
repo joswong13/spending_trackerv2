@@ -33,18 +33,17 @@ Future<String> colorDialog(BuildContext context) async {
                       Navigator.pop(context, eachColor["name"]);
                     },
                   );
-                  // return SimpleDialogOption(
-                  //   child: Container(
-                  //     width: 50,
-                  //     height: 50,
-                  //     color: eachColor["color"],
-                  //   ),
-                  //   onPressed: () {
-                  //     Navigator.pop(context, eachColor["name"]);
-                  //   },
-                  // );
                 }).toList(),
               ),
+            ),
+            FlatButton(
+              child: const Text(
+                'Cancel',
+                style: TextStyle(color: primaryGreen),
+              ),
+              onPressed: () {
+                Navigator.pop(context, null);
+              },
             ),
           ],
         );
@@ -55,3 +54,14 @@ Future<String> colorDialog(BuildContext context) async {
   }
   return color;
 }
+
+// return SimpleDialogOption(
+//   child: Container(
+//     width: 50,
+//     height: 50,
+//     color: eachColor["color"],
+//   ),
+//   onPressed: () {
+//     Navigator.pop(context, eachColor["name"]);
+//   },
+// );

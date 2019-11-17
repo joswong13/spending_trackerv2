@@ -88,30 +88,31 @@ class _TransactionScreenState extends State<TransactionScreen> {
                 method: appProvider.refreshTransactions,
                 changed: _transactionAdded,
                 widget: _addTransactionIconButton(
-                    color: Theme.of(context).primaryColor,
-                    tooltip: "Add",
-                    insertMethod: () {
-                      Map<String, dynamic> validMap = validateTransactionFields(
-                          name: nameController.text.trim(),
-                          desc: descController.text.trim(),
-                          amount: amountController.text.trim(),
-                          category: _category,
-                          date: _selectedDate);
-                      if (validMap["valid"]) {
-                        appProvider
-                            .insertUserTransaction(
-                                nameController.text.trim(),
-                                parseDoubleFromController(amountController.text),
-                                descController.text.trim(),
-                                _selectedDate,
-                                _category)
-                            .then((resp) {
-                          _afterSubmit();
-                        });
-                      } else {
-                        errorMsgDialog(context, validMap["error"]);
-                      }
-                    }),
+                  color: Theme.of(context).primaryColor,
+                  tooltip: "Add",
+                  insertMethod: () {
+                    Map<String, dynamic> validMap = validateTransactionFields(
+                        name: nameController.text.trim(),
+                        desc: descController.text.trim(),
+                        amount: amountController.text.trim(),
+                        category: _category,
+                        date: _selectedDate);
+                    if (validMap["valid"]) {
+                      appProvider
+                          .insertUserTransaction(
+                              nameController.text.trim(),
+                              parseDoubleFromController(amountController.text),
+                              descController.text.trim(),
+                              _selectedDate,
+                              _category)
+                          .then((resp) {
+                        _afterSubmit();
+                      });
+                    } else {
+                      errorMsgDialog(context, validMap["error"]);
+                    }
+                  },
+                ),
               ),
               Container(
                 margin: EdgeInsets.fromLTRB(30, 10, 30, 0),

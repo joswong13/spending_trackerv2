@@ -23,8 +23,8 @@ class EditCategoryView extends StatefulWidget {
 class _EditCategoryViewState extends State<EditCategoryView> {
   String _name = "";
   String _categoryIcon = "Choose Icon";
-  String _colorOne = 'greyVeryDarkBlue';
-  String _colorTwo = 'greyVeryDarkBlue';
+  String _colorOne = 'blueGrey900';
+  String _colorTwo = 'blueGrey900';
   int _id;
 
   _EditCategoryViewState(UserCategory userCategory) {
@@ -43,8 +43,8 @@ class _EditCategoryViewState extends State<EditCategoryView> {
 
   void _resetContainerColor() {
     setState(() {
-      _colorOne = 'greyVeryDarkBlue';
-      _colorTwo = 'greyVeryDarkBlue';
+      _colorOne = 'blueGrey900';
+      _colorTwo = 'blueGrey900';
     });
   }
 

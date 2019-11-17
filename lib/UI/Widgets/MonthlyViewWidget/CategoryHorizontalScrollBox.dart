@@ -11,7 +11,6 @@ class CategoryHorizontalScrollBox extends StatelessWidget {
     final appProvider = Provider.of<AppProvider>(context);
 
     return Container(
-      //color: darkGrey,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [Theme.of(context).primaryColor, darkGrey],

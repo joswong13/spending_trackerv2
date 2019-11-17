@@ -3,6 +3,12 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'dart:math' as math;
 
+/// Removes any spaces inside the amount textfield
+double parseDoubleFromController(String amountText) {
+  String result = amountText.replaceAll(RegExp(r"\s+\b|\b\s"), "");
+  return double.tryParse(result);
+}
+
 ///Creates a textfield given the parameters.
 TextField transactionTextfield(
     Color primary, FocusNode focusNode, TextEditingController controller, String label, String hint, bool isNum) {
@@ -77,6 +83,8 @@ void textfieldFullClearUnfocus({FocusNode focusNode, TextEditingController textF
   });
 }
 
+//--------------------------------------------------------------------------------------------------------------------------------------
+// Used for making sure there ar eonly two decimal places in a text field
 class DecimalTextInputFormatter extends TextInputFormatter {
   DecimalTextInputFormatter({this.decimalRange}) : assert(decimalRange == null || decimalRange > 0);
 
@@ -113,11 +121,6 @@ class DecimalTextInputFormatter extends TextInputFormatter {
     }
     return newValue;
   }
-}
-
-double parseDoubleFromController(String amountText) {
-  String result = amountText.replaceAll(RegExp(r"\s+\b|\b\s"), "");
-  return double.tryParse(result);
 }
 
 // return Scaffold(

@@ -26,7 +26,6 @@ Future<bool> confirmationDialog(BuildContext context, String message) async {
         );
       });
 
-  //return category.toString();
   switch (confirmation) {
     case Confirmation.YES:
       return true;

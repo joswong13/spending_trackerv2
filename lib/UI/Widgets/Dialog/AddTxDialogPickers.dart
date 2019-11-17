@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:spending_tracker/Core/Constants/ColorPalette.dart';
 import 'package:spending_tracker/Core/Constants/IconsLibrary.dart';
 import 'package:spending_tracker/Core/Models/Category.dart';
 import 'package:spending_tracker/UI/Widgets/CommonWidgets/CommonFunctions.dart';
@@ -50,7 +51,16 @@ Future<String> categoryDialog(BuildContext context, List<UserCategory> categorie
                     );
                   }).toList(),
                 ),
-              )
+              ),
+              FlatButton(
+                child: const Text(
+                  'Cancel',
+                  style: TextStyle(color: primaryGreen),
+                ),
+                onPressed: () {
+                  Navigator.pop(context, null);
+                },
+              ),
             ]);
       });
 

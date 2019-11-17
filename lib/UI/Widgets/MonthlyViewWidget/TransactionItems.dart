@@ -14,12 +14,6 @@ class TransactionItems extends StatelessWidget {
       ),
       elevation: 1,
       margin: EdgeInsets.fromLTRB(16, 5, 16, 5),
-      // child: Container(
-      //   decoration: BoxDecoration(
-      //     borderRadius: BorderRadius.circular(15),
-      //     //color: greySlightlyDarkBlue,
-      //     //color: Colors.blueGrey[900],
-      //   ),
       child: Column(
         children: <Widget>[
           Padding(
@@ -49,7 +43,7 @@ class TransactionItems extends StatelessWidget {
           ),
           ...transaction["transactions"].map((tx) {
             return TransactionItemCard(txData: tx);
-          })
+          }),
         ],
       ),
       //),
@@ -59,3 +53,10 @@ class TransactionItems extends StatelessWidget {
 
 //style: TextStyle(fontSize: 18, color: Colors.blue[200]),
 //style: TextStyle(fontSize: 18, color: tealLessThanRobinsEgg),
+
+// child: Container(
+//   decoration: BoxDecoration(
+//     borderRadius: BorderRadius.circular(15),
+//     //color: greySlightlyDarkBlue,
+//     //color: Colors.blueGrey[900],
+//   ),
