@@ -27,10 +27,13 @@ Querying of transactions can be filtered by using either the date represented as
 - [ ] theme: ability to change colors
 - [ ] quick select months
 - [ ] quick reset to current month
+- [ ] add animations
+- [ ] change fonts
+- [ ] ability to set budget
 
 ## Version History
 
-### V0.0.9 (Nov 17, 2019)
+### V0.9.0 (Nov 17, 2019)
 
 - first build candidate
 - can add categories
