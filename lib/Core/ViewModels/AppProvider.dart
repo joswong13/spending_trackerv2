@@ -19,18 +19,27 @@ class AppProvider with ChangeNotifier {
 
   //Provider variables
   bool _busy = false;
+  bool _constructorStatus = false;
+
   String _categoryType = '';
   List<UserTransaction> _categoryUserTransactionList = [];
 
   List<UserCategory> _userCategoryList = [];
   Map<String, String> _userCategoryMap = {};
+  List<int> _listOfYears = [];
 
   ///@Constructor
   ///Generate initial calendar and query from database.
   AppProvider() {
-    _setBusy(true);
+    _setConstructorBusy(true);
+
+    for (int i = DateTime.now().year; i >= 2018; i--) {
+      _listOfYears.add(i);
+    }
+
     setDate(DateTime.now(), monthInstance);
 
+    //Gets all the categories
     _getAllCategory().then((categoryList) {
       for (int i = 0; i < categoryList.length; i++) {
         _userCategoryList.add(UserCategory.fromDb(categoryList[i]));
@@ -38,21 +47,24 @@ class AppProvider with ChangeNotifier {
       }
     });
 
+    //Gets all the transactions from the start of the month to the end of the month
     _getUserTransactionsBetween().then((listOfUserTx) async {
       Map<String, dynamic> temp = {"tx": listOfUserTx, "listOfCategories": _userCategoryList};
 
+      //Create monthly transaction object
       await compute(StaticMonthlyTransactionObject.calc, temp).then((resp) {
         dataTable = resp;
-        _setBusy(false);
+        _setConstructorBusy(false);
       });
-      // await StaticMonthlyTransactionObject.calc(temp).then((resp) {
-      //   dataTable = resp;
-      //   _setBusy(false);
-      // });
     });
   }
 
   //----------------------------------------------Core Functions-----------------------------------------
+  ///Sets busy status or not busy status during constructor call. The only method used to notify listeners.
+  void _setConstructorBusy(bool value) {
+    _constructorStatus = value;
+    notifyListeners();
+  }
 
   ///Sets busy status or not busy status. The only method used to notify listeners.
   void _setBusy(bool value) {
@@ -60,8 +72,7 @@ class AppProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  ///Check if given date is same month and year as current date. If not, then change date, build MonthlyDateArray and then build MonthlyTransactionObject.
-  ///Used for Reset button and Changing months by swiping left and right.
+  ///Sets the date in the month model and then performs the query.
   Future<void> _changeDateAndQuery(DateTime date) async {
     _setBusy(true);
     setDate(date, monthInstance);
@@ -84,6 +95,19 @@ class AppProvider with ChangeNotifier {
 
   //----------------------------------------------Getters-----------------------------------------
 
+  ///Used to set widget tree status. Returns the value of the busy status.
+  bool get busy {
+    return _busy;
+  }
+
+  bool get constructorStatus {
+    return _constructorStatus;
+  }
+
+  List<int> get listOfYears {
+    return _listOfYears;
+  }
+
   ///Get the date currently selected.
   DateTime get date {
     return monthInstance.date;
@@ -91,11 +115,6 @@ class AppProvider with ChangeNotifier {
 
   double get monthlyTotal {
     return dataTable.monthlyTotal;
-  }
-
-  ///Used to set widget tree status. Returns the value of the busy status.
-  bool get busy {
-    return _busy;
   }
 
   ///Returns a maps for each category containing their totals.
@@ -149,10 +168,6 @@ class AppProvider with ChangeNotifier {
     await compute(StaticMonthlyTransactionObject.calc, temp).then((resp) {
       dataTable = resp;
       _setBusy(false);
-      // List<List<Map<String, dynamic>>> temp = resp.MonthlyTransactionObjectObject;
-      // for (int i = 0; i < temp.length; i++) {
-      //   print(temp[i]);
-      // }
     });
   }
 

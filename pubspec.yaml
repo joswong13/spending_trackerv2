@@ -51,6 +51,12 @@ flutter:
   #   - family: SpendingTracker
   #     fonts:
   #       - asset: assets/fonts/SpendingTracker.ttf
+  fonts:
+    - family: Quicksand
+      fonts:
+        - asset: assets/fonts/Quicksand-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Quicksand-Regular.ttf
   # To add assets to your application, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg

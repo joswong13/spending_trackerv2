@@ -23,15 +23,19 @@ Querying of transactions can be filtered by using either the date represented as
 ## TODO (not in order of importance)
 
 - [ ] back up storage options other than firebase
-- [ ] add firebase functionality (for backup storage and data restore)
+- [ ] add firebase functionality (for backup storage and data restore) (TBD)
 - [ ] theme: ability to change colors
-- [ ] quick select months
-- [ ] quick reset to current month
 - [ ] add animations
-- [ ] change fonts
-- [ ] ability to set budget
+- [ ] ability to set budget (TBD)
 
 ## Version History
+
+### V0.9.1 (Nov 22, 2019)
+
+- changed which widgets will reloaded when notifyListener is called
+- added snackbar confirmation when adding a transaction
+- added a dialog window to quickly change month and year
+- changed font to Quicksand
 
 ### V0.9.0 (Nov 17, 2019)
 

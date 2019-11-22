@@ -3,13 +3,16 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'dart:math' as math;
 
+import 'package:spending_tracker/Core/Constants/ColorPalette.dart';
+
 /// Removes any spaces inside the amount textfield
 double parseDoubleFromController(String amountText) {
   String result = amountText.replaceAll(RegExp(r"\s+\b|\b\s"), "");
   return double.tryParse(result);
 }
 
-///Creates a textfield given the parameters.
+/// Creates a textfield given the color, FocusNode to deselect the textfield,
+/// a text controller for the results, a label, hint and isNum to determine if the keyboard should be a number keyboard.
 TextField transactionTextfield(
     Color primary, FocusNode focusNode, TextEditingController controller, String label, String hint, bool isNum) {
   TextInputType keyboard;
@@ -81,6 +84,25 @@ void textfieldFullClearUnfocus({FocusNode focusNode, TextEditingController textF
     focusNode.unfocus();
     textFieldController.clear();
   });
+}
+
+/// When the submit button is pressed, given the context that is a child of a scaffold and the title. A snackbar will appear.
+void onSubmitSnackbar(BuildContext context, String title) {
+  final snackBar = SnackBar(
+    backgroundColor: Colors.black,
+    content: Text(
+      title + " successfully added!",
+      style: TextStyle(color: primaryGreen),
+    ),
+    action: SnackBarAction(
+      textColor: primaryGreen,
+      label: "OK",
+      onPressed: () {
+        Scaffold.of(context).removeCurrentSnackBar();
+      },
+    ),
+  );
+  Scaffold.of(context).showSnackBar(snackBar);
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------

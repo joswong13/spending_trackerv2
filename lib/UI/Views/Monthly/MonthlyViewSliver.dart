@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:spending_tracker/Core/Constants/ColorPalette.dart';
 import 'package:spending_tracker/Core/ViewModels/AppProvider.dart';
 import 'package:spending_tracker/UI/Widgets/MonthlyViewWidget/EmptyTransactionListSliver.dart';
 import 'package:spending_tracker/UI/Widgets/MonthlyViewWidget/TransactionItems.dart';
@@ -11,7 +12,7 @@ class MonthlyViewSliver extends StatelessWidget {
   Widget build(BuildContext context) {
     final appProvider = Provider.of<AppProvider>(context);
 
-    return appProvider.busy
+    return appProvider.constructorStatus
         ? Center(
             child: CircularProgressIndicator(),
           )
@@ -26,18 +27,35 @@ class MonthlyViewSliver extends StatelessWidget {
                 floating: false,
                 delegate: HeaderDelegate(minExtent: 44, maxExtent: 100),
               ),
-              appProvider.txList.length == 0
-                  ? SliverList(
-                      delegate: SliverChildListDelegate([EmptyTransactionListSliver()]),
+              appProvider.busy
+                  ? SliverToBoxAdapter(
+                      child: Container(
+                        color: darkGrey,
+                      ),
                     )
                   : SliverList(
-                      delegate: SliverChildListDelegate(
-                        appProvider.txList.map((eachTX) {
-                          return TransactionItems(transaction: eachTX);
-                        }).toList(),
-                      ),
+                      delegate: appProvider.txList.length == 0
+                          ? SliverChildListDelegate([EmptyTransactionListSliver()])
+                          : SliverChildBuilderDelegate(
+                              (BuildContext context, int index) {
+                                return TransactionItems(transaction: appProvider.txList[index]);
+                              },
+                              childCount: appProvider.txList.length,
+                            ),
                     ),
             ],
           );
   }
 }
+
+// appProvider.txList.length == 0
+//             ? SliverList(
+//                 delegate: SliverChildListDelegate([EmptyTransactionListSliver()]),
+//               )
+//             : SliverList(
+//                 delegate: SliverChildListDelegate(
+//                   appProvider.txList.map((eachTX) {
+//                     return TransactionItems(transaction: eachTX);
+//                   }).toList(),
+//                 ),
+//               ),
