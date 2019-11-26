@@ -27,8 +27,13 @@ Querying of transactions can be filtered by using either the date represented as
 - [ ] theme: ability to change colors
 - [ ] add animations
 - [ ] ability to set budget (TBD)
+- [ ] analytics
 
 ## Version History
+
+### V0.9.2 (Nov 25, 2019)
+
+- fixed date render bug on categories view
 
 ### V0.9.1 (Nov 22, 2019)
 

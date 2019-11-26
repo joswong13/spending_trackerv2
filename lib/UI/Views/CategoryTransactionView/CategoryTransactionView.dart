@@ -73,8 +73,8 @@ class CategoryTransactionView extends StatelessWidget {
                             child: Column(
                               children: <Widget>[
                                 Text(
-                                  DateFormat("MMM EEE d")
-                                      .format(DateTime.fromMillisecondsSinceEpoch(_categoryList[index].date)),
+                                  DateFormat("MMM EEE d").format(
+                                      DateTime.fromMillisecondsSinceEpoch(_categoryList[index].date, isUtc: true)),
                                   textScaleFactor: 1,
                                   style: TextStyle(fontSize: 18, color: Theme.of(context).primaryColor),
                                 ),
