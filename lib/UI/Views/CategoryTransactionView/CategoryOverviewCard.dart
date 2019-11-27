@@ -23,6 +23,23 @@ class CategoryOverviewCard extends StatelessWidget {
         children: <Widget>[
           Stack(alignment: Alignment.center, children: [
             Align(
+              alignment: Alignment.centerLeft,
+              child: IconButton(
+                icon: Icon(
+                  Icons.reorder,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) {
+                      return CreateCategoryView();
+                    }),
+                  );
+                },
+              ),
+            ),
+            Align(
               alignment: Alignment.center,
               child: Text(
                 "Categories",
@@ -50,7 +67,7 @@ class CategoryOverviewCard extends StatelessWidget {
                   );
                 },
               ),
-            )
+            ),
           ]),
           Expanded(
             child: Container(

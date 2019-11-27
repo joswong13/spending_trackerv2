@@ -25,14 +25,16 @@ Querying of transactions can be filtered by using either the date represented as
 - [ ] back up storage options other than firebase
 - [ ] add firebase functionality (for backup storage and data restore) (TBD)
 - [ ] theme: ability to change colors
-- [ ] add animations
+- [ ] add animations (TBD)
 - [ ] ability to set budget (TBD)
 - [ ] analytics
+- [ ] user reorganize categories
 
 ## Version History
 
 ### V0.9.2 (Nov 25, 2019)
 
+- removed bouncing scroll on main screen
 - fixed date render bug on categories view
 
 ### V0.9.1 (Nov 22, 2019)

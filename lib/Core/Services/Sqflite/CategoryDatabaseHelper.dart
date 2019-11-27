@@ -12,8 +12,10 @@ class CategoryDatabase extends BaseDB<UserCategory> {
 
   Database _categoryDatabase;
 
-  static final String _createCategoryDatabaseString =
+  static final String _createCategoryDatabaseStringV1 =
       "CREATE TABLE category (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT , icon TEXT, colorOne TEXT, colorTwo TEXT)";
+  static final String _createCategoryDatabaseStringV2 =
+      "CREATE TABLE category (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT , icon TEXT, colorOne TEXT, colorTwo TEXT, position INTEGER DEFAULT 0)";
 
   CategoryDatabase._createInstance();
 
@@ -36,11 +38,21 @@ class CategoryDatabase extends BaseDB<UserCategory> {
   Future<Database> getDatabaseInstance() async {
     Directory directory = await getApplicationDocumentsDirectory();
     String path = join(directory.path, "category.db");
-    return await openDatabase(path, version: 1, onCreate: _createDB);
+    return await openDatabase(path, version: 2, onCreate: _createDB, onUpgrade: _onUpgradeDB);
   }
 
+//onUpgrade: _onUpgradeDB
   void _createDB(Database db, int version) async {
-    await db.execute(_createCategoryDatabaseString);
+    await db.execute(_createCategoryDatabaseStringV2);
+  }
+
+  void _onUpgradeDB(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < newVersion) {
+      print("upgrade called");
+      await db.execute("ALTER TABLE category ADD COLUMN position INTEGER DEFAULT 0");
+
+      print("DONE UPGRADE");
+    }
   }
 
 //---------------------------------------------INSERT---------------------------------------------------------

@@ -4,6 +4,7 @@ class UserCategory {
   String _icon;
   String _colorOne;
   String _colorTwo;
+  int _position;
 
   UserCategory();
 
@@ -13,10 +14,12 @@ class UserCategory {
     this._icon = data["icon"];
     this._colorOne = data["colorOne"];
     this._colorTwo = data["colorTwo"];
+    this._position = data["position"];
   }
 
   Map<String, dynamic> toMap() {
-    return {"id": id, "name": name, "icon": icon, "colorOne": colorOne, "colorTwo": colorTwo};
+    //return {"id": id, "name": name, "icon": icon, "colorOne": colorOne, "colorTwo": colorTwo};
+    return {"id": id, "name": name, "icon": icon, "colorOne": colorOne, "colorTwo": colorTwo, "position": position};
   }
 
   set id(id) {
@@ -39,6 +42,10 @@ class UserCategory {
     _colorTwo = color;
   }
 
+  set position(position) {
+    _position = position;
+  }
+
   int get id {
     return _id;
   }
@@ -57,5 +64,9 @@ class UserCategory {
 
   String get colorTwo {
     return _colorTwo;
+  }
+
+  int get position {
+    return _position;
   }
 }

@@ -17,7 +17,7 @@ class MonthlyViewSliver extends StatelessWidget {
             child: CircularProgressIndicator(),
           )
         : CustomScrollView(
-            physics: BouncingScrollPhysics(),
+            //physics: BouncingScrollPhysics(),
             slivers: <Widget>[
               SliverToBoxAdapter(
                 child: CategoryHorizontalScrollBox(),
