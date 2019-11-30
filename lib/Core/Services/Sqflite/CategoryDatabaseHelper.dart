@@ -48,10 +48,7 @@ class CategoryDatabase extends BaseDB<UserCategory> {
 
   void _onUpgradeDB(Database db, int oldVersion, int newVersion) async {
     if (oldVersion < newVersion) {
-      print("upgrade called");
       await db.execute("ALTER TABLE category ADD COLUMN position INTEGER DEFAULT 0");
-
-      print("DONE UPGRADE");
     }
   }
 
@@ -86,7 +83,7 @@ class CategoryDatabase extends BaseDB<UserCategory> {
   Future<List<Map<String, dynamic>>> getAllInDb() async {
     final Database db = await database;
 
-    return await db.query('category');
+    return await db.query('category', orderBy: "position ASC");
   }
 
   @override
@@ -120,6 +117,17 @@ class CategoryDatabase extends BaseDB<UserCategory> {
   @override
   Future<int> deleteByString(String s) {
     return null;
+  }
+
+  @override
+  Future<void> batchJob(List<UserCategory> object) async {
+    final Database db = await database;
+    Batch batch = db.batch();
+
+    for (int i = 0; i < object.length; i++) {
+      batch.update('category', object[i].toMap(), where: "id = ?", whereArgs: [object[i].id]);
+    }
+    await batch.commit(noResult: true);
   }
 }
 

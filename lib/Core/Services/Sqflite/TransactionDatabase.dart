@@ -116,6 +116,11 @@ class TransactionDatabase extends BaseDB<UserTransaction> {
 
     return resp;
   }
+
+  @override
+  Future<void> batchJob(List<UserTransaction> object) {
+    return null;
+  }
 }
 
 // class TransactionDatabase {

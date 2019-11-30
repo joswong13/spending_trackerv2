@@ -26,6 +26,7 @@ class _EditCategoryViewState extends State<EditCategoryView> {
   String _colorOne = 'blueGrey900';
   String _colorTwo = 'blueGrey900';
   int _id;
+  int _position;
 
   _EditCategoryViewState(UserCategory userCategory) {
     _name = userCategory.name;
@@ -33,6 +34,7 @@ class _EditCategoryViewState extends State<EditCategoryView> {
     _colorOne = userCategory.colorOne;
     _colorTwo = userCategory.colorTwo;
     _id = userCategory.id;
+    _position = userCategory.position;
   }
 
   void _setCategoryIcon(String iconName) {
@@ -159,7 +161,7 @@ class _EditCategoryViewState extends State<EditCategoryView> {
                 onPressed: () async {
                   Map<String, dynamic> validateMap = validateCategoryFields(name: _name, categoryIcon: _categoryIcon);
                   if (validateMap["valid"]) {
-                    await appProvider.updateUserCategory(_id, _name, _colorOne, _colorTwo, _categoryIcon);
+                    await appProvider.updateUserCategory(_id, _name, _colorOne, _colorTwo, _categoryIcon, _position);
 
                     Navigator.pop(context);
                   } else {
