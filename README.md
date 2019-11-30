@@ -28,14 +28,16 @@ Querying of transactions can be filtered by using either the date represented as
 - [ ] add animations (TBD)
 - [ ] ability to set budget (TBD)
 - [ ] analytics
-- [ ] user reorganize categories
+- [x] user reorganize categories
 
 ## Version History
 
-### V0.9.2 (Nov 25, 2019)
+### V0.9.2 (Nov 30, 2019)
 
 - removed bouncing scroll on main screen
 - fixed date render bug on categories view
+- can rearrange categories
+- updated categories database to version 2
 
 ### V0.9.1 (Nov 22, 2019)
 
