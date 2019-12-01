@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spending_tracker/UI/Views/CreateCategoryView/CreateCategoryView.dart';
 import 'package:spending_tracker/UI/Views/CategoryTransactionView/ReorganizeCategoryView.dart';
+import 'package:spending_tracker/UI/Widgets/CategoryViewWidget/CategoryRowWidget.dart';
 import '../../../Core/ViewModels/AppProvider.dart';
 import '../../Widgets/CategoryViewWidget/CategoryCard.dart';
 
@@ -72,16 +73,24 @@ class CategoryOverviewCard extends StatelessWidget {
             ),
           ]),
           Expanded(
-            child: Container(
-              margin: EdgeInsets.symmetric(vertical: 5),
-              child: GridView.count(
-                crossAxisCount: 2,
-                children: appProvider.userCategoryList.map((eachCategory) {
-                  return CategoryCard(eachCategory);
-                }).toList(),
-              ),
+            child: ListView.builder(
+              itemCount: appProvider.userCategoryList.length,
+              itemBuilder: (BuildContext contect, int index) {
+                return CategoryRowWidget(appProvider.userCategoryList[index]);
+              },
             ),
-          ),
+          )
+          // Expanded(
+          //   child: Container(
+          //     margin: EdgeInsets.symmetric(vertical: 5),
+          //     child: GridView.count(
+          //       crossAxisCount: 2,
+          //       children: appProvider.userCategoryList.map((eachCategory) {
+          //         return CategoryCard(eachCategory);
+          //       }).toList(),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
