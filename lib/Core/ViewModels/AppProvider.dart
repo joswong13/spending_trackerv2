@@ -334,15 +334,3 @@ class AppProvider with ChangeNotifier {
     await _refreshUserCategoryList();
   }
 }
-
-///Gets all the user transaction.
-///Not used in any of the widgets.
-// Future<List<Map<String, dynamic>>> _getAllUserTransaction() async {
-//   return await transactionDatabase.getAllInDb();
-// }
-
-// ///Resets the current date in Provider to today.
-// Future<void> reset() async {
-//   DateTime resetToCurrentDate = DateTime.now();
-//   await _changeDateAndQuery(DateTime.utc(resetToCurrentDate.year, resetToCurrentDate.month, resetToCurrentDate.day));
-// }

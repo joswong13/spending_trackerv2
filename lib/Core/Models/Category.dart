@@ -18,7 +18,6 @@ class UserCategory {
   }
 
   Map<String, dynamic> toMap() {
-    //return {"id": id, "name": name, "icon": icon, "colorOne": colorOne, "colorTwo": colorTwo};
     return {"id": id, "name": name, "icon": icon, "colorOne": colorOne, "colorTwo": colorTwo, "position": position};
   }
 
