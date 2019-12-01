@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spending_tracker/UI/Views/CreateCategoryView/CreateCategoryView.dart';
+import 'package:spending_tracker/UI/Views/CategoryTransactionView/ReorganizeCategoryView.dart';
 import '../../../Core/ViewModels/AppProvider.dart';
 import '../../Widgets/CategoryViewWidget/CategoryCard.dart';
 
@@ -26,16 +27,17 @@ class CategoryOverviewCard extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: IconButton(
                 icon: Icon(
-                  Icons.reorder,
+                  Icons.swap_vert,
                   color: Colors.black,
                 ),
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (_) {
-                      return CreateCategoryView();
+                      return ReorganizeCategoryView(appProvider.userCategoryList);
                     }),
                   );
+                  //open dialog
                 },
               ),
             ),

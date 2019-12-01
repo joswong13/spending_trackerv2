@@ -22,4 +22,6 @@ abstract class BaseDB<T> {
 
   /// Deletes an entry in database by string.
   Future<int> deleteByString(String s);
+
+  Future<void> batchJob(List<T> object);
 }

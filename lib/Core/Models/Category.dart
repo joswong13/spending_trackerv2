@@ -69,4 +69,12 @@ class UserCategory {
   int get position {
     return _position;
   }
+
+  bool checkEqual(UserCategory uc) {
+    bool same = false;
+    if (uc.position == _position && uc.name == _name) {
+      same = true;
+    }
+    return same;
+  }
 }

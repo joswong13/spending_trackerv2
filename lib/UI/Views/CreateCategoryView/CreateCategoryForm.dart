@@ -167,7 +167,9 @@ class _CategoryFormState extends State<CreateCategoryForm> {
               if (confirmation) {
                 bool ifExists = await appProvider.categoryExists(nameController.text.trim());
                 if (!ifExists) {
-                  await appProvider.insertCategory(nameController.text.trim(), _categoryIcon, _colorOne, _colorTwo);
+                  int position = appProvider.userCategoryList.last.position + 1;
+                  await appProvider.insertCategory(
+                      nameController.text.trim(), _categoryIcon, _colorOne, _colorTwo, position);
                   SchedulerBinding.instance.addPostFrameCallback((_) {
                     focusNode.unfocus();
                     nameController.clear();
