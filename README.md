@@ -20,14 +20,15 @@ This table stores transaction that the user adds. This includes the name, descri
 
 Querying of transactions can be filtered by using either the date represented as an integer or by category and date as an integer.
 
-## TODO (not in order of importance)
+## TODO
 
-- [ ] back up storage options other than firebase
-- [ ] add firebase functionality (for backup storage and data restore) (TBD)
-- [ ] theme: ability to change colors
-- [ ] add animations (TBD)
-- [ ] ability to set budget (TBD)
-- [ ] analytics
+- [ ] analytics (high)
+- [ ] move add category and rearrange categories to settings page (high)
+- [ ] back up storage options other than firebase (medium)
+- [ ] add firebase functionality (for backup storage and data restore) (low)
+- [ ] theme: ability to change colors (low)
+- [ ] add animations (low)
+- [ ] ability to set budget (low)
 
 ## Version History
 
@@ -37,6 +38,7 @@ Querying of transactions can be filtered by using either the date represented as
 - fixed date render bug on categories view
 - can rearrange categories
 - updated categories database to version 2
+- changed CategoryOverviewCard from square grid to listview widget
 
 ### V0.9.1 (Nov 22, 2019)
 
