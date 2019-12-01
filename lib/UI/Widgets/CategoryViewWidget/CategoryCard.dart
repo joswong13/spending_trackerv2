@@ -58,11 +58,13 @@ class CategoryCard extends StatelessWidget {
               style: TextStyle(fontSize: 24),
               maxLines: 1,
             ),
-            AutoSizeText(
-              upperCaseFirstLetter(_userCategory.position.toString()),
-              style: TextStyle(fontSize: 24),
-              maxLines: 1,
-            ),
+
+            //DELETE POSITION SOON
+            // AutoSizeText(
+            //   upperCaseFirstLetter(_userCategory.position.toString()),
+            //   style: TextStyle(fontSize: 24),
+            //   maxLines: 1,
+            // ),
             appProvider.busy
                 ? AutoSizeText(
                     "\$ -",

@@ -28,7 +28,6 @@ Querying of transactions can be filtered by using either the date represented as
 - [ ] add animations (TBD)
 - [ ] ability to set budget (TBD)
 - [ ] analytics
-- [x] user reorganize categories
 
 ## Version History
 
