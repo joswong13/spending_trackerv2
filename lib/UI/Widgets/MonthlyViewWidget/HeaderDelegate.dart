@@ -64,8 +64,14 @@ class HeaderDelegate implements SliverPersistentHeaderDelegate {
                   child: CircularProgressIndicator(),
                 )
               : InkWell(
-                  onTap: () {
-                    monthSelector(context, appProvider.date.month, appProvider.listOfYears, appProvider.changeDate);
+                  onTap: () async {
+                    DateTime date = await monthSelector(
+                      context,
+                      appProvider.date.month,
+                      appProvider.date.year,
+                      appProvider.listOfYears,
+                    );
+                    await appProvider.changeDate(date);
                   },
                   child: ListView(
                     padding: EdgeInsets.symmetric(vertical: 5),

@@ -87,7 +87,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                   focusNode1: amountFocusNode,
                   focusNode2: descFocusNode,
                   method: appProvider.refreshTransactions,
-                  changed: _transactionAdded,
+                  runMethod: _transactionAdded,
                   widget: _addTransactionIconButton(
                     color: Theme.of(context).primaryColor,
                     tooltip: "Add",

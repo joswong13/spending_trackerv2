@@ -9,11 +9,11 @@ class EmptyTransactionListSliver extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Text(
-            "No Transactions",
+            "Empty",
             textScaleFactor: 1,
             style: TextStyle(fontSize: 30),
           ),
-          emptyTransactionListAddButton(context, "Add Transaction"),
+          emptyTransactionListAddButton(context, "Add"),
         ],
       ),
     );

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 //Widgets
 import 'package:spending_tracker/UI/Views/AddExpenseView/AddTransactionView.dart';
+import 'package:spending_tracker/UI/Views/SettingsView/SettingsView.dart';
+import 'package:spending_tracker/UI/Views/StatsView/StatsView.dart';
 import '../CategoryTransactionView/CategoryOverviewCard.dart';
 import '../Monthly/MonthlyViewSliver.dart';
 
@@ -17,7 +19,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(vsync: this, length: 2);
+    _tabController = TabController(vsync: this, length: 4);
   }
 
   @override
@@ -38,10 +40,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
         child: TabBarView(
           physics: NeverScrollableScrollPhysics(),
           controller: _tabController,
-          children: <Widget>[
-            MonthlyViewSliver(),
-            CategoryOverviewCard(),
-          ],
+          children: <Widget>[MonthlyViewSliver(), CategoryOverviewCard(), StatsView(), SettingsView()],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -68,8 +67,18 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
           color: Colors.black,
           child: TabBar(
             tabs: <Widget>[
-              Tab(icon: Icon(Icons.calendar_today)),
-              Tab(icon: Icon(Icons.category)),
+              Tab(
+                icon: Icon(Icons.calendar_today),
+              ),
+              Tab(
+                icon: Icon(Icons.category),
+              ),
+              Tab(
+                icon: Icon(Icons.insert_chart),
+              ),
+              Tab(
+                icon: Icon(Icons.settings),
+              ),
             ],
             controller: _tabController,
             labelColor: Theme.of(context).primaryColor,

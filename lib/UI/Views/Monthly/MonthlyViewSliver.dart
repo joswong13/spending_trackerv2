@@ -47,15 +47,3 @@ class MonthlyViewSliver extends StatelessWidget {
           );
   }
 }
-
-// appProvider.txList.length == 0
-//             ? SliverList(
-//                 delegate: SliverChildListDelegate([EmptyTransactionListSliver()]),
-//               )
-//             : SliverList(
-//                 delegate: SliverChildListDelegate(
-//                   appProvider.txList.map((eachTX) {
-//                     return TransactionItems(transaction: eachTX);
-//                   }).toList(),
-//                 ),
-//               ),

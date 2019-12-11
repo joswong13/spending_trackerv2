@@ -22,6 +22,7 @@ Querying of transactions can be filtered by using either the date represented as
 
 ## TODO
 
+- [ ] issue when spawning thread then changing mainthread page
 - [ ] analytics (high)
 - [ ] move add category and rearrange categories to settings page (high)
 - [ ] back up storage options other than firebase (medium)

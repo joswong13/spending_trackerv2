@@ -12,9 +12,7 @@ void main() {
               // The builder function must return a widget.
               return RaisedButton(
                 onPressed: () {
-                  monthSelector(context, 11, [2018, 2019], (DateTime resp) {
-                    print(resp);
-                  });
+                  monthSelector(context, 11, 2018, [2019, 2018]);
                 },
               );
             },

@@ -64,7 +64,7 @@ class _CategoryFormState extends State<CreateCategoryForm> {
             title: "Category Management",
             focusNode: focusNode,
             method: appProvider.refreshTransactions,
-            changed: _categoryListChanged),
+            runMethod: _categoryListChanged),
         Container(
           margin: EdgeInsets.all(10),
           padding: EdgeInsets.symmetric(vertical: 6, horizontal: 30),
@@ -167,9 +167,16 @@ class _CategoryFormState extends State<CreateCategoryForm> {
               if (confirmation) {
                 bool ifExists = await appProvider.categoryExists(nameController.text.trim());
                 if (!ifExists) {
-                  int position = appProvider.userCategoryList.last.position + 1;
+                  int position;
+
+                  if (appProvider.userCategoryList.length == 0) {
+                    position = 0;
+                  } else {
+                    position = appProvider.userCategoryList.last.position + 1;
+                  }
                   await appProvider.insertCategory(
                       nameController.text.trim(), _categoryIcon, _colorOne, _colorTwo, position);
+
                   SchedulerBinding.instance.addPostFrameCallback((_) {
                     focusNode.unfocus();
                     nameController.clear();

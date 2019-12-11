@@ -1,8 +1,10 @@
 import 'package:spending_tracker/Core/Models/Category.dart';
 import 'package:spending_tracker/Core/Models/MonthlyTransactionObject.dart';
+import 'package:spending_tracker/Core/Models/Stat.dart';
 import 'package:spending_tracker/Core/Models/UserTransaction.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:spending_tracker/Core/Services/SQFLiteHelperMethods/StatService.dart';
 import 'package:spending_tracker/Core/Services/Sqflite/BaseDB.dart';
 import 'package:spending_tracker/Core/Services/Sqflite/CategoryDatabaseHelper.dart';
 import '../Models/Month.dart';
@@ -20,12 +22,18 @@ class AppProvider with ChangeNotifier {
   //Provider variables
   bool _busy = false;
   bool _constructorStatus = false;
-
-  String _categoryType = '';
   List<UserTransaction> _categoryUserTransactionList = [];
 
+  /// _categoryType gets changed when the user clicks on a category card, used when refreshing transactions if user edits the transaction
+  String _categoryType = '';
+
+  /// _userCategoryList contains the full UserCategory object
   List<UserCategory> _userCategoryList = [];
+
+  /// _userCategoryMap contains only the category name and category icon as string {"name": CATEGORY_NAME, "icon": CATEGORY_ICON}
   Map<String, String> _userCategoryMap = {};
+
+  /// _listOfYears contains the years to pass to the dialog when quick selecting dates
   List<int> _listOfYears = [];
 
   ///@Constructor
@@ -48,7 +56,8 @@ class AppProvider with ChangeNotifier {
     });
 
     //Gets all the transactions from the start of the month to the end of the month
-    _getUserTransactionsBetween().then((listOfUserTx) async {
+    _getUserTransactionsBetween(monthInstance.beginningOfMonthInt, monthInstance.endOfMonthInt)
+        .then((listOfUserTx) async {
       Map<String, dynamic> temp = {"tx": listOfUserTx, "listOfCategories": _userCategoryList};
 
       //Create monthly transaction object
@@ -79,7 +88,8 @@ class AppProvider with ChangeNotifier {
 
     //Query
     //Call build table fcn
-    List<Map<String, dynamic>> listOfUserTx = await _getUserTransactionsBetween();
+    List<Map<String, dynamic>> listOfUserTx =
+        await _getUserTransactionsBetween(monthInstance.beginningOfMonthInt, monthInstance.endOfMonthInt);
 
     Map<String, dynamic> temp = {"tx": listOfUserTx, "listOfCategories": _userCategoryList};
     await compute(StaticMonthlyTransactionObject.calc, temp).then((resp) {
@@ -105,7 +115,7 @@ class AppProvider with ChangeNotifier {
   }
 
   List<int> get listOfYears {
-    return _listOfYears;
+    return List.unmodifiable(_listOfYears);
   }
 
   ///Get the date currently selected.
@@ -156,7 +166,9 @@ class AppProvider with ChangeNotifier {
 
     //Query
     //Call build table fcn
-    List<Map<String, dynamic>> listOfUserTx = await _getUserTransactionsBetween();
+
+    List<Map<String, dynamic>> listOfUserTx =
+        await _getUserTransactionsBetween(monthInstance.beginningOfMonthInt, monthInstance.endOfMonthInt);
 
     Map<String, dynamic> temp = {"tx": listOfUserTx, "listOfCategories": _userCategoryList};
 
@@ -193,6 +205,19 @@ class AppProvider with ChangeNotifier {
         _categoryUserTransactionList.add(UserTransaction.fromDb(resp[i]));
       }
     });
+  }
+
+  Future<Stat> getStatsView(int begin, int end) async {
+    Stat stat;
+    List<Map<String, dynamic>> res = await _getUserTransactionsBetween(begin, end);
+
+    Map<String, dynamic> temp = {"tx": res, "listOfCategories": _userCategoryList, "begin": begin, "end": end};
+
+    await compute(StaticStatService.calc, temp).then((resp) {
+      stat = resp;
+    });
+
+    return stat;
   }
 
   //----------------------------------------------SQFLite Core Functions-----------------------------------------
@@ -291,9 +316,9 @@ class AppProvider with ChangeNotifier {
   }
 
   ///Private function that grabs all the transactions between certain dates.
-  Future<List<Map<String, dynamic>>> _getUserTransactionsBetween() async {
-    int beginningOfQuery = monthInstance.beginningOfMonthInt;
-    int endOfQuery = monthInstance.endOfMonthInt;
+  Future<List<Map<String, dynamic>>> _getUserTransactionsBetween(int beginningOfQuery, int endOfQuery) async {
+    // int beginningOfQuery = monthInstance.beginningOfMonthInt;
+    // int endOfQuery = monthInstance.endOfMonthInt;
 
     return await transactionDatabase.getWithTwoParameters<int, int>(beginningOfQuery, endOfQuery);
   }
