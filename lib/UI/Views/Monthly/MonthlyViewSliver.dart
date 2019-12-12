@@ -12,7 +12,7 @@ class MonthlyViewSliver extends StatelessWidget {
   Widget build(BuildContext context) {
     final appProvider = Provider.of<AppProvider>(context);
 
-    return appProvider.constructorStatus
+    return appProvider.constructorBusy
         ? Center(
             child: CircularProgressIndicator(),
           )

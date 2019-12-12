@@ -8,7 +8,9 @@ import 'package:spending_tracker/UI/Widgets/CommonWidgets/CommonFunctions.dart';
 class CategoryStat extends StatelessWidget {
   final StatCategory _statCategory;
 
+  /// Used in the sliver grid to display the stats of each category given the [StatCategory] object.
   CategoryStat(this._statCategory);
+
   @override
   Widget build(BuildContext context) {
     return Container(

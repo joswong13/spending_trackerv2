@@ -92,9 +92,10 @@ class _ReorganizeCategoryViewState extends State<ReorganizeCategoryView> {
                       finalList.add(cloneList[i]);
                     }
                   }
-                  appProvider.batchJobUpdateUserCategory(finalList).then((_) {
-                    Navigator.pop(context);
-                  });
+                  await appProvider.batchJobUpdateUserCategory(finalList);
+
+                  await appProvider.refreshUserCategoryList();
+                  Navigator.pop(context);
                 },
               ),
             ),

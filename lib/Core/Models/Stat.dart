@@ -30,13 +30,9 @@ class Stat {
 class StatMonth {
   double _total;
   int _numberOfTransactions;
-  int _month;
-  int _year;
-  int _dateMillisecondsSinceEpoch;
   DateTime _date;
 
-  StatMonth(
-      this._total, this._numberOfTransactions, this._month, this._year, this._dateMillisecondsSinceEpoch, this._date);
+  StatMonth(this._total, this._numberOfTransactions, this._date);
 
   set total(double total) {
     this._total = total;
@@ -52,18 +48,6 @@ class StatMonth {
 
   int get numberOfTransactions {
     return this._numberOfTransactions;
-  }
-
-  int get month {
-    return this._month;
-  }
-
-  int get year {
-    return this._year;
-  }
-
-  int get dateMillisecondsSinceEpoch {
-    return this._dateMillisecondsSinceEpoch;
   }
 
   DateTime get date {

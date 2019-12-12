@@ -5,14 +5,14 @@ import 'dart:math' as math;
 
 import 'package:spending_tracker/Core/Constants/ColorPalette.dart';
 
-/// Removes any spaces inside the amount textfield
+/// Removes any spaces inside the amount textfield and parses the given string to a Double.
 double parseDoubleFromController(String amountText) {
   String result = amountText.replaceAll(RegExp(r"\s+\b|\b\s"), "");
   return double.tryParse(result);
 }
 
-/// Creates a textfield given the color, FocusNode to deselect the textfield,
-/// a text controller for the results, a label, hint and isNum to determine if the keyboard should be a number keyboard.
+/// Creates a textfield given the [color], [FocusNode] to deselect the textfield,
+/// a text [controller] for the results, a [label], [hint] and [isNum] to determine if the keyboard should be a number keyboard.
 TextField transactionTextfield(
     Color primary, FocusNode focusNode, TextEditingController controller, String label, String hint, bool isNum) {
   TextInputType keyboard;
@@ -106,7 +106,7 @@ void onSubmitSnackbar(BuildContext context, String title) {
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------
-// Used for making sure there ar eonly two decimal places in a text field
+// Used for making sure there are only two decimal places in a text field
 class DecimalTextInputFormatter extends TextInputFormatter {
   DecimalTextInputFormatter({this.decimalRange}) : assert(decimalRange == null || decimalRange > 0);
 

@@ -3,11 +3,11 @@ import 'package:spending_tracker/Core/Models/MonthlyTransactionObject.dart';
 import '../../Models/UserTransaction.dart';
 
 class StaticMonthlyTransactionObject {
-  static Future<MonthlyTransactionObject> calc(Map<String, dynamic> computeMap) async {
+  static Future<MonthlyTransactionObject> createMonthlyTransactionObject(Map<String, dynamic> computeMap) async {
     return _buildMonthlyData(computeMap["tx"], computeMap["listOfCategories"]);
   }
 }
-//-------------------------Private functions---------------------------------------------------------------------------
+//-------------------------StaticMonthlyTransactionObject functions---------------------------------------------------------------------------
 
 ///Given the monthly date array and the tx list, builds the monthly view array.
 MonthlyTransactionObject _buildMonthlyData(List<Map<String, dynamic>> tx, List<UserCategory> userCategory) {
@@ -34,11 +34,16 @@ Map<String, double> _initMonthlyCategoryTotalsMap(List<UserCategory> userCategor
   return categoryMap;
 }
 
-///Using a given transactions list from SQFLite, converts the List<Map<String,dynamic>> to a Map<String,dynamic>.
-///The purpose is to reorganize each transactions by the date it occured.
-///@Algo
-///First sets the first date in the transactions list, if the date is the same, add the transactions to the list of daily transactions.
-///Else, add the daily transactions to the map with the date and then change the currentTxDate, and then create a new list.
+/// Given a list of user transactions, converts the List<Map<String,dynamic>> to a Map<String,dynamic>.
+/// The purpose is to reorganize each transactions by the date it occured.
+///
+/// Explanation:
+/// 1) Save first date in the transactions list to DateTime object called [currentTxDate].
+/// 2) If the transaction date is the same as [currentTxDate], add the transactions to the list of daily transactions called [listOfDailyTx].
+/// 3) When a transaction no longer has the same transaction as [currentTxDate], add the list of daily transactions to the map [dailyMap]
+/// 4) Add [dailyMap] to [txList].
+/// 5) Set the [currentTxDate] to the new transaction date, add the trnasaction to [listOfDailyTx].
+/// 6) Repeat steps 2 to 5 until no more transactions.
 void _createTransactionsMapFromList(List<Map<String, dynamic>> tx, MonthlyTransactionObject mto) {
   double _monthlyTotal = 0.0;
   double dailyTotal = 0.0;

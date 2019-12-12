@@ -23,5 +23,6 @@ abstract class BaseDB<T> {
   /// Deletes an entry in database by string.
   Future<int> deleteByString(String s);
 
+  /// Given a list of transactions, executes them in SQFLite.
   Future<void> batchJob(List<T> object);
 }

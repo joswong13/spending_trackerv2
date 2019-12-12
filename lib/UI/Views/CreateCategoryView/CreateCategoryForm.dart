@@ -177,6 +177,7 @@ class _CategoryFormState extends State<CreateCategoryForm> {
                   await appProvider.insertCategory(
                       nameController.text.trim(), _categoryIcon, _colorOne, _colorTwo, position);
 
+                  await appProvider.refreshUserCategoryList();
                   SchedulerBinding.instance.addPostFrameCallback((_) {
                     focusNode.unfocus();
                     nameController.clear();

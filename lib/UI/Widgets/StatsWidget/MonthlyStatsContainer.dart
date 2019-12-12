@@ -7,6 +7,7 @@ class MonthlyStatsContainer extends StatelessWidget {
   final StatMonth _statMonth;
   final double _rangeTotal;
 
+  /// Used in the sliver list to display each month with a bar graph next to it given the [StatMonth] object and the total.
   MonthlyStatsContainer(this._statMonth, this._rangeTotal);
 
   @override

@@ -35,6 +35,8 @@ Map<String, dynamic> validateTransactionFields(
   return {"valid": true};
 }
 
+/// Checks [name] to test if it is not empty, and less than 12 characters.
+/// Checks [categoryIcon], to make sure is not default or 0 length.
 Map<String, dynamic> validateCategoryFields({@required String name, @required String categoryIcon}) {
   if (name == "") {
     return {"valid": false, "error": ERR_CAT_NAME_EMPTY};
