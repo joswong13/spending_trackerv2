@@ -23,7 +23,6 @@ Querying of transactions can be filtered by using either the date represented as
 ## TODO
 
 - [ ] issue when spawning thread then changing mainthread page
-- [ ] analytics (high)
 - [ ] move add category and rearrange categories to settings page (high)
 - [ ] back up storage options other than firebase (medium)
 - [ ] add firebase functionality (for backup storage and data restore) (low)
@@ -32,6 +31,10 @@ Querying of transactions can be filtered by using either the date represented as
 - [ ] ability to set budget (low)
 
 ## Version History
+
+### V0.9.3 (Dec 11, 2019)
+
+- created analytics page
 
 ### V0.9.2 (Nov 30, 2019)
 
