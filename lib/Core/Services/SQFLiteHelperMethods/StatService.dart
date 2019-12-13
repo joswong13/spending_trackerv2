@@ -12,7 +12,7 @@ class StaticStatService {
 
 /// Given a list of user transactions between certain dates, a list of user categories,
 /// the begining and end as an int, create a Stat object.
-_buildStat(List<Map<String, dynamic>> tx, List<UserCategory> userCategory, int begin, int end) {
+Stat _buildStat(List<Map<String, dynamic>> tx, List<UserCategory> userCategory, int begin, int end) {
   double _cumulativeTotal = 0.0;
   List<StatCategory> _listOfStatCategory = [];
   List<StatMonth> _listOfStatMonth = [];
@@ -52,7 +52,6 @@ _buildStat(List<Map<String, dynamic>> tx, List<UserCategory> userCategory, int b
   _categoryMap.forEach((key, value) {
     _listOfStatCategory.add(value);
   });
-
   return Stat(_cumulativeTotal, _listOfStatMonth, _listOfStatCategory, tx.length);
 }
 

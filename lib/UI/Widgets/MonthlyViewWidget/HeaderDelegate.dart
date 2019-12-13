@@ -4,7 +4,9 @@ import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:spending_tracker/Core/Constants/ColorPalette.dart';
+import 'package:spending_tracker/Core/Constants/ErrorCode.dart';
 import 'package:spending_tracker/Core/ViewModels/AppProvider.dart';
+import 'package:spending_tracker/UI/Widgets/Dialog/ErrorDialog.dart';
 import 'package:spending_tracker/UI/Widgets/Dialog/MonthYearDialog.dart';
 
 class HeaderDelegate implements SliverPersistentHeaderDelegate {
@@ -71,7 +73,9 @@ class HeaderDelegate implements SliverPersistentHeaderDelegate {
                       appProvider.date.year,
                       appProvider.listOfYears,
                     );
-                    await appProvider.changeDate(date);
+                    if (date != null) {
+                      await appProvider.changeDate(date);
+                    }
                   },
                   child: ListView(
                     padding: EdgeInsets.symmetric(vertical: 5),
@@ -102,7 +106,11 @@ class HeaderDelegate implements SliverPersistentHeaderDelegate {
         child: IconButton(
           onPressed: () {
             DateTime newMonth = DateTime.utc(appProvider.date.year, appProvider.date.month - 1, 1);
-            appProvider.changeDate(newMonth);
+            if (newMonth.isAfter(appProvider.backwardLimit)) {
+              appProvider.changeDate(newMonth);
+            } else {
+              errorMsgDialog(context, ERR_DATE_PAST_BACKLIMIT);
+            }
           },
           iconSize: 30,
           icon: Icon(
@@ -116,7 +124,11 @@ class HeaderDelegate implements SliverPersistentHeaderDelegate {
         child: IconButton(
           onPressed: () {
             DateTime newMonth = DateTime.utc(appProvider.date.year, appProvider.date.month + 1, 1);
-            appProvider.changeDate(newMonth);
+            if (newMonth.isBefore(appProvider.forwardLimit)) {
+              appProvider.changeDate(newMonth);
+            } else {
+              errorMsgDialog(context, ERR_DATE_PAST_FORWARDLIMIT);
+            }
           },
           iconSize: 30,
           icon: Icon(

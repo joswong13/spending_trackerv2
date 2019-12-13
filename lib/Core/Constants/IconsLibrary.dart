@@ -64,6 +64,15 @@ const Map<String, IconData> icons = {
   "Spa": Icons.spa
 };
 
+List<Map<String, dynamic>> getIconMapAsList() {
+  List<Map<String, dynamic>> iconMapAsList = [];
+  icons.forEach((key, value) {
+    iconMapAsList.add({"name": key, "icon": value});
+  });
+
+  return iconMapAsList;
+}
+
 // final List<Map<String, dynamic>> iconList = [
 //   {"name": "Gas", "icon" : Icons.local_gas_station},
 //   {"name": "Food", "icon" : Icons.restaurant},
@@ -89,11 +98,3 @@ const Map<String, IconData> icons = {
 //   {"name": , "icon" : },
 
 // ];
-List<Map<String, dynamic>> getIconMapAsList() {
-  List<Map<String, dynamic>> iconMapAsList = [];
-  icons.forEach((key, value) {
-    iconMapAsList.add({"name": key, "icon": value});
-  });
-
-  return iconMapAsList;
-}

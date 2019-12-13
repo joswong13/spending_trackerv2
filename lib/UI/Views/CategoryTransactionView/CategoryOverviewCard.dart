@@ -4,7 +4,6 @@ import 'package:spending_tracker/UI/Views/CreateCategoryView/CreateCategoryView.
 import 'package:spending_tracker/UI/Views/CategoryTransactionView/ReorganizeCategoryView.dart';
 import 'package:spending_tracker/UI/Widgets/CategoryViewWidget/CategoryRowWidget.dart';
 import '../../../Core/ViewModels/AppProvider.dart';
-import '../../Widgets/CategoryViewWidget/CategoryCard.dart';
 
 class CategoryOverviewCard extends StatelessWidget {
   @override

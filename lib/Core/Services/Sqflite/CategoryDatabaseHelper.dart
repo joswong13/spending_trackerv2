@@ -12,8 +12,8 @@ class CategoryDatabase extends BaseDB<UserCategory> {
 
   Database _categoryDatabase;
 
-  static final String _createCategoryDatabaseStringV1 =
-      "CREATE TABLE category (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT , icon TEXT, colorOne TEXT, colorTwo TEXT)";
+  // static final String _createCategoryDatabaseStringV1 =
+  //     "CREATE TABLE category (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT , icon TEXT, colorOne TEXT, colorTwo TEXT)";
   static final String _createCategoryDatabaseStringV2 =
       "CREATE TABLE category (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT , icon TEXT, colorOne TEXT, colorTwo TEXT, position INTEGER DEFAULT 0)";
 

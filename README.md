@@ -34,6 +34,8 @@ Querying of transactions can be filtered by using either the date represented as
 
 ### V0.9.3 (Dec 11, 2019)
 
+- set a forward and backward date limit
+- adjusted error font size
 - created analytics page
 
 ### V0.9.2 (Nov 30, 2019)

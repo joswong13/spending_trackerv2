@@ -18,7 +18,11 @@ class CategoryListView extends StatelessWidget {
               func: () async {
                 await appProvider.deleteAllUserTransactionInCategory(appProvider.userCategoryList[index].name);
 
-                await appProvider.deleteCategory(appProvider.userCategoryList[index].id);
+                int resp = await appProvider.deleteCategory(appProvider.userCategoryList[index].id);
+                if (resp == 1) {
+                  await appProvider.refreshUserCategoryList();
+                  await appProvider.refreshTransactions();
+                }
               },
             );
           },

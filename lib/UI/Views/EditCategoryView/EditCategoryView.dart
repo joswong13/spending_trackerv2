@@ -161,7 +161,11 @@ class _EditCategoryViewState extends State<EditCategoryView> {
                 onPressed: () async {
                   Map<String, dynamic> validateMap = validateCategoryFields(name: _name, categoryIcon: _categoryIcon);
                   if (validateMap["valid"]) {
-                    await appProvider.updateUserCategory(_id, _name, _colorOne, _colorTwo, _categoryIcon, _position);
+                    int resp = await appProvider.updateUserCategory(
+                        _id, _name, _colorOne, _colorTwo, _categoryIcon, _position);
+                    if (resp == 1) {
+                      await appProvider.refreshUserCategoryList();
+                    }
 
                     Navigator.pop(context);
                   } else {

@@ -6,7 +6,6 @@ import 'package:spending_tracker/Core/Constants/ErrorCode.dart';
 import 'package:spending_tracker/Core/Constants/IconsLibrary.dart';
 import 'package:spending_tracker/Core/Services/Validators/TextFieldValidators.dart';
 import 'package:spending_tracker/Core/ViewModels/AppProvider.dart';
-import 'package:spending_tracker/UI/Views/CreateCategoryView/CreateCategoriesListView.dart';
 import 'package:spending_tracker/UI/Widgets/CommonWidgets/TopTextButtonStack.dart';
 import 'package:spending_tracker/UI/Widgets/Dialog/CategoryIconDialog.dart';
 import 'package:spending_tracker/UI/Widgets/Dialog/ColorDialog.dart';

@@ -7,7 +7,11 @@ Future<void> errorMsgDialog(BuildContext context, String errorMsg) async {
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          title: Text(errorMsg),
+          title: Text(
+            errorMsg,
+            textScaleFactor: 1,
+            style: TextStyle(fontSize: 18),
+          ),
           actions: <Widget>[
             FlatButton(
               child: const Text('Ok'),

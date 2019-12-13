@@ -49,6 +49,8 @@ class MyApp extends StatelessWidget {
           //mode
           brightness: Brightness.dark,
           primaryColor: primaryGreen,
+          highlightColor: Colors.transparent,
+          splashColor: Colors.transparent,
           //scaffold
           scaffoldBackgroundColor: Color.fromRGBO(18, 18, 18, 1),
           //text
