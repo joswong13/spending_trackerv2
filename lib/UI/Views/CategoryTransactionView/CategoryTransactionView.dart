@@ -59,7 +59,8 @@ class CategoryTransactionView extends StatelessWidget {
               ],
             ),
             _categoryList.isEmpty
-                ? emptyTransactionListAddButton(context, "Add transactions for " + _categoryType)
+                ? emptyTransactionListAddButton(context, "Add transactions for " + upperCaseFirstLetter(_categoryType),
+                    date: appProvider.date, category: _categoryType)
                 : Expanded(
                     child: Container(
                       margin: const EdgeInsets.fromLTRB(8, 5, 8, 5),

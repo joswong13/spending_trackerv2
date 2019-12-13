@@ -8,15 +8,16 @@ const roundedRect30 = RoundedRectangleBorder(
   ),
 );
 
+/// Returns a text widget for buttons where [fontSize] is 14 and [color] is black.
 Text raisedButtonTextSize14(String buttonText) {
   return Text(
-    upperCaseFirstLetter(buttonText) ,
+    upperCaseFirstLetter(buttonText),
     textScaleFactor: 1,
     style: TextStyle(fontSize: 14, color: Colors.black),
   );
 }
 
-RaisedButton emptyTransactionListAddButton(BuildContext context, String title) {
+RaisedButton emptyTransactionListAddButton(BuildContext context, String title, {DateTime date, String category}) {
   return RaisedButton.icon(
     elevation: 8,
     shape: roundedRect30,
@@ -33,7 +34,10 @@ RaisedButton emptyTransactionListAddButton(BuildContext context, String title) {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (_) {
-          return TransactionScreen();
+          return TransactionScreen(
+            date: date,
+            category: category,
+          );
         }),
       );
     },

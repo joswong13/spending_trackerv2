@@ -32,11 +32,13 @@ Querying of transactions can be filtered by using either the date represented as
 
 ## Version History
 
-### V0.9.3 (Dec 11, 2019)
+### V0.9.3 (Dec 13, 2019)
 
+- when pressing Add button, will auto fill in the Date and/or Category where possible
 - set a forward and backward date limit
 - adjusted error font size
 - created analytics page
+- increased icon size in CategoriesRow widget
 
 ### V0.9.2 (Nov 30, 2019)
 
