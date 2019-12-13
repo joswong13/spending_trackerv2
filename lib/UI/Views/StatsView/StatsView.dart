@@ -6,7 +6,7 @@ import 'package:spending_tracker/UI/Widgets/Dialog/ErrorDialog.dart';
 import 'package:spending_tracker/UI/Widgets/Dialog/MonthYearDialog.dart';
 import 'package:spending_tracker/UI/Widgets/StatsWidget/CategoryStats.dart';
 import 'package:spending_tracker/UI/Widgets/StatsWidget/HeaderCard.dart';
-import 'package:spending_tracker/UI/Widgets/StatsWidget/MonthlyStatsContainer.dart';
+import 'package:spending_tracker/UI/Widgets/StatsWidget/MonthlyStats.dart';
 //import 'package:intl/intl.dart';
 
 class StatsView extends StatefulWidget {
@@ -102,7 +102,7 @@ class _StatsViewState extends State<StatsView> {
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {
-                      return MonthlyStatsContainer(stat.statMonth[index], stat.total);
+                      return MonthlyStats(stat.statMonth[index], stat.total);
                     },
                     childCount: stat.statMonth.length,
                   ),

@@ -3,12 +3,12 @@ import 'package:spending_tracker/Core/Constants/ColorPalette.dart';
 import 'package:spending_tracker/Core/Models/Stat.dart';
 import 'package:intl/intl.dart';
 
-class MonthlyStatsContainer extends StatelessWidget {
+class MonthlyStats extends StatelessWidget {
   final StatMonth _statMonth;
   final double _rangeTotal;
 
   /// Used in the sliver list to display each month with a bar graph next to it given the [StatMonth] object and the total.
-  MonthlyStatsContainer(this._statMonth, this._rangeTotal);
+  MonthlyStats(this._statMonth, this._rangeTotal);
 
   @override
   Widget build(BuildContext context) {
