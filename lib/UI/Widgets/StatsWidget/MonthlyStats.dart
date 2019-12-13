@@ -44,7 +44,7 @@ class MonthlyStats extends StatelessWidget {
                 ),
                 Center(
                   child: Text(
-                    "\$${_statMonth.total}",
+                    "\$" + _statMonth.total.toStringAsFixed(2),
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20,
@@ -61,11 +61,3 @@ class MonthlyStats extends StatelessWidget {
     );
   }
 }
-
-// Column(
-//   children: <Widget>[
-//     Text(DateFormat.yMMM().format(_statMonth.date)),
-//     Text(_statMonth.total.toString()),
-//     Text(_statMonth.numberOfTransactions.toString()),
-//   ],
-// ),

@@ -7,7 +7,6 @@ import 'package:spending_tracker/UI/Widgets/Dialog/MonthYearDialog.dart';
 import 'package:spending_tracker/UI/Widgets/StatsWidget/CategoryStats.dart';
 import 'package:spending_tracker/UI/Widgets/StatsWidget/HeaderCard.dart';
 import 'package:spending_tracker/UI/Widgets/StatsWidget/MonthlyStats.dart';
-//import 'package:intl/intl.dart';
 
 class StatsView extends StatefulWidget {
   @override
@@ -40,6 +39,7 @@ class _StatsViewState extends State<StatsView> {
     });
   }
 
+  // This method runs right after initState. This performs the query on widget build rather than passing in data from the constructor.
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
@@ -66,63 +66,60 @@ class _StatsViewState extends State<StatsView> {
         ? Center(
             child: CircularProgressIndicator(),
           )
-        : Container(
-            //color: Colors.teal,
-            child: CustomScrollView(
-              slivers: <Widget>[
-                SliverToBoxAdapter(
-                  child: InkWell(
-                    onTap: () async {
-                      Map<String, dynamic> monthSelectorMap =
-                          await statMonthSelector(context, appProvider.listOfYears, begin, end);
+        : CustomScrollView(
+            slivers: <Widget>[
+              SliverToBoxAdapter(
+                child: InkWell(
+                  onTap: () async {
+                    Map<String, dynamic> monthSelectorMap =
+                        await statMonthSelector(context, appProvider.listOfYears, begin, end);
 
-                      if (monthSelectorMap != null &&
-                          monthSelectorMap["valid"] &&
-                          (monthSelectorMap["begin"] != begin || monthSelectorMap["end"] != end)) {
-                        //if monthSelectorMap is null, it means the user pressed cancel
-                        setState(() {
-                          busy = true;
-                        });
+                    if (monthSelectorMap != null &&
+                        monthSelectorMap["valid"] &&
+                        (monthSelectorMap["begin"] != begin || monthSelectorMap["end"] != end)) {
+                      //if monthSelectorMap is null, it means the user pressed cancel
+                      setState(() {
+                        busy = true;
+                      });
 
-                        Stat tempStat = await _queryStat(monthSelectorMap["begin"], monthSelectorMap["end"]);
+                      Stat tempStat = await _queryStat(monthSelectorMap["begin"], monthSelectorMap["end"]);
 
-                        setState(() {
-                          begin = monthSelectorMap["begin"];
-                          end = monthSelectorMap["end"];
-                          stat = tempStat;
-                          busy = false;
-                        });
-                      } else if (monthSelectorMap != null && !monthSelectorMap["valid"]) {
-                        errorMsgDialog(context, monthSelectorMap["error"]);
-                      }
-                    },
-                    child: HeaderCard(begin, end, stat.total, stat.numberOfTransactions),
-                  ),
+                      setState(() {
+                        begin = monthSelectorMap["begin"];
+                        end = monthSelectorMap["end"];
+                        stat = tempStat;
+                        busy = false;
+                      });
+                    } else if (monthSelectorMap != null && !monthSelectorMap["valid"]) {
+                      errorMsgDialog(context, monthSelectorMap["error"]);
+                    }
+                  },
+                  child: HeaderCard(begin, end, stat.total, stat.numberOfTransactions),
                 ),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                      return MonthlyStats(stat.statMonth[index], stat.total);
-                    },
-                    childCount: stat.statMonth.length,
-                  ),
+              ),
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    return MonthlyStats(stat.statMonth[index], stat.total);
+                  },
+                  childCount: stat.statMonth.length,
                 ),
-                SliverGrid(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                  ),
-                  delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
-                    return CategoryStat(stat.statCategory[index]);
-                  }, childCount: stat.statCategory.length),
+              ),
+              SliverGrid(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
                 ),
-                //Container gives extra space above the last item and the FAB
-                SliverToBoxAdapter(
-                  child: Container(
-                    height: 30,
-                  ),
+                delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
+                  return CategoryStat(stat.statCategory[index]);
+                }, childCount: stat.statCategory.length),
+              ),
+              //Container gives extra space above the last item and the FAB
+              SliverToBoxAdapter(
+                child: Container(
+                  height: 30,
                 ),
-              ],
-            ),
+              ),
+            ],
           );
   }
 }

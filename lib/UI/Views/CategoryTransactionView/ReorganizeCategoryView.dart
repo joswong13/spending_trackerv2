@@ -7,17 +7,14 @@ import 'package:spending_tracker/UI/Widgets/CommonWidgets/CommonFunctions.dart';
 import 'package:spending_tracker/UI/Widgets/CommonWidgets/TopTextButtonStack.dart';
 
 class ReorganizeCategoryView extends StatefulWidget {
-  final List<UserCategory> listOfUC;
-  ReorganizeCategoryView(this.listOfUC);
-
   /// Given a list of user categories, allows user to rearrange the categories to any order.
   @override
-  _ReorganizeCategoryViewState createState() => _ReorganizeCategoryViewState(listOfUC);
+  _ReorganizeCategoryViewState createState() => _ReorganizeCategoryViewState();
 }
 
 class _ReorganizeCategoryViewState extends State<ReorganizeCategoryView> {
-  //Original list (probably dont need this in memory)
-  final List<UserCategory> _originalListofUserCategory;
+  //Original list that is used to check if the category has moved
+  List<UserCategory> _originalListofUserCategory;
 
   //The cloned list of the UserCategories
   List<UserCategory> cloneList = [];
@@ -25,7 +22,11 @@ class _ReorganizeCategoryViewState extends State<ReorganizeCategoryView> {
   //The final list of changed UserCategories
   List<UserCategory> finalList = [];
 
-  _ReorganizeCategoryViewState(this._originalListofUserCategory) {
+  @override
+  void initState() {
+    super.initState();
+    List<UserCategory> _originalListofUserCategory = Provider.of<AppProvider>(context, listen: false).userCategoryList;
+
     _originalListofUserCategory.forEach((uc) {
       //Clone the UC
       UserCategory tempUc = UserCategory();

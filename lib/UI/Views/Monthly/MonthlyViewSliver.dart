@@ -43,6 +43,11 @@ class MonthlyViewSliver extends StatelessWidget {
                               childCount: appProvider.txList.length,
                             ),
                     ),
+              SliverToBoxAdapter(
+                child: Container(
+                  height: 30,
+                ),
+              ),
             ],
           );
   }
