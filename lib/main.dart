@@ -61,12 +61,12 @@ class MyApp extends StatelessWidget {
           ),
           fontFamily: 'Quicksand',
         ),
-        builder: (context, child) {
-          return ScrollConfiguration(
-            behavior: MyBehavior(),
-            child: child,
-          );
-        },
+        // builder: (context, child) {
+        //   return ScrollConfiguration(
+        //     behavior: MyBehavior(),
+        //     child: child,
+        //   );
+        // },
         home: HomeView(),
       ),
     );
