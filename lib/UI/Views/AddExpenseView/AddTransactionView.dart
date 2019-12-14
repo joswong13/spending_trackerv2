@@ -10,8 +10,13 @@ import 'package:spending_tracker/UI/Widgets/Dialog/AddTxDialogPickers.dart';
 import 'package:spending_tracker/Core/Services/Validators/TextFieldValidators.dart';
 
 class TransactionScreen extends StatefulWidget {
+  final String category;
+  final DateTime date;
+
+  TransactionScreen({this.date, this.category});
+
   @override
-  _TransactionScreenState createState() => _TransactionScreenState();
+  _TransactionScreenState createState() => _TransactionScreenState(this.date, this.category);
 }
 
 class _TransactionScreenState extends State<TransactionScreen> {
@@ -23,8 +28,17 @@ class _TransactionScreenState extends State<TransactionScreen> {
   FocusNode descFocusNode = FocusNode();
   FocusNode amountFocusNode = FocusNode();
   DateTime _selectedDate;
-  String _category = "None";
+  String _category;
   bool _transactionAdded = false;
+
+  _TransactionScreenState(DateTime date, String category) {
+    this._selectedDate = date;
+    if (category == null) {
+      this._category = "none";
+    } else {
+      this._category = category;
+    }
+  }
 
 //----------------------------------------------Functions-----------------------------------------
   @override
@@ -51,7 +65,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
     textfieldFullClearUnfocus(focusNode: amountFocusNode, textFieldController: amountController);
     textfieldFullClearUnfocus(focusNode: descFocusNode, textFieldController: descController);
     setState(() {
-      _category = "None";
+      _category = "none";
       _selectedDate = null;
       _transactionAdded = true;
     });
@@ -87,7 +101,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                   focusNode1: amountFocusNode,
                   focusNode2: descFocusNode,
                   method: appProvider.refreshTransactions,
-                  changed: _transactionAdded,
+                  runMethod: _transactionAdded,
                   widget: _addTransactionIconButton(
                     color: Theme.of(context).primaryColor,
                     tooltip: "Add",

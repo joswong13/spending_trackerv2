@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:spending_tracker/UI/Widgets/CommonWidgets/CustomScrollBehavior.dart';
 import './Core/ViewModels/AppProvider.dart';
 import './UI/Views/HomeView/HomeView.dart';
 import 'Core/Constants/ColorPalette.dart';
@@ -48,6 +49,8 @@ class MyApp extends StatelessWidget {
           //mode
           brightness: Brightness.dark,
           primaryColor: primaryGreen,
+          highlightColor: Colors.transparent,
+          splashColor: Colors.transparent,
           //scaffold
           scaffoldBackgroundColor: Color.fromRGBO(18, 18, 18, 1),
           //text
@@ -58,6 +61,12 @@ class MyApp extends StatelessWidget {
           ),
           fontFamily: 'Quicksand',
         ),
+        builder: (context, child) {
+          return ScrollConfiguration(
+            behavior: MyBehavior(),
+            child: child,
+          );
+        },
         home: HomeView(),
       ),
     );

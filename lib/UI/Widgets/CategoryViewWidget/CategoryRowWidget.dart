@@ -53,7 +53,10 @@ class CategoryRowWidget extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            Icon(icons[_userCategory.icon]),
+            Icon(
+              icons[_userCategory.icon],
+              size: 40,
+            ),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[

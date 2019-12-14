@@ -1,24 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:spending_tracker/Core/Constants/ColorPalette.dart';
+import 'package:spending_tracker/Core/Constants/ErrorCode.dart';
 
 /// Given the current selected month and the list of years to render, render a dialog window that lets users select the month and year.
 /// After the user selects the month and day, give a DateTime object to the changeDate function.
-Future<void> monthSelector(BuildContext context, int month, List<int> listOfYears, Function changeDate) async {
-  int pageOfMonth = 0;
-  int pageOfYear = 0;
+Future<DateTime> monthSelector(BuildContext context, int month, int year, List<int> listOfYears) async {
+  DateTime date = await _monthSelector(context, month, year, listOfYears, 'Select Month and Year');
+  return date;
+}
+
+Container _pageViewContainer(String title) {
+  return Container(
+    height: 100,
+    child: Center(
+      child: Text(
+        title,
+        textScaleFactor: 1,
+        style: TextStyle(fontSize: 20),
+      ),
+    ),
+  );
+}
+
+Future<DateTime> _monthSelector(BuildContext context, int month, int year, List<int> listOfYears, String title) async {
+  int pageOfMonth = month - 1;
+  int pageOfYear = listOfYears.indexOf(year);
+
   final List<String> months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
   PageController monthPC = PageController(initialPage: month - 1, viewportFraction: 0.2);
-  PageController yearPC = PageController(viewportFraction: 0.2);
+  PageController yearPC = PageController(initialPage: pageOfYear, viewportFraction: 0.2);
 
-  await showDialog(
+  DateTime date = await showDialog(
       context: context,
       builder: (BuildContext context) {
         return SimpleDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
           title: Column(
             children: <Widget>[
-              const Text('Select Month and Year'),
+              Text(title),
               Divider(
                 color: Colors.white70,
               ),
@@ -91,8 +111,7 @@ Future<void> monthSelector(BuildContext context, int month, List<int> listOfYear
                     style: TextStyle(color: primaryGreen),
                   ),
                   onPressed: () async {
-                    await changeDate(DateTime.utc(listOfYears[pageOfYear], pageOfMonth + 1, 1));
-                    Navigator.pop(context, null);
+                    Navigator.pop(context, DateTime.utc(listOfYears[pageOfYear], pageOfMonth + 1, 1));
                   },
                 ),
                 FlatButton(
@@ -109,17 +128,36 @@ Future<void> monthSelector(BuildContext context, int month, List<int> listOfYear
           ],
         );
       });
+
+  return date;
 }
 
-Container _pageViewContainer(String title) {
-  return Container(
-    height: 100,
-    child: Center(
-      child: Text(
-        title,
-        textScaleFactor: 1,
-        style: TextStyle(fontSize: 20),
-      ),
-    ),
-  );
+Future<Map<String, dynamic>> statMonthSelector(
+    BuildContext context, List<int> listOfYears, DateTime beginQueryDate, DateTime endQueryDate) async {
+  Map<String, dynamic> dateMap = {};
+
+  DateTime begin =
+      await _monthSelector(context, beginQueryDate.month, beginQueryDate.year, listOfYears, 'Select The Beginning');
+
+  if (begin != null) {
+    dateMap["begin"] = begin;
+  } else {
+    return null;
+  }
+
+  DateTime end = await _monthSelector(context, endQueryDate.month, endQueryDate.year, listOfYears, 'Select The End');
+
+  if (end != null) {
+    if (end.isAfter(begin)) {
+      dateMap["end"] = DateTime.utc(end.year, end.month + 1, 0);
+      dateMap["valid"] = true;
+    } else {
+      dateMap["error"] = ERR_STAT_END_DATE;
+      dateMap["valid"] = false;
+    }
+  } else {
+    return null;
+  }
+
+  return dateMap;
 }

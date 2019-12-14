@@ -12,7 +12,7 @@ class MonthlyViewSliver extends StatelessWidget {
   Widget build(BuildContext context) {
     final appProvider = Provider.of<AppProvider>(context);
 
-    return appProvider.constructorStatus
+    return appProvider.constructorBusy
         ? Center(
             child: CircularProgressIndicator(),
           )
@@ -43,19 +43,12 @@ class MonthlyViewSliver extends StatelessWidget {
                               childCount: appProvider.txList.length,
                             ),
                     ),
+              SliverToBoxAdapter(
+                child: Container(
+                  height: 30,
+                ),
+              ),
             ],
           );
   }
 }
-
-// appProvider.txList.length == 0
-//             ? SliverList(
-//                 delegate: SliverChildListDelegate([EmptyTransactionListSliver()]),
-//               )
-//             : SliverList(
-//                 delegate: SliverChildListDelegate(
-//                   appProvider.txList.map((eachTX) {
-//                     return TransactionItems(transaction: eachTX);
-//                   }).toList(),
-//                 ),
-//               ),

@@ -22,7 +22,7 @@ Querying of transactions can be filtered by using either the date represented as
 
 ## TODO
 
-- [ ] analytics (high)
+- [ ] issue when spawning thread then changing mainthread page
 - [ ] move add category and rearrange categories to settings page (high)
 - [ ] back up storage options other than firebase (medium)
 - [ ] add firebase functionality (for backup storage and data restore) (low)
@@ -31,6 +31,14 @@ Querying of transactions can be filtered by using either the date represented as
 - [ ] ability to set budget (low)
 
 ## Version History
+
+### V0.9.3 (Dec 13, 2019)
+
+- when pressing Add button, will auto fill in the Date and/or Category where possible
+- set a forward and backward date limit
+- adjusted error font size
+- created analytics page
+- increased icon size in CategoriesRow widget
 
 ### V0.9.2 (Nov 30, 2019)
 
