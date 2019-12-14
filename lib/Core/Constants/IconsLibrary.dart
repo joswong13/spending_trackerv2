@@ -12,7 +12,6 @@ const Map<String, IconData> icons = {
   "Gift Card": Icons.card_giftcard,
   "Pets": Icons.pets,
   "Print": Icons.print,
-  //"Cart": Icons.shopping_cart,
   "Basket": Icons.shopping_basket,
   "Store": Icons.store,
   "Work": Icons.work,
