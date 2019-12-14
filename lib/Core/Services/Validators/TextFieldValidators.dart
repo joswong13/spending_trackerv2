@@ -27,7 +27,7 @@ Map<String, dynamic> validateTransactionFields(
     return {"valid": false, "error": ERR_TX_DESC_TOO_LONG};
   } else if (_tempAmount <= 0.00) {
     return {"valid": false, "error": ERR_TX_AMOUNT_DOUBLE_ERROR};
-  } else if (category == "None" || category.length <= 0) {
+  } else if (category == "none" || category == "None" || category.length <= 0) {
     return {"valid": false, "error": ERR_TX_CAT_NULL};
   } else if (date == null) {
     return {"valid": false, "error": ERR_TX_DATE_NULL};

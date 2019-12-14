@@ -9,7 +9,7 @@ import 'package:spending_tracker/Core/ViewModels/AppProvider.dart';
 import 'package:spending_tracker/UI/Widgets/Dialog/ErrorDialog.dart';
 import 'package:spending_tracker/UI/Widgets/Dialog/MonthYearDialog.dart';
 
-class HeaderDelegate implements SliverPersistentHeaderDelegate {
+class HeaderDelegate extends SliverPersistentHeaderDelegate {
   HeaderDelegate({this.minExtent, this.maxExtent});
 
   final double minExtent;
