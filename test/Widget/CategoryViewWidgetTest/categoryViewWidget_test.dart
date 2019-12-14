@@ -20,6 +20,7 @@ void main() {
     uc.icon = "Shopping";
     uc.colorOne = "red500";
     uc.colorTwo = "green500";
+    uc.position = 0;
 
     await tester.pumpWidget(
       MultiProvider(
@@ -44,7 +45,7 @@ void main() {
     expect(find.byIcon(icons["Shopping"]), findsOneWidget);
     expect(find.byType(AutoSizeText), findsNWidgets(2));
     expect(find.byType(InkWell), findsNWidgets(1));
-
+    expect(find.text("Test"), findsOneWidget);
     await tester.tap(find.byType(InkWell));
     await tester.pumpAndSettle();
 

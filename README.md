@@ -20,18 +20,38 @@ This table stores transaction that the user adds. This includes the name, descri
 
 Querying of transactions can be filtered by using either the date represented as an integer or by category and date as an integer.
 
-## TODO (not in order of importance)
+## TODO
 
-- [ ] back up storage options other than firebase
-- [ ] add firebase functionality (for backup storage and data restore)
-- [ ] theme: ability to change colors
-- [ ] quick select months
-- [ ] quick reset to current month
-- [ ] add animations
-- [ ] change fonts
-- [ ] ability to set budget
+- [ ] back up storage options other than firebase (medium)
+- [ ] add firebase functionality (for backup storage and data restore) (low)
+- [ ] theme: ability to change colors (low)
+- [ ] add animations (low)
+- [ ] ability to set budget (low)
 
 ## Version History
+
+### V0.9.3 (Dec 14, 2019)
+
+- when pressing Add button, will auto fill in the Date and/or Category where possible
+- set a forward and backward date limit
+- adjusted error font size
+- created analytics page
+- increased icon size in CategoriesRow widget
+
+### V0.9.2 (Nov 30, 2019)
+
+- removed bouncing scroll on main screen
+- fixed date render bug on categories view
+- can rearrange categories
+- updated categories database to version 2
+- changed CategoryOverviewCard from square grid to listview widget
+
+### V0.9.1 (Nov 22, 2019)
+
+- changed which widgets will reloaded when notifyListener is called
+- added snackbar confirmation when adding a transaction
+- added a dialog window to quickly change month and year
+- changed font to Quicksand
 
 ### V0.9.0 (Nov 17, 2019)
 

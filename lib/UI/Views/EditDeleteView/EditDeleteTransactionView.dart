@@ -99,14 +99,15 @@ class _TransactionScreenState extends State<EditScreen> {
                     deleteMethod: () async {
                       bool deleteConfirmation = await deleteDialog(context);
                       if (deleteConfirmation) {
-                        appProvider.deleteUserTransaction(widget.id).then((resp) async {
-                          if (resp == 1) {
-                            Navigator.pop(context);
-                          }
-                        });
+                        int resp = await appProvider.deleteUserTransaction(widget.id);
+
+                        if (resp == 1) {
+                          await appProvider.refreshTransactions();
+                        }
+                        Navigator.pop(context);
                       }
                     },
-                    confirmMethod: () {
+                    confirmMethod: () async {
                       Map<String, dynamic> validMap = validateTransactionFields(
                           name: nameController.text.trim(),
                           amount: amountController.text.trim(),
@@ -114,20 +115,19 @@ class _TransactionScreenState extends State<EditScreen> {
                           category: _category,
                           date: _selectedDate);
                       if (validMap["valid"]) {
-                        appProvider
-                            .updateUserTransaction(
-                                widget.id,
-                                nameController.text.trim(),
-                                parseDoubleFromController(amountController.text),
-                                descController.text.trim(),
-                                _selectedDate,
-                                _category,
-                                widget.uploaded)
-                            .then((resp) async {
-                          if (resp == 1) {
-                            Navigator.pop(context);
-                          }
-                        });
+                        int resp = await appProvider.updateUserTransaction(
+                            widget.id,
+                            nameController.text.trim(),
+                            parseDoubleFromController(amountController.text),
+                            descController.text.trim(),
+                            _selectedDate,
+                            _category,
+                            widget.uploaded);
+
+                        if (resp == 1) {
+                          await appProvider.refreshTransactions();
+                        }
+                        Navigator.pop(context);
                       } else {
                         errorMsgDialog(context, validMap["error"]);
                       }

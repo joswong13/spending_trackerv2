@@ -46,7 +46,6 @@ class TransactionItems extends StatelessWidget {
           }),
         ],
       ),
-      //),
     );
   }
 }

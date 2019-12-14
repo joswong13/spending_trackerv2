@@ -4,7 +4,10 @@ import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:spending_tracker/Core/Constants/ColorPalette.dart';
+import 'package:spending_tracker/Core/Constants/ErrorCode.dart';
 import 'package:spending_tracker/Core/ViewModels/AppProvider.dart';
+import 'package:spending_tracker/UI/Widgets/Dialog/ErrorDialog.dart';
+import 'package:spending_tracker/UI/Widgets/Dialog/MonthYearDialog.dart';
 
 class HeaderDelegate implements SliverPersistentHeaderDelegate {
   HeaderDelegate({this.minExtent, this.maxExtent});
@@ -22,9 +25,10 @@ class HeaderDelegate implements SliverPersistentHeaderDelegate {
 
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
-    final monthData = Provider.of<AppProvider>(context);
+    final appProvider = Provider.of<AppProvider>(context);
 
     return Stack(overflow: Overflow.visible, children: [
+      //Head at top of screen
       AnimatedOpacity(
         opacity: topHeaderVisible(shrinkOffset) ? 1.0 : 0.0,
         duration: Duration(milliseconds: 100),
@@ -36,12 +40,14 @@ class HeaderDelegate implements SliverPersistentHeaderDelegate {
           ),
           child: Center(
               child: Text(
-            DateFormat.yMMM().format(monthData.date),
+            DateFormat.yMMM().format(appProvider.date),
             textScaleFactor: 1.0,
             style: TextStyle(fontSize: 28, color: Theme.of(context).primaryColor),
           )),
         ),
       ),
+
+      //Header at the middle of screen
       AnimatedOpacity(
         opacity: topHeaderVisible(shrinkOffset) ? 0.0 : 1.0,
         duration: Duration(milliseconds: 100),
@@ -55,39 +61,61 @@ class HeaderDelegate implements SliverPersistentHeaderDelegate {
             ),
             color: darkGrey,
           ),
-          child: ListView(
-            padding: EdgeInsets.symmetric(vertical: 5),
-            physics: NeverScrollableScrollPhysics(),
-            children: <Widget>[
-              Center(
-                child: Text(DateFormat.yMMM().format(monthData.date),
-                    style: TextStyle(
-                      fontSize: 28,
-                    ),
-                    textScaleFactor: 1.0),
-              ),
-              Center(
-                child: Text(
-                  "Spent - \$${monthData.monthlyTotal.toStringAsFixed(2)}",
-                  style: TextStyle(
-                    fontSize: 28,
+          child: appProvider.busy
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : InkWell(
+                  onTap: () async {
+                    DateTime date = await monthSelector(
+                      context,
+                      appProvider.date.month,
+                      appProvider.date.year,
+                      appProvider.listOfYears,
+                    );
+                    if (date != null) {
+                      await appProvider.changeDate(date);
+                    }
+                  },
+                  child: ListView(
+                    padding: EdgeInsets.symmetric(vertical: 5),
+                    physics: NeverScrollableScrollPhysics(),
+                    children: <Widget>[
+                      Center(
+                        child: Text(DateFormat.yMMM().format(appProvider.date),
+                            style: TextStyle(
+                              fontSize: 28,
+                            ),
+                            textScaleFactor: 1.0),
+                      ),
+                      Center(
+                        child: Text(
+                          "Spent - \$${appProvider.monthlyTotal.toStringAsFixed(2)}",
+                          style: TextStyle(
+                            fontSize: 28,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-            ],
-          ),
         ),
       ),
       Align(
         alignment: Alignment.centerLeft,
         child: IconButton(
           onPressed: () {
-            DateTime newMonth = DateTime.utc(monthData.date.year, monthData.date.month - 1, 1);
-            monthData.changeDate(newMonth);
+            DateTime newMonth = DateTime.utc(appProvider.date.year, appProvider.date.month - 1, 1);
+            if (newMonth.isAfter(appProvider.backwardLimit)) {
+              appProvider.changeDate(newMonth);
+            } else {
+              errorMsgDialog(context, ERR_DATE_PAST_BACKLIMIT);
+            }
           },
           iconSize: 30,
           icon: Icon(
             Icons.chevron_left,
+            color: topHeaderVisible(shrinkOffset) ? Theme.of(context).primaryColor : Colors.white,
           ),
         ),
       ),
@@ -95,12 +123,17 @@ class HeaderDelegate implements SliverPersistentHeaderDelegate {
         alignment: Alignment.centerRight,
         child: IconButton(
           onPressed: () {
-            DateTime newMonth = DateTime.utc(monthData.date.year, monthData.date.month + 1, 1);
-            monthData.changeDate(newMonth);
+            DateTime newMonth = DateTime.utc(appProvider.date.year, appProvider.date.month + 1, 1);
+            if (newMonth.isBefore(appProvider.forwardLimit)) {
+              appProvider.changeDate(newMonth);
+            } else {
+              errorMsgDialog(context, ERR_DATE_PAST_FORWARDLIMIT);
+            }
           },
           iconSize: 30,
           icon: Icon(
             Icons.chevron_right,
+            color: topHeaderVisible(shrinkOffset) ? Theme.of(context).primaryColor : Colors.white,
           ),
         ),
       ),

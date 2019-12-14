@@ -12,7 +12,7 @@ const Map<String, IconData> icons = {
   "Gift Card": Icons.card_giftcard,
   "Pets": Icons.pets,
   "Print": Icons.print,
-  "Cart": Icons.shopping_cart,
+  //"Cart": Icons.shopping_cart,
   "Basket": Icons.shopping_basket,
   "Store": Icons.store,
   "Work": Icons.work,
@@ -72,3 +72,29 @@ List<Map<String, dynamic>> getIconMapAsList() {
 
   return iconMapAsList;
 }
+
+// final List<Map<String, dynamic>> iconList = [
+//   {"name": "Gas", "icon" : Icons.local_gas_station},
+//   {"name": "Food", "icon" : Icons.restaurant},
+//   {"name": "Shopping", "icon" : Icons.local_offer},
+//   {"name": "Grocceries", "icon" : Icons.local_grocery_store},
+//   {"name": "Transportation", "icon" : Icons.train},
+//   {"name": "Entertainment", "icon" : Icons.local_movies,},
+//   {"name": "Recurring", "icon" :Icons.receipt },
+//   {"name": "Misc.", "icon" :Icons.credit_card },
+//   {"name": "Gift Card", "icon" :Icons.card_giftcard },
+//   {"name": "Pets", "icon" : Icons.pets},
+//   {"name":  "Print" , "icon" : Icons.print},
+//   {"name": , "icon" : },
+//   {"name": , "icon" : },
+//   {"name": , "icon" : },
+//   {"name": , "icon" : },
+//   {"name": , "icon" : },
+//   {"name": , "icon" : },
+//   {"name": , "icon" : },
+//   {"name": , "icon" : },
+//   {"name": , "icon" : },
+//   {"name": , "icon" : },
+//   {"name": , "icon" : },
+
+// ];

@@ -30,7 +30,7 @@ void main() {
     Map<String, dynamic> temp = {"tx": listOfUserTx, "listOfCategories": uCList};
 
     MonthlyTransactionObject dataTable = MonthlyTransactionObject.getInstance;
-    dataTable = await StaticMonthlyTransactionObject.calc(temp);
+    dataTable = await StaticMonthlyTransactionObject.createMonthlyTransactionObject(temp);
 
     UserTransaction uT = dataTable.txList[1]["transactions"][0];
     expect(uT.id, 3);

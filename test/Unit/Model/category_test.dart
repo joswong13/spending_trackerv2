@@ -10,12 +10,14 @@ void main() {
       uc.icon = "Icon";
       uc.colorOne = "Blue";
       uc.colorTwo = "Red";
+      uc.position = 0;
 
       expect(uc.id, 1);
       expect(uc.name, "Test");
       expect(uc.icon, "Icon");
       expect(uc.colorOne, "Blue");
       expect(uc.colorTwo, "Red");
+      expect(uc.position, 0);
     });
 
     test("toMap", () {
@@ -25,12 +27,21 @@ void main() {
       uc.icon = "Icon";
       uc.colorOne = "Blue";
       uc.colorTwo = "Red";
+      uc.position = 0;
 
-      expect(uc.toMap(), {"id": 1, "name": "Test", "icon": "Icon", "colorOne": "Blue", "colorTwo": "Red"});
+      expect(
+          uc.toMap(), {"id": 1, "name": "Test", "icon": "Icon", "colorOne": "Blue", "colorTwo": "Red", "position": 0});
     });
 
     test("fromDb", () {
-      Map<String, dynamic> fromDb = {"id": 1, "name": "Test", "icon": "Icon", "colorOne": "Blue", "colorTwo": "Red"};
+      Map<String, dynamic> fromDb = {
+        "id": 1,
+        "name": "Test",
+        "icon": "Icon",
+        "colorOne": "Blue",
+        "colorTwo": "Red",
+        "position": 0
+      };
       UserCategory uc = UserCategory.fromDb(fromDb);
 
       expect(uc.id, 1);
@@ -38,6 +49,42 @@ void main() {
       expect(uc.icon, "Icon");
       expect(uc.colorOne, "Blue");
       expect(uc.colorTwo, "Red");
+      expect(uc.position, 0);
+    });
+
+    test("test checkEqual function", () {
+      Map<String, dynamic> fromDb = {
+        "id": 1,
+        "name": "Test",
+        "icon": "Icon",
+        "colorOne": "Blue",
+        "colorTwo": "Red",
+        "position": 0
+      };
+
+      Map<String, dynamic> fromDb1 = {
+        "id": 1,
+        "name": "Test",
+        "icon": "Icon",
+        "colorOne": "Blue",
+        "colorTwo": "Red",
+        "position": 0
+      };
+
+      Map<String, dynamic> fromDb2 = {
+        "id": 1,
+        "name": "Test",
+        "icon": "Icon",
+        "colorOne": "Blue",
+        "colorTwo": "Red",
+        "position": 2
+      };
+      UserCategory uc = UserCategory.fromDb(fromDb);
+      UserCategory uc1 = UserCategory.fromDb(fromDb1);
+      UserCategory uc2 = UserCategory.fromDb(fromDb2);
+
+      expect(uc.checkEqual(uc1), true);
+      expect(uc.checkEqual(uc2), false);
     });
   });
 }
