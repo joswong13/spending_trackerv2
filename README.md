@@ -22,8 +22,6 @@ Querying of transactions can be filtered by using either the date represented as
 
 ## TODO
 
-- [ ] issue when spawning thread then changing mainthread page
-- [ ] move add category and rearrange categories to settings page (high)
 - [ ] back up storage options other than firebase (medium)
 - [ ] add firebase functionality (for backup storage and data restore) (low)
 - [ ] theme: ability to change colors (low)
@@ -32,7 +30,7 @@ Querying of transactions can be filtered by using either the date represented as
 
 ## Version History
 
-### V0.9.3 (Dec 13, 2019)
+### V0.9.3 (Dec 14, 2019)
 
 - when pressing Add button, will auto fill in the Date and/or Category where possible
 - set a forward and backward date limit
