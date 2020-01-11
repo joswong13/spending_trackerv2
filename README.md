@@ -30,6 +30,12 @@ Querying of transactions can be filtered by using either the date represented as
 
 ## Version History
 
+### V0.9.4 (Jan 11, 2020)
+
+- can no longer use back gestures or back buttons from the Android system to go back, must use the back buttons provided in application
+- added AboutListTile
+- added an 'Add Category' tile to the Category overview page if there is no Categories
+
 ### V0.9.3 (Dec 14, 2019)
 
 - when pressing Add button, will auto fill in the Date and/or Category where possible

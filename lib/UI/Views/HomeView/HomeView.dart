@@ -34,56 +34,61 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
     // final SizeConfig sizeConfig = SizeConfig();
     // sizeConfig.initValues(context);
 
-    return Scaffold(
-      key: GlobalKey<ScaffoldState>(),
-      body: SafeArea(
-        child: TabBarView(
-          physics: NeverScrollableScrollPhysics(),
-          controller: _tabController,
-          children: <Widget>[MonthlyViewSliver(), CategoryOverviewCard(), StatsView(), SettingsView()],
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        tooltip: 'Add',
-        isExtended: true,
-        backgroundColor: Theme.of(context).primaryColor,
-        foregroundColor: Colors.black,
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) {
-              return TransactionScreen();
-            }),
-          );
-        },
-      ),
-      bottomNavigationBar: BottomAppBar(
-        notchMargin: 5.0,
-        clipBehavior: Clip.antiAlias,
-        shape: CircularNotchedRectangle(),
-        child: Material(
-          color: Colors.black,
-          child: TabBar(
-            tabs: <Widget>[
-              Tab(
-                icon: Icon(Icons.calendar_today),
-              ),
-              Tab(
-                icon: Icon(Icons.category),
-              ),
-              Tab(
-                icon: Icon(Icons.insert_chart),
-              ),
-              Tab(
-                icon: Icon(Icons.settings),
-              ),
-            ],
+    return WillPopScope(
+      onWillPop: () {
+        return Future(() => false);
+      },
+      child: Scaffold(
+        key: GlobalKey<ScaffoldState>(),
+        body: SafeArea(
+          child: TabBarView(
+            physics: NeverScrollableScrollPhysics(),
             controller: _tabController,
-            labelColor: Theme.of(context).primaryColor,
-            indicatorColor: Theme.of(context).primaryColor,
-            unselectedLabelColor: Colors.grey[800],
+            children: <Widget>[MonthlyViewSliver(), CategoryOverviewCard(), StatsView(), SettingsView()],
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: FloatingActionButton(
+          tooltip: 'Add',
+          isExtended: true,
+          backgroundColor: Theme.of(context).primaryColor,
+          foregroundColor: Colors.black,
+          child: Icon(Icons.add),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) {
+                return TransactionScreen();
+              }),
+            );
+          },
+        ),
+        bottomNavigationBar: BottomAppBar(
+          notchMargin: 5.0,
+          clipBehavior: Clip.antiAlias,
+          shape: CircularNotchedRectangle(),
+          child: Material(
+            color: Colors.black,
+            child: TabBar(
+              tabs: <Widget>[
+                Tab(
+                  icon: Icon(Icons.calendar_today),
+                ),
+                Tab(
+                  icon: Icon(Icons.category),
+                ),
+                Tab(
+                  icon: Icon(Icons.insert_chart),
+                ),
+                Tab(
+                  icon: Icon(Icons.settings),
+                ),
+              ],
+              controller: _tabController,
+              labelColor: Theme.of(context).primaryColor,
+              indicatorColor: Theme.of(context).primaryColor,
+              unselectedLabelColor: Colors.grey[800],
+            ),
           ),
         ),
       ),

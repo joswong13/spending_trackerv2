@@ -6,14 +6,17 @@ import 'package:spending_tracker/UI/Views/CreateCategoryView/CreateCategoriesLis
 class CreateCategoryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).requestFocus(FocusNode());
-        },
-        child: SafeArea(
-          child: Column(
-            children: <Widget>[CreateCategoryForm(), CategoryListView()],
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        body: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: SafeArea(
+            child: Column(
+              children: <Widget>[CreateCategoryForm(), CategoryListView()],
+            ),
           ),
         ),
       ),

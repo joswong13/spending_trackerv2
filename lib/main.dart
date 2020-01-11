@@ -7,6 +7,8 @@ import './UI/Views/HomeView/HomeView.dart';
 import 'Core/Constants/ColorPalette.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
   //sets fullscreen (without bottom nav android nav bar)
   //SystemChrome.setEnabledSystemUIOverlays([]);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
