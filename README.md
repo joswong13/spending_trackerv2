@@ -1,5 +1,13 @@
 # Spending Tracker [![Codemagic build status](https://api.codemagic.io/apps/5dcdb8f05b37710008f462ef/5dcdb8f05b37710008f462ee/status_badge.svg)](https://codemagic.io/apps/5dcdb8f05b37710008f462ef/5dcdb8f05b37710008f462ee/latest_build)
 
+## Table of Contents
+
+- [About](#about)
+- [Data Storage](#data-storage)
+- [Screenshots](#screenshots)
+- [Todo](#todo)
+- [Version History](#version-history)
+
 ## About
 
 This app was built to help people keep track of their monthly spending. On the main screen, there is a top row of categories that the user creates to help them organize their transactions. The middle section of the screen contains the information about the current month and how much they spent that month. To the left and right of the month are chevrons to help users navigate between each month.
