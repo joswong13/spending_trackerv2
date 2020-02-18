@@ -2,11 +2,16 @@
 
 ## Table of Contents
 
+- [Android Version](#android-version)
 - [About](#about)
 - [Data Storage](#data-storage)
 - [Screenshots](#screenshots)
 - [Todo](#todo)
 - [Version History](#version-history)
+
+## Android Version
+
+The minimum android version this application supports is Android 9 (targetSdkVersion = 28).
 
 ## About
 
