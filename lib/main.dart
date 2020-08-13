@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: Color.fromRGBO(18, 18, 18, 1),
           //text
           textTheme: TextTheme(
-            body1: TextStyle(
+            bodyText1: TextStyle(
               color: Color.fromRGBO(255, 255, 255, 0.87),
             ),
           ),
