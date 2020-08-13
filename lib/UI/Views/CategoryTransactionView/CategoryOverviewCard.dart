@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:spending_tracker/Core/Constants/ColorPalette.dart';
+import 'package:spending_tracker/UI/Views/CreateCategoryView/CreateCategoryView.dart';
 import 'package:spending_tracker/UI/Widgets/CategoryViewWidget/CategoryRowWidget.dart';
+import 'package:spending_tracker/UI/Widgets/CategoryViewWidget/EmptyCategoryRowWidget.dart';
 import '../../../Core/ViewModels/AppProvider.dart';
 
 class CategoryOverviewCard extends StatelessWidget {
@@ -31,14 +34,16 @@ class CategoryOverviewCard extends StatelessWidget {
               ),
             ),
           ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: appProvider.userCategoryList.length,
-              itemBuilder: (BuildContext contect, int index) {
-                return CategoryRowWidget(appProvider.userCategoryList[index]);
-              },
-            ),
-          )
+          appProvider.userCategoryList.length == 0
+              ? EmptyCategoryRowWidget()
+              : Expanded(
+                  child: ListView.builder(
+                    itemCount: appProvider.userCategoryList.length,
+                    itemBuilder: (BuildContext contect, int index) {
+                      return CategoryRowWidget(appProvider.userCategoryList[index]);
+                    },
+                  ),
+                )
         ],
       ),
     );

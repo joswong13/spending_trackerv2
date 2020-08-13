@@ -75,79 +75,82 @@ class _ReorganizeCategoryViewState extends State<ReorganizeCategoryView> {
   Widget build(BuildContext context) {
     final AppProvider appProvider = Provider.of<AppProvider>(context);
 
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            TopTextButtonStack(
-              title: "Rearrange",
-              widget: IconButton(
-                icon: const Icon(Icons.save),
-                iconSize: 28,
-                color: Theme.of(context).primaryColor,
-                tooltip: "Save",
-                onPressed: () async {
-                  for (int i = 0; i < _originalListofUserCategory.length; i++) {
-                    bool same = _originalListofUserCategory[i].checkEqual(cloneList[i]);
-                    if (!same) {
-                      finalList.add(cloneList[i]);
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        body: SafeArea(
+          child: Column(
+            children: <Widget>[
+              TopTextButtonStack(
+                title: "Rearrange",
+                widget: IconButton(
+                  icon: const Icon(Icons.save),
+                  iconSize: 28,
+                  color: Theme.of(context).primaryColor,
+                  tooltip: "Save",
+                  onPressed: () async {
+                    for (int i = 0; i < _originalListofUserCategory.length; i++) {
+                      bool same = _originalListofUserCategory[i].checkEqual(cloneList[i]);
+                      if (!same) {
+                        finalList.add(cloneList[i]);
+                      }
                     }
-                  }
-                  await appProvider.batchJobUpdateUserCategory(finalList);
+                    await appProvider.batchJobUpdateUserCategory(finalList);
 
-                  await appProvider.refreshUserCategoryList();
-                  Navigator.pop(context);
-                },
+                    await appProvider.refreshUserCategoryList();
+                    Navigator.pop(context);
+                  },
+                ),
               ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: cloneList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return ListTile(
-                    leading: index == 0
-                        ? IconButton(
-                            icon: Icon(
-                              Icons.keyboard_arrow_up,
-                              color: Colors.grey,
+              Expanded(
+                child: ListView.builder(
+                  itemCount: cloneList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ListTile(
+                      leading: index == 0
+                          ? IconButton(
+                              icon: Icon(
+                                Icons.keyboard_arrow_up,
+                                color: Colors.grey,
+                              ),
+                              onPressed: null,
+                            )
+                          : IconButton(
+                              icon: Icon(
+                                Icons.keyboard_arrow_up,
+                                color: primaryGreen,
+                              ),
+                              onPressed: () {
+                                _moveUpList(index);
+                              },
                             ),
-                            onPressed: null,
-                          )
-                        : IconButton(
-                            icon: Icon(
-                              Icons.keyboard_arrow_up,
-                              color: primaryGreen,
+                      title: Text(
+                        upperCaseFirstLetter(cloneList[index].name),
+                        textScaleFactor: 1,
+                      ),
+                      trailing: index == cloneList.length - 1
+                          ? IconButton(
+                              icon: Icon(
+                                Icons.keyboard_arrow_down,
+                                color: Colors.grey,
+                              ),
+                              onPressed: null,
+                            )
+                          : IconButton(
+                              icon: Icon(
+                                Icons.keyboard_arrow_down,
+                                color: primaryGreen,
+                              ),
+                              onPressed: () {
+                                _moveDownList(index);
+                              },
                             ),
-                            onPressed: () {
-                              _moveUpList(index);
-                            },
-                          ),
-                    title: Text(
-                      upperCaseFirstLetter(cloneList[index].name),
-                      textScaleFactor: 1,
-                    ),
-                    trailing: index == cloneList.length - 1
-                        ? IconButton(
-                            icon: Icon(
-                              Icons.keyboard_arrow_down,
-                              color: Colors.grey,
-                            ),
-                            onPressed: null,
-                          )
-                        : IconButton(
-                            icon: Icon(
-                              Icons.keyboard_arrow_down,
-                              color: primaryGreen,
-                            ),
-                            onPressed: () {
-                              _moveDownList(index);
-                            },
-                          ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

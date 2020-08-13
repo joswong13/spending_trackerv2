@@ -45,3 +45,34 @@ class ReorgCategoryListTile extends StatelessWidget {
     );
   }
 }
+
+class AboutSpendingTrackerListTile extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final TextStyle textStyle = Theme.of(context).textTheme.body1;
+    final List<Widget> aboutBoxChildren = <Widget>[
+      SizedBox(height: 24),
+      RichText(
+        text: TextSpan(
+          children: <TextSpan>[
+            TextSpan(
+                style: textStyle,
+                text:
+                    'Spending Tracker is an app to help people keep track of what they are spending on by sorting each expense into their corresponding categories. The code can be found at '),
+            TextSpan(
+                style: textStyle.copyWith(color: Theme.of(context).accentColor),
+                text: 'https://github.com/joswong13/spending_trackerv2'),
+            TextSpan(style: textStyle, text: '.'),
+          ],
+        ),
+      ),
+    ];
+
+    return AboutListTile(
+        icon: Icon(Icons.info),
+        applicationName: "Spending Tracker",
+        applicationVersion: "January 11 2020",
+        applicationLegalese: "Built by Joseph Wong",
+        aboutBoxChildren: aboutBoxChildren);
+  }
+}
