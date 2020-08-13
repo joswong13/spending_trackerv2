@@ -11,7 +11,7 @@
 
 ## Android Version
 
-The minimum android version this application supports is Android 9 (targetSdkVersion = 28).
+The minimum android version this application supports is Android 10 (targetSdkVersion = 30).
 
 ## About
 
