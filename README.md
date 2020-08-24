@@ -135,7 +135,7 @@ Allows user to quick select a particular month and particular year to display tr
 
 ## Version History
 
-### V0.9.4 (Aug 23, 2020)
+### V0.9.5 (Aug 23, 2020)
 
 - fixed issue with not being able reorganize categories
 - added an export and import feature for the database file
