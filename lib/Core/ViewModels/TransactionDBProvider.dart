@@ -59,4 +59,12 @@ mixin TransactionDBProvider {
   Future<int> deleteAllUserTransactionInCategory(String category) {
     return transactionDatabase.deleteByString(category);
   }
+
+  Future<String> exportBackupTransaction() async {
+    return await transactionDatabase.getDatabasePath();
+  }
+
+  Future<void> importBackupTransaction(String path) async {
+    return await transactionDatabase.importDatabase(path);
+  }
 }

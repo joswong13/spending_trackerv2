@@ -56,4 +56,12 @@ mixin CategoryDBProvider {
   Future<void> batchJobUpdateUserCategory(List<UserCategory> listOfUC) async {
     await categoryDatabase.batchJob(listOfUC);
   }
+
+  Future<String> exportBackupCategory() async {
+    return await categoryDatabase.getDatabasePath();
+  }
+
+  Future<void> importBackupCategory(String path) async {
+    return await categoryDatabase.importDatabase(path);
+  }
 }

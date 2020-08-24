@@ -2,7 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:spending_tracker/UI/Widgets/SettingsWidgets/SettingsListTile.dart';
 
 class SettingsView extends StatelessWidget {
-  final List<Widget> settingsList = [AddCategory(), ReorgCategoryListTile(), AboutSpendingTrackerListTile()];
+  final List<Widget> settingsList = [
+    AddCategory(),
+    ReorgCategoryListTile(),
+    AboutSpendingTrackerListTile(),
+    ImportBackUp(),
+    ExportBackUp(),
+  ];
 
   @override
   Widget build(BuildContext context) {

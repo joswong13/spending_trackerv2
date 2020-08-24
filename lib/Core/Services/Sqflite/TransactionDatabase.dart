@@ -121,4 +121,19 @@ class TransactionDatabase extends BaseDB<UserTransaction> {
   Future<void> batchJob(List<UserTransaction> object) {
     return null;
   }
+
+  @override
+  Future<String> getDatabasePath() async {
+    Directory directory = await getApplicationDocumentsDirectory();
+    String path = join(directory.path, "userTransaction.db");
+    return path;
+  }
+
+  @override
+  Future<void> importDatabase(String path) async {
+    Directory directory = await getApplicationDocumentsDirectory();
+    String saveToPath = join(directory.path, "userTransaction.db");
+
+    await File(path).copy(saveToPath);
+  }
 }

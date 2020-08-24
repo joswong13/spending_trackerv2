@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:share_extend/share_extend.dart';
+import 'package:spending_tracker/Core/ViewModels/AppProvider.dart';
 import 'package:spending_tracker/UI/Views/CategoryTransactionView/ReorganizeCategoryView.dart';
 import 'package:spending_tracker/UI/Views/CreateCategoryView/CreateCategoryView.dart';
+import 'package:spending_tracker/UI/Views/ImportBackUpView/ImportBackUpView.dart';
 
 class AddCategory extends StatelessWidget {
   @override
@@ -49,7 +53,7 @@ class ReorgCategoryListTile extends StatelessWidget {
 class AboutSpendingTrackerListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final TextStyle textStyle = Theme.of(context).textTheme.body1;
+    final TextStyle textStyle = Theme.of(context).textTheme.bodyText1;
     final List<Widget> aboutBoxChildren = <Widget>[
       SizedBox(height: 24),
       RichText(
@@ -74,5 +78,53 @@ class AboutSpendingTrackerListTile extends StatelessWidget {
         applicationVersion: "January 11 2020",
         applicationLegalese: "Built by Joseph Wong",
         aboutBoxChildren: aboutBoxChildren);
+  }
+}
+
+class ExportBackUp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final appProvider = Provider.of<AppProvider>(context);
+
+    return ListTile(
+      leading: Icon(Icons.swap_vert),
+      title: Text(
+        "Export Back Up",
+        textScaleFactor: 1,
+      ),
+      subtitle: Text("Export backup for Android"),
+      onTap: () async {
+        List<String> pathList = [];
+
+        String transactionPath = await appProvider.exportBackupTransaction();
+        String categoryPath = await appProvider.exportBackupCategory();
+
+        pathList.add(transactionPath);
+        pathList.add(categoryPath);
+        ShareExtend.shareMultiple(pathList, 'file');
+      },
+    );
+  }
+}
+
+class ImportBackUp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Icon(Icons.swap_vert),
+      title: Text(
+        "Import Back Up",
+        textScaleFactor: 1,
+      ),
+      subtitle: Text("Import backup for Android"),
+      onTap: () async {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) {
+            return ImportBackUpView();
+          }),
+        );
+      },
+    );
   }
 }

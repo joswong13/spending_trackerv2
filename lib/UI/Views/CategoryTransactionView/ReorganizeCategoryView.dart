@@ -25,7 +25,7 @@ class _ReorganizeCategoryViewState extends State<ReorganizeCategoryView> {
   @override
   void initState() {
     super.initState();
-    List<UserCategory> _originalListofUserCategory = Provider.of<AppProvider>(context, listen: false).userCategoryList;
+    _originalListofUserCategory = Provider.of<AppProvider>(context, listen: false).userCategoryList;
 
     _originalListofUserCategory.forEach((uc) {
       //Clone the UC
