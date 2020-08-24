@@ -25,4 +25,8 @@ abstract class BaseDB<T> {
 
   /// Given a list of transactions, executes them in SQFLite.
   Future<void> batchJob(List<T> object);
+
+  Future<String> getDatabasePath();
+
+  Future<void> importDatabase(String path);
 }

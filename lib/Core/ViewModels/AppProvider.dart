@@ -34,7 +34,19 @@ class AppProvider extends BaseProvider with CategoryDBProvider, TransactionDBPro
   ///@Constructor
   ///Generate initial calendar and query from database.
   AppProvider() {
+    restartAppProviderService();
+  }
+
+  void _clearAllInstanceVar() {
+    _categoryUserTransactionList = [];
+    _categoryType = '';
+    _userCategoryList = [];
+    _userCategoryMap = {};
+  }
+
+  Future<void> restartAppProviderService() async {
     constructorBusy = true;
+    _clearAllInstanceVar();
 
     for (int i = DateTime.now().year; i >= 2018; i--) {
       _listOfYears.add(i);

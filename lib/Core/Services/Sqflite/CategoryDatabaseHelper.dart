@@ -38,6 +38,7 @@ class CategoryDatabase extends BaseDB<UserCategory> {
   Future<Database> getDatabaseInstance() async {
     Directory directory = await getApplicationDocumentsDirectory();
     String path = join(directory.path, "category.db");
+
     return await openDatabase(path, version: 2, onCreate: _createDB, onUpgrade: _onUpgradeDB);
   }
 
@@ -128,5 +129,20 @@ class CategoryDatabase extends BaseDB<UserCategory> {
       batch.update('category', object[i].toMap(), where: "id = ?", whereArgs: [object[i].id]);
     }
     await batch.commit(noResult: true);
+  }
+
+  @override
+  Future<String> getDatabasePath() async {
+    Directory directory = await getApplicationDocumentsDirectory();
+    String path = join(directory.path, "category.db");
+    return path;
+  }
+
+  @override
+  Future<void> importDatabase(String path) async {
+    Directory directory = await getApplicationDocumentsDirectory();
+    String saveToPath = join(directory.path, "category.db");
+
+    await File(path).copy(saveToPath);
   }
 }

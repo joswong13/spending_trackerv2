@@ -11,7 +11,7 @@
 
 ## Android Version
 
-The minimum android version this application supports is Android 10 (targetSdkVersion = 30).
+The minimum android version this application supports is Android 9 (targetSdkVersion = 28).
 
 ## About
 
@@ -134,6 +134,11 @@ Allows user to quick select a particular month and particular year to display tr
 - [ ] ability to set budget (low)
 
 ## Version History
+
+### V0.9.5 (Aug 23, 2020)
+
+- fixed issue with not being able reorganize categories
+- added an export and import feature for the database file
 
 ### V0.9.4 (Jan 11, 2020)
 
